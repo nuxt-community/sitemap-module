@@ -4,6 +4,8 @@
 [![CircleCI](https://img.shields.io/circleci/project/github/nuxt-community/sitemap-module.svg?style=flat-square)](https://circleci.com/gh/nuxt-community/sitemap-module)
 [![Codecov](https://img.shields.io/codecov/c/github/nuxt-community/sitemap-module.svg?style=flat-square)](https://codecov.io/gh/nuxt-community/sitemap-module)
 [![Dependencies](https://david-dm.org/nuxt-community/sitemap-module/status.svg?style=flat-square)](https://david-dm.org/nuxt-community/sitemap-module)
+
+
 [![js-standard-style](https://cdn.rawgit.com/standard/standard/master/badge.svg)](http://standardjs.com)
 
 > Automatically generate or serve dynamic [sitemap.xml](https://www.sitemaps.org/protocol.html) for Nuxt.js projects!
@@ -140,10 +142,10 @@ module.exports = {
 }
 ```
 
-### Contributors
-- [Nicolas PENNEC](https://github.com/NicoPennec)
-- [Pooya Parsa](https://github.com/pi0)
-
 ## License
 
 [MIT License](./LICENSE)
+
+### Contributors
+- [Nicolas PENNEC](https://github.com/NicoPennec)
+- [Pooya Parsa](https://github.com/pi0)
