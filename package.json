@@ -1,0 +1,57 @@
+{
+  "name": "@nuxtjs/sitemap-module",
+  "version": "0.0.3",
+  "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
+  "license": "MIT",
+  "contributors": [
+    { 
+      "name": "Nicolas Pennec"
+    },
+    {
+      "name": "Pooya Parsa"
+    }
+  ],
+  "main": "dist/index.js",
+  "repository": "https://github.com/nuxt-community/sitemap-module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "nuxt-module",
+    "watch": "nuxt-module --watch",
+    "lint": "eslint lib src test",
+    "lint-fix": "eslint --fix lib src test",
+    "test": "NODE_ENV=test npm run build && npm run lint && jest",
+    "release": "standard-version && git push --follow-tags && npm publish",
+    "prepare": "npm run test && npm run build"
+  },
+  "eslintIgnore": [
+    "*.template.*"
+  ],
+  "files": [
+    "lib",
+    "src",
+    "dist"
+  ],
+  "jest": {
+    "testEnvironment": "node",
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "lib",
+      "src"
+    ]
+  },
+  "dependencies": {
+    "async-cache": "^1.1.0",
+    "fs-extra": "^4.0.0",
+    "is-https": "^1.0.0",
+    "lodash": "^4.17.4",
+    "minimatch": "^3.0.4",
+    "pify": "^3.0.0",
+    "sitemap": "^1.13.0"
+  },
+  "devDependencies": {
+    "nuxt-module-builder": "^0.0.2"
+  }
+}
