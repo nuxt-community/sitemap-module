@@ -32,7 +32,7 @@ Module based on the awesome [sitemap](https://github.com/ekalinin/sitemap.js) pa
     exclude: [
       '/secret',
       '/admin/**'
-    ]
+    ],
     routes: [
       '/page/1',
       {
