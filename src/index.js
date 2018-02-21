@@ -162,7 +162,15 @@ function promisifyRoute (fn) {
 
 // Join static and options-defined routes into single array
 function routesUnion (staticRoutes, optionsRoutes) {
-  staticRoutes = staticRoutes.map(route => ({ url: route }))
+  // Make sure any routes passed as strings are converted to objects with url properties
+  staticRoutes = staticRoutes.map(ensureRouteIsObject)
+  optionsRoutes = optionsRoutes.map(ensureRouteIsObject)
   // add static routes to options routes, discarding any defined in options
   return unionBy(optionsRoutes, staticRoutes, 'url')
+}
+
+// Make sure a passed route is an object
+function ensureRouteIsObject (route) {
+  if (typeof route === 'object') return route
+  return { url: route }
 }
