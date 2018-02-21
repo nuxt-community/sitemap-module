@@ -171,6 +171,5 @@ function routesUnion (staticRoutes, optionsRoutes) {
 
 // Make sure a passed route is an object
 function ensureRouteIsObject (route) {
-  if (typeof route === 'object') return route
-  return { url: route }
+  return typeof route === 'object' ? route : { url: route }
 }
