@@ -1,7 +1,7 @@
 const { Minimatch } = require('minimatch')
 const sm = require('sitemap')
 const isHTTPS = require('is-https')
-const { union, uniq } = require('lodash')
+const { unionBy, uniq } = require('lodash')
 const path = require('path')
 const fs = require('fs-extra')
 const AsyncCache = require('async-cache')
@@ -101,7 +101,7 @@ function createCache (staticRoutes, options) {
     maxAge: options.cacheTime,
     load (_, callback) {
       promisifyRoute(options.routes)
-        .then(routes => union(staticRoutes, routes))
+        .then(routes => routesUnion(staticRoutes, routes))
         .then(routes => {
           callback(null, routes)
         })
@@ -158,4 +158,18 @@ function promisifyRoute (fn) {
     promise = Promise.resolve(promise)
   }
   return promise
+}
+
+// Join static and options-defined routes into single array
+function routesUnion (staticRoutes, optionsRoutes) {
+  // Make sure any routes passed as strings are converted to objects with url properties
+  staticRoutes = staticRoutes.map(ensureRouteIsObject)
+  optionsRoutes = optionsRoutes.map(ensureRouteIsObject)
+  // add static routes to options routes, discarding any defined in options
+  return unionBy(optionsRoutes, staticRoutes, 'url')
+}
+
+// Make sure a passed route is an object
+function ensureRouteIsObject (route) {
+  return typeof route === 'object' ? route : { url: route }
 }
