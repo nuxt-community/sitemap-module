@@ -4,7 +4,7 @@
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
   "license": "MIT",
   "contributors": [
-    { 
+    {
       "name": "Nicolas Pennec"
     },
     {
@@ -44,9 +44,9 @@
   },
   "dependencies": {
     "async-cache": "^1.1.0",
-    "fs-extra": "^4.0.0",
+    "fs-extra": "^5.0.0",
     "is-https": "^1.0.0",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.5",
     "minimatch": "^3.0.4",
     "pify": "^3.0.0",
     "sitemap": "^1.13.0"
