@@ -1,5 +1,5 @@
 {
-  "name": "@nuxtjs/sitemap-module",
+  "name": "@nuxtjs/sitemap",
   "version": "0.0.4",
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
   "license": "MIT",
