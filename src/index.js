@@ -128,11 +128,6 @@ function createSitemap (options, routes, req) {
     routes = options.filter({routes, hostname: sitemapConfig.hostname, req})
   }
 
-  // option to filter on each sitemap request over submitted routes
-  if (typeof options.filter === 'function') {
-    routes = options.filter({routes, hostname: sitemapConfig.hostname, req})
-  }
-
   // Set urls and ensure they are unique
   sitemapConfig.urls = uniq(routes)
 
