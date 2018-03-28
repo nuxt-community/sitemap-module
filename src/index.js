@@ -83,14 +83,7 @@ export default async function sitemap (moduleOptions) {
     path: options.path,
     handler (req, res, next) {
       cache.get('routes')
-        .then(routes => {
-          if (typeof options.filter === 'function') {
-            // eslint-disable-next-line no-console
-            console.log(options.filter)
-            routes = options.filter(routes, req)
-          }
-          return createSitemap(options, routes, req)
-        })
+        .then(routes => createSitemap(options, routes, req))
         .then(sitemap => sitemap.toXML())
         .then(xml => {
           res.setHeader('Content-Type', 'application/xml')
@@ -129,6 +122,11 @@ function createSitemap (options, routes, req) {
   // Set sitemap hostname
   sitemapConfig.hostname = options.hostname ||
     (req && `${isHTTPS(req) ? 'https' : 'http'}://${req.headers.host}`) || `http://${hostname()}`
+
+  // option to filter on each sitemap request
+  if (typeof options.filter === 'function') {
+    routes = options.filter({routes, hostname: sitemapConfig.hostname, req})
+  }
 
   // Set urls and ensure they are unique
   sitemapConfig.urls = uniq(routes)
