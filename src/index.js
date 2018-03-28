@@ -89,8 +89,8 @@ export default async function sitemap (moduleOptions) {
           res.setHeader('Content-Type', 'application/xml')
           res.end(xml)
         }).catch(err => {
-        next(err)
-      })
+          next(err)
+        })
     }
   })
 }
@@ -123,7 +123,7 @@ function createSitemap (options, routes, req) {
   sitemapConfig.hostname = options.hostname ||
     (req && `${isHTTPS(req) ? 'https' : 'http'}://${req.headers.host}`) || `http://${hostname()}`
 
-  // option to filter on each sitemap request
+  // option to filter on each sitemap request over submitted routes
   if (typeof options.filter === 'function') {
     routes = options.filter({routes, hostname: sitemapConfig.hostname, req})
   }
