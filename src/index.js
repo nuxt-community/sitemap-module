@@ -1,12 +1,12 @@
-const { Minimatch } = require('minimatch')
+const {Minimatch} = require('minimatch')
 const sm = require('sitemap')
 const isHTTPS = require('is-https')
-const { unionBy, uniq } = require('lodash')
+const {unionBy, uniq} = require('lodash')
 const path = require('path')
 const fs = require('fs-extra')
 const AsyncCache = require('async-cache')
 const pify = require('pify')
-const { hostname } = require('os')
+const {hostname} = require('os')
 
 // Defaults
 const defaults = {
@@ -30,7 +30,7 @@ export default async function sitemap (moduleOptions) {
   // Ensure no generated file exists
   fs.removeSync(xmlGeneratePath)
 
-  let staticRoutes = fs.readJsonSync(jsonStaticRoutesPath, { throws: false })
+  let staticRoutes = fs.readJsonSync(jsonStaticRoutesPath, {throws: false})
   let cache = null
 
   // TODO find a better way to detect if is a "build", "start" or "generate" command
@@ -83,14 +83,21 @@ export default async function sitemap (moduleOptions) {
     path: options.path,
     handler (req, res, next) {
       cache.get('routes')
-        .then(routes => createSitemap(options, routes, req))
+        .then(routes => {
+          if (typeof options.filter === 'function') {
+            // eslint-disable-next-line no-console
+            console.log(options.filter)
+            routes = options.filter(routes, req)
+          }
+          return createSitemap(options, routes, req)
+        })
         .then(sitemap => sitemap.toXML())
         .then(xml => {
           res.setHeader('Content-Type', 'application/xml')
           res.end(xml)
         }).catch(err => {
-          next(err)
-        })
+        next(err)
+      })
     }
   })
 }
@@ -171,5 +178,5 @@ function routesUnion (staticRoutes, optionsRoutes) {
 
 // Make sure a passed route is an object
 function ensureRouteIsObject (route) {
-  return typeof route === 'object' ? route : { url: route }
+  return typeof route === 'object' ? route : {url: route}
 }
