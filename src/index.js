@@ -18,7 +18,7 @@ const defaults = {
   cacheTime: 1000 * 60 * 15
 }
 
-export default async function sitemap (moduleOptions) {
+module.exports = function module (moduleOptions) {
   const options = Object.assign({}, defaults, this.options.sitemap, moduleOptions)
 
   // sitemap-routes.json is written to dist dir on build mode
@@ -43,7 +43,7 @@ export default async function sitemap (moduleOptions) {
   }
 
   // Extend routes
-  this.extendRoutes(async routes => {
+  this.extendRoutes(routes => {
     // Map to path and filter dynamic routes
     let staticRoutes = routes
       .map(r => r.path)
@@ -69,11 +69,13 @@ export default async function sitemap (moduleOptions) {
 
       // TODO on generate process only and not on build process
       if (options.generate) {
-        // Generate static sitemap.xml
-        const routes = await cache.get('routes')
-        const sitemap = await createSitemap(options, routes)
-        const xml = await sitemap.toXML()
-        await fs.writeFile(xmlGeneratePath, xml)
+        (async () => {
+          // Generate static sitemap.xml
+          const routes = await cache.get('routes')
+          const sitemap = await createSitemap(options, routes)
+          const xml = await sitemap.toXML()
+          await fs.writeFile(xmlGeneratePath, xml)
+        })()
       }
     }
   })
