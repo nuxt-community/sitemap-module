@@ -1,6 +1,6 @@
 {
   "name": "@nuxtjs/sitemap",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
   "license": "MIT",
   "contributors": [
@@ -22,7 +22,9 @@
     "test": "npm run lint && jest",
     "release": "standard-version && git push --follow-tags && npm publish"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "jest": {
     "testEnvironment": "node",
     "collectCoverage": true
