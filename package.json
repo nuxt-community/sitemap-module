@@ -35,11 +35,9 @@
     "is-https": "^1.0.0",
     "lodash": "^4.17.5",
     "minimatch": "^3.0.4",
-    "pify": "^3.0.0",
     "sitemap": "^1.13.0"
   },
   "devDependencies": {
-    "nuxt": "latest",
     "codecov": "latest",
     "eslint": "latest",
     "eslint-config-standard": "latest",
@@ -51,6 +49,7 @@
     "eslint-plugin-vue": "latest",
     "jest": "latest",
     "jsdom": "latest",
+    "nuxt": "latest",
     "standard-version": "latest"
   }
 }

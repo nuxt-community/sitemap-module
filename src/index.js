@@ -5,7 +5,7 @@ const { unionBy, uniq } = require('lodash')
 const path = require('path')
 const fs = require('fs-extra')
 const AsyncCache = require('async-cache')
-const pify = require('pify')
+const { promisify } = require('util')
 const { hostname } = require('os')
 
 // Defaults
@@ -112,7 +112,7 @@ function createCache (staticRoutes, options) {
         })
     }
   })
-  cache.get = pify(cache.get)
+  cache.get = promisify(cache.get)
 
   return cache
 }
@@ -133,7 +133,7 @@ function createSitemap (options, routes, req) {
 
   // Create promisified instance and return
   const sitemap = sm.createSitemap(sitemapConfig)
-  sitemap.toXML = pify(sitemap.toXML)
+  sitemap.toXML = promisify(sitemap.toXML)
 
   return sitemap
 }
