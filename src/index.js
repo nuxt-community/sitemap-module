@@ -100,7 +100,8 @@ module.exports = function module (moduleOptions) {
           .then(routes => createSitemap(options, routes, req))
           .then(sitemap => sitemap.toGzip())
           .then(gzip => {
-            res.setHeader('Content-Type', 'gzip')
+            res.setHeader('Content-Type', 'application/x-gzip')
+            res.setHeader('Content-Encoding', 'gzip')
             res.end(gzip)
           }).catch(err => {
             next(err)
