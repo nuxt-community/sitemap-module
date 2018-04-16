@@ -16,7 +16,8 @@ const defaults = {
   generate: false,
   exclude: [],
   routes: [],
-  cacheTime: 1000 * 60 * 15
+  cacheTime: 1000 * 60 * 15,
+  gzip: true
 }
 
 module.exports = function module (moduleOptions) {
@@ -28,8 +29,12 @@ module.exports = function module (moduleOptions) {
   // sitemap.xml is written to static dir on generate mode
   const xmlGeneratePath = path.resolve(this.options.srcDir, path.join('static', options.path))
 
+  options.pathGzip = (options.gzip) ? `${options.path}.gz` : options.path
+  const gzipGeneratePath = path.resolve(this.options.srcDir, path.join('static', options.pathGzip))
+
   // Ensure no generated file exists
   fs.removeSync(xmlGeneratePath)
+  fs.removeSync(gzipGeneratePath)
 
   let staticRoutes = fs.readJsonSync(jsonStaticRoutesPath, { throws: false })
   let cache = null
@@ -75,13 +80,36 @@ module.exports = function module (moduleOptions) {
           const routes = await cache.get('routes')
           const sitemap = await createSitemap(options, routes)
           const xml = await sitemap.toXML()
+          await fs.ensureFile(xmlGeneratePath)
           await fs.writeFile(xmlGeneratePath, xml)
+          if (options.gzip) {
+            const gzip = await sitemap.toGzip()
+            await fs.writeFile(gzipGeneratePath, gzip)
+          }
         })()
       }
     }
   })
 
-  // Add server middleware
+  if (options.gzip) {
+    // Add server middleware for sitemap.xml.gz
+    this.addServerMiddleware({
+      path: options.pathGzip,
+      handler (req, res, next) {
+        cache.get('routes')
+          .then(routes => createSitemap(options, routes, req))
+          .then(sitemap => sitemap.toGzip())
+          .then(gzip => {
+            res.setHeader('Content-Type', 'gzip')
+            res.end(gzip)
+          }).catch(err => {
+            next(err)
+          })
+      }
+    })
+  }
+
+  // Add server middleware for sitemap.xml
   this.addServerMiddleware({
     path: options.path,
     handler (req, res, next) {
