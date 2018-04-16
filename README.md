@@ -26,6 +26,7 @@ Module based on the awesome [sitemap](https://github.com/ekalinin/sitemap.js) pa
     path: '/sitemap.xml',
     hostname: 'https://example.com',
     cacheTime: 1000 * 60 * 15,
+    gzip: true,
     generate: false, // Enable me when using nuxt generate
     exclude: [
       '/secret',
@@ -76,6 +77,11 @@ Generates static sitemap file during build/generate instead of serving using mid
 Defines how frequently should sitemap **routes** being updated.
 This option is only effective when `generate` is `false`.
 Please note that after each invalidation, `routes` will be evaluated again. (See [routes](#routes-1) section)
+
+### `gzip`
+- Default: `true`
+
+Enable the creation of the `.xml.gz` sitemap compressed with gzip.
 
 ## Routes
 
