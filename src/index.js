@@ -17,7 +17,7 @@ const defaults = {
   exclude: [],
   routes: [],
   cacheTime: 1000 * 60 * 15,
-  gzip: true
+  gzip: false
 }
 
 module.exports = function module (moduleOptions) {

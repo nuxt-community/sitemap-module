@@ -79,7 +79,7 @@ This option is only effective when `generate` is `false`.
 Please note that after each invalidation, `routes` will be evaluated again. (See [routes](#routes-1) section)
 
 ### `gzip`
-- Default: `true`
+- Default: `false`
 
 Enable the creation of the `.xml.gz` sitemap compressed with gzip.
 
