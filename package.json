@@ -37,9 +37,9 @@
   },
   "dependencies": {
     "async-cache": "^1.1.0",
-    "fs-extra": "^5.0.0",
+    "fs-extra": "^6.0.0",
     "is-https": "^1.0.0",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.10",
     "minimatch": "^3.0.4",
     "sitemap": "^1.13.0"
   },
