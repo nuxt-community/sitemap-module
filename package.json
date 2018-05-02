@@ -22,8 +22,10 @@
   },
   "scripts": {
     "dev": "nuxt test/fixture",
+    "generate": "nuxt generate test/fixture",
     "lint": "eslint src test",
-    "test": "npm run lint && jest",
+    "unit": "jest --maxWorkers=4",
+    "test": "npm run lint && npm run unit",
     "release": "standard-version && git push --follow-tags && npm publish"
   },
   "files": [
