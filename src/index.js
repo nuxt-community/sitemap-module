@@ -27,10 +27,10 @@ module.exports = function module (moduleOptions) {
   const jsonStaticRoutesPath = path.resolve(this.options.buildDir, path.join('dist', 'sitemap-routes.json'))
 
   // sitemap.xml is written to static dir on generate mode
-  const xmlGeneratePath = path.resolve(this.options.srcDir, path.join(typeof this.options.dir.static != 'undefined' ? this.options.dir.static : 'static', options.path))
+  const xmlGeneratePath = path.resolve(this.options.srcDir, path.join(this.options.dir.static || 'static', options.path))
 
   options.pathGzip = (options.gzip) ? `${options.path}.gz` : options.path
-  const gzipGeneratePath = path.resolve(this.options.srcDir, path.join(typeof this.options.dir.static != 'undefined' ? this.options.dir.static : 'static', options.pathGzip))
+  const gzipGeneratePath = path.resolve(this.options.srcDir, path.join(this.options.dir.static || 'static', options.pathGzip))
 
   // Ensure no generated file exists
   fs.removeSync(xmlGeneratePath)
