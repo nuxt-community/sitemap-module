@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/nuxt-community/sitemap-module/compare/v0.1.0...v0.1.1) (2018-04-16)
+
+
+### Bug Fixes
+
+* disable gzip option by default ([fba2943](https://github.com/nuxt-community/sitemap-module/commit/fba2943))
+* header of gzipped sitemap ([30edf85](https://github.com/nuxt-community/sitemap-module/commit/30edf85))
+
+
+
+<a name="0.1.0"></a>
+# [0.1.0](https://github.com/nuxt-community/sitemap-module/compare/v0.0.5...v0.1.0) (2018-04-16)
+
+
+### Features
+
+* feat: add gzip compression to sitemap by default ([6cee9bd](https://github.com/nuxt-community/sitemap-module/commit/6cee9bd)), closes [#16](https://github.com/nuxt-community/sitemap-module/issues/16)
+
+
+### Performance Improvements
+
+* optimize lodash imports ([5e1e68f](https://github.com/nuxt-community/sitemap-module/commit/5e1e68f))
+
+
+
+<a name="0.0.5"></a>
+## [0.0.5](https://github.com/nuxt-community/sitemap-module/compare/v0.0.4...v0.0.5) (2018-04-14)
+
+
+### Bug Fixes
+
+* wrap async calls ([b1b785a](https://github.com/nuxt-community/sitemap-module/commit/b1b785a))
+
+
+
 <a name="0.0.4"></a>
 ## 0.0.4 (2018-03-20)
 

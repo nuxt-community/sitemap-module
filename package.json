@@ -1,6 +1,6 @@
 {
   "name": "@nuxtjs/sitemap",
-  "version": "0.0.4",
+  "version": "0.1.1",
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
   "license": "MIT",
   "contributors": [
@@ -11,47 +11,51 @@
       "name": "Pooya Parsa"
     }
   ],
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/nuxt-community/sitemap-module",
   "publishConfig": {
     "access": "public"
   },
-  "scripts": {
-    "build": "nuxt-module",
-    "watch": "nuxt-module --watch",
-    "lint": "eslint lib src test",
-    "lint-fix": "eslint --fix lib src test",
-    "test": "NODE_ENV=test npm run build && npm run lint && jest",
-    "release": "standard-version && git push --follow-tags && npm publish",
-    "prepare": "npm run test && npm run build"
+  "engines": {
+    "node": ">=8.0.0",
+    "npm": ">=5.0.0"
   },
-  "eslintIgnore": [
-    "*.template.*"
-  ],
+  "scripts": {
+    "dev": "nuxt test/fixture",
+    "generate": "nuxt generate test/fixture",
+    "lint": "eslint src test",
+    "unit": "jest --maxWorkers=4",
+    "test": "npm run lint && npm run unit",
+    "release": "standard-version && git push --follow-tags && npm publish"
+  },
   "files": [
-    "lib",
-    "src",
-    "dist"
+    "src"
   ],
   "jest": {
     "testEnvironment": "node",
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "lib",
-      "src"
-    ]
+    "collectCoverage": true
   },
   "dependencies": {
     "async-cache": "^1.1.0",
-    "fs-extra": "^5.0.0",
+    "fs-extra": "^6.0.0",
     "is-https": "^1.0.0",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.10",
     "minimatch": "^3.0.4",
-    "pify": "^3.0.0",
     "sitemap": "^1.13.0"
   },
   "devDependencies": {
-    "nuxt-module-builder": "^0.0.2"
+    "codecov": "latest",
+    "eslint": "latest",
+    "eslint-config-standard": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-jest": "latest",
+    "eslint-plugin-node": "latest",
+    "eslint-plugin-promise": "latest",
+    "eslint-plugin-standard": "latest",
+    "eslint-plugin-vue": "latest",
+    "jest": "latest",
+    "jsdom": "latest",
+    "nuxt": "latest",
+    "standard-version": "latest"
   }
 }
