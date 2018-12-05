@@ -38,6 +38,12 @@ describe('ssr', () => {
     expect(html).toContain('/1/index')
     html = await get('/exclude')
     expect(html).toContain('/exclude')
+    html = await get('/parent')
+    expect(html).toContain('/parent')
+    html = await get('/parent/child')
+    expect(html).toContain('/parent/child')
+    html = await get('/parent/child/child2')
+    expect(html).toContain('/parent/child/child2')
   })
 
   test('sitemap', async () => {
@@ -48,6 +54,9 @@ describe('ssr', () => {
     expect(xml).toContain('<loc>http://localhost:3000/child</loc>')
     expect(xml).toContain('<loc>http://localhost:3000/child/1</loc>')
     expect(xml).toContain('<loc>http://localhost:3000/1/</loc>')
+    expect(xml).toContain('<loc>http://localhost:3000/parent</loc>')
+    expect(xml).toContain('<loc>http://localhost:3000/parent/child</loc>')
+    expect(xml).toContain('<loc>http://localhost:3000/parent/child/child2</loc>')
     expect(xml).not.toContain('<loc>http://localhost:3000/exclude</loc>')
   })
 

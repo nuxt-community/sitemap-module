@@ -49,10 +49,9 @@ module.exports = function module (moduleOptions) {
   }
 
   // Extend routes
-  this.extendRoutes(routes => {
+  this.extendRoutes((routes) => {
     // Map to path and filter dynamic routes
-    let staticRoutes = routes
-      .map(r => r.path)
+    let staticRoutes = getRoutesPaths(routes)
       .filter(r => !r.includes(':') && !r.includes('*'))
 
     // Exclude routes
@@ -204,4 +203,35 @@ function routesUnion (staticRoutes, optionsRoutes) {
 // Make sure a passed route is an object
 function ensureRouteIsObject (route) {
   return typeof route === 'object' ? route : { url: route }
+}
+
+// Transforms router's routes to an array of paths
+function getRoutesPaths (routes) {
+  return flatten(routes.map(parseRoute))
+
+  // Get route path including children
+  function parseRoute (route, prefix = '') {
+    let isAbsolutePath = route.path[0] === '/'
+    let path = isAbsolutePath ? route.path : prefix + '/' + route.path
+
+    let children = []
+    if (route.children) {
+      children = route.children.map(child => parseRoute(child, path))
+    }
+
+    return [path, ...children]
+  }
+
+  // Flatten sub-arrays to a single array
+  function flatten (array) {
+    return array.reduce((acc, slot) => {
+      if (Array.isArray(slot)) {
+        acc = acc.concat(flatten(slot))
+      } else {
+        acc.push(slot)
+      }
+
+      return acc
+    }, [])
+  }
 }

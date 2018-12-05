@@ -1,5 +1,6 @@
 <template>
   <div>
-    /sub/index
+  /parent
+    <nuxt-child></nuxt-child>
   </div>
 </template>
