@@ -156,8 +156,8 @@ function createSitemap (options, routes, req) {
     (req && `${isHTTPS(req) ? 'https' : 'http'}://${req.headers.host}`) || `http://${hostname()}`
 
   // option to filter on each sitemap request over submitted routes
-  if (typeof options.filter === 'function') {
-    routes = options.filter({routes, hostname: sitemapConfig.hostname, req})
+  if (typeof options.postProcess === 'function') {
+    routes = options.postProcess({routes, options: Object.assign({}, options, sitemapConfig)})
   }
 
   // Set urls and ensure they are unique

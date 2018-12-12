@@ -78,7 +78,7 @@ Defines how frequently should sitemap **routes** being updated.
 This option is only effective when `generate` is `false`.
 Please note that after each invalidation, `routes` will be evaluated again. (See [routes](#routes-1) section)
 
-## `filter`
+## `postProcess`
 - Default: `undefined`
 
 If set all routes will be filtered through this function.
@@ -88,8 +88,8 @@ Example:
 ```
 module.exports = {
   sitemap: {
-    filter({routes, hostname, req}){
-      if(hostname === 'example.com'){
+    postProcess({routes, options}){
+      if(options.hostname === 'example.com'){
         return routes.filter(route => route.locale === 'en')
       }
       return routes.filter(route => route.locale === 'de')
