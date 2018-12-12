@@ -6,8 +6,8 @@ const uniq = require('lodash/uniq')
 const path = require('path')
 const fs = require('fs-extra')
 const AsyncCache = require('async-cache')
-const { promisify } = require('util')
-const { hostname } = require('os')
+const {promisify} = require('util')
+const {hostname} = require('os')
 
 // Defaults
 const defaults = {
@@ -104,8 +104,8 @@ module.exports = function module (moduleOptions) {
             res.setHeader('Content-Encoding', 'gzip')
             res.end(gzip)
           }).catch(err => {
-            next(err)
-          })
+          next(err)
+        })
       }
     })
   }
@@ -121,8 +121,8 @@ module.exports = function module (moduleOptions) {
           res.setHeader('Content-Type', 'application/xml')
           res.end(xml)
         }).catch(err => {
-          next(err)
-        })
+        next(err)
+      })
     }
   })
 }
