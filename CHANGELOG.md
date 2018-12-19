@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/nuxt-community/sitemap-module/compare/v0.1.1...v0.1.2) (2018-12-11)
+
+
+### Bug Fixes
+
+* fix static folder path ([0e02ea6](https://github.com/nuxt-community/sitemap-module/commit/0e02ea6))
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/nuxt-community/sitemap-module/compare/v0.1.0...v0.1.1) (2018-04-16)
 
@@ -14,7 +23,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 
 <a name="0.1.0"></a>
-# [0.1.0](https://github.com/nuxt-community/sitemap-module/compare/v0.0.5...v0.1.0) (2018-04-16)
+## [0.1.0](https://github.com/nuxt-community/sitemap-module/compare/v0.0.5...v0.1.0) (2018-04-16)
 
 
 ### Features

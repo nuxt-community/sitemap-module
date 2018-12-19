@@ -1,6 +1,6 @@
 {
   "name": "@nuxtjs/sitemap",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
   "license": "MIT",
   "contributors": [
@@ -22,8 +22,10 @@
   },
   "scripts": {
     "dev": "nuxt test/fixture",
+    "generate": "nuxt generate test/fixture",
     "lint": "eslint src test",
-    "test": "npm run lint && jest",
+    "unit": "jest --maxWorkers=4",
+    "test": "npm run lint && npm run unit",
     "release": "standard-version && git push --follow-tags && npm publish"
   },
   "files": [
@@ -35,11 +37,11 @@
   },
   "dependencies": {
     "async-cache": "^1.1.0",
-    "fs-extra": "^5.0.0",
+    "fs-extra": "^7.0.1",
     "is-https": "^1.0.0",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.10",
     "minimatch": "^3.0.4",
-    "sitemap": "^1.13.0"
+    "sitemap": "^2.1.0"
   },
   "devDependencies": {
     "codecov": "latest",

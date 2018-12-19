@@ -7,5 +7,17 @@ module.exports = {
   render: {
     resourceHints: false
   },
-  modules: ['@@']
+  modules: ['@@'],
+  sitemap: {
+    exclude: [
+      '/exclude'
+    ],
+    generate: true,
+    gzip: true,
+    hostname: 'http://localhost:3000/',
+    routes: [
+      '1/',
+      'child/1'
+    ]
+  }
 }

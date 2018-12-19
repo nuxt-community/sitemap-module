@@ -1,5 +1,5 @@
 <template>
 <div>
-    /index
+    /exclude
 </div>
 </template>
