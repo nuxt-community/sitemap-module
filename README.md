@@ -46,6 +46,47 @@ Module based on the awesome [sitemap](https://github.com/ekalinin/sitemap.js) pa
 
 ## Options
 
+The options can be an `object` for a single sitemap or an `array of objects` if you need to create multiple sitemaps.
+
+Single sitemap:
+```js
+  sitemap: {
+    path: '/sitemap.xml',
+    hostname: 'https://example.com',
+    gzip: true,
+    routes: [
+      '/page/1',
+      '/page/2',
+    ]
+  }
+```
+
+Multiple sitemaps:
+```js
+  sitemap: [
+    {
+      path: '/sitemap.xml',
+      hostname: 'https://example.com',
+      gzip: true,
+      routes: [
+        '/page/1',
+        '/page/2',
+      ]
+    },
+    {
+      path: '/second-sitemap.xml',
+      hostname: 'https://example.com',
+      gzip: true,
+      routes: [
+        '/page/3',
+        '/page/4',
+      ]
+    },
+  ]
+```
+
+## Sitemap options
+
 ### `exclude`
 The `exclude` parameter is an array of [glob patterns](https://github.com/isaacs/minimatch#features) to exclude static routes from the generated sitemap.
 
@@ -153,3 +194,4 @@ module.exports = {
 ### Contributors
 - [Nicolas PENNEC](https://github.com/NicoPennec)
 - [Pooya Parsa](https://github.com/pi0)
+- [William DA SILVA](https://github.com/WilliamDASILVA)

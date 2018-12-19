@@ -21,109 +21,121 @@ const defaults = {
 }
 
 module.exports = function module (moduleOptions) {
-  const options = Object.assign({}, defaults, this.options.sitemap, moduleOptions)
+  const options = {
+    sitemaps: []
+  }
+
+  // Merge the options with the default values
+  mergeOrPushSitemaps(this.options.sitemap, options)
+  mergeOrPushSitemaps(moduleOptions, options)
 
   // sitemap-routes.json is written to dist dir on build mode
   const jsonStaticRoutesPath = path.resolve(this.options.buildDir, path.join('dist', 'sitemap-routes.json'))
-
-  // sitemap.xml is written to static dir on generate mode
-  const xmlGeneratePath = path.resolve(this.options.srcDir, path.join('static', options.path))
-
-  options.pathGzip = (options.gzip) ? `${options.path}.gz` : options.path
-  const gzipGeneratePath = path.resolve(this.options.srcDir, path.join('static', options.pathGzip))
-
-  // Ensure no generated file exists
-  fs.removeSync(xmlGeneratePath)
-  fs.removeSync(gzipGeneratePath)
-
   let staticRoutes = fs.readJsonSync(jsonStaticRoutesPath, { throws: false })
-  let cache = null
 
-  // TODO find a better way to detect if is a "build", "start" or "generate" command
-  // on "start" cmd only
-  if (staticRoutes && !this.options.dev) {
-    // Create a cache for routes
-    cache = createCache(staticRoutes, options)
-    // Hydrate cache
-    cache.get('routes')
-  }
+  options.sitemaps.map((sitemap) => {
+    // sitemap.xml is written to static dir on generate mode
+    const xmlGeneratePath = path.resolve(this.options.srcDir, path.join('static', sitemap.path))
 
-  // Extend routes
-  this.extendRoutes(routes => {
-    // Map to path and filter dynamic routes
-    let staticRoutes = routes
-      .map(r => r.path)
-      .filter(r => !r.includes(':') && !r.includes('*'))
+    sitemap.pathGzip = (sitemap.gzip) ? `${sitemap.path}.gz` : sitemap.path
+    const gzipGeneratePath = path.resolve(this.options.srcDir, path.join('static', sitemap.pathGzip))
 
-    // Exclude routes
-    options.exclude.forEach(pattern => {
-      const minimatch = new Minimatch(pattern)
-      minimatch.negate = true
-      staticRoutes = staticRoutes.filter(route => minimatch.match(route))
+    // Ensure no generated file exists
+    fs.removeSync(xmlGeneratePath)
+    fs.removeSync(gzipGeneratePath)
+
+    sitemap.cache = null
+
+    // TODO find a better way to detect if is a "build", "start" or "generate" command
+    // on "start" cmd only
+    if (staticRoutes && !this.options.dev) {
+      // Create a cache for routes
+      sitemap.cache = createCache(staticRoutes, sitemap)
+      // Hydrate cache
+      sitemap.cache.get('routes')
+    }
+
+    // Extend routes
+    this.extendRoutes(routes => {
+      // Map to path and filter dynamic routes
+      let staticRoutes = routes
+        .map(r => r.path)
+        .filter(r => !r.includes(':') && !r.includes('*'))
+
+      // Exclude routes
+      sitemap.exclude.forEach(pattern => {
+        const minimatch = new Minimatch(pattern)
+        minimatch.negate = true
+        staticRoutes = staticRoutes.filter(route => minimatch.match(route))
+      })
+
+      if (this.options.dev || sitemap.generate) {
+        // Create a cache for routes
+        sitemap.cache = createCache(staticRoutes, sitemap)
+      }
+
+      if (!this.options.dev) {
+        // TODO on build process only
+        // Save static routes
+        fs.ensureDirSync(path.resolve(this.options.buildDir, 'dist'))
+        fs.writeJsonSync(jsonStaticRoutesPath, staticRoutes)
+
+        // TODO on generate process only and not on build process
+        if (sitemap.generate) {
+          (async () => {
+            // Generate static sitemap.xml
+            const routes = await sitemap.cache.get('routes')
+            const sm = await createSitemap(sitemap, routes)
+            const xml = await sitemap.toXML()
+            await fs.ensureFile(xmlGeneratePath)
+            await fs.writeFile(xmlGeneratePath, xml)
+            if (sitemap.gzip) {
+              const gzip = await sm.toGzip()
+              await fs.writeFile(gzipGeneratePath, gzip)
+            }
+          })()
+        }
+      }
     })
 
-    if (this.options.dev || options.generate) {
-      // Create a cache for routes
-      cache = createCache(staticRoutes, options)
-    }
-
-    if (!this.options.dev) {
-      // TODO on build process only
-      // Save static routes
-      fs.ensureDirSync(path.resolve(this.options.buildDir, 'dist'))
-      fs.writeJsonSync(jsonStaticRoutesPath, staticRoutes)
-
-      // TODO on generate process only and not on build process
-      if (options.generate) {
-        (async () => {
-          // Generate static sitemap.xml
-          const routes = await cache.get('routes')
-          const sitemap = await createSitemap(options, routes)
-          const xml = await sitemap.toXML()
-          await fs.ensureFile(xmlGeneratePath)
-          await fs.writeFile(xmlGeneratePath, xml)
-          if (options.gzip) {
-            const gzip = await sitemap.toGzip()
-            await fs.writeFile(gzipGeneratePath, gzip)
-          }
-        })()
-      }
-    }
+    return sitemap
   })
 
-  if (options.gzip) {
-    // Add server middleware for sitemap.xml.gz
+  options.sitemaps.forEach((sitemap) => {
+    if (sitemap.gzip) {
+      // Add server middleware for sitemap.xml.gz
+      this.addServerMiddleware({
+        path: sitemap.pathGzip,
+        handler (req, res, next) {
+          sitemap.cache.get('routes')
+            .then(routes => createSitemap(sitemap, routes, req))
+            .then(sm => sm.toGzip())
+            .then(gzip => {
+              res.setHeader('Content-Type', 'application/x-gzip')
+              res.setHeader('Content-Encoding', 'gzip')
+              res.end(gzip)
+            }).catch(err => {
+              next(err)
+            })
+        }
+      })
+    }
+
+    // Add server middleware for sitemap.xml
     this.addServerMiddleware({
-      path: options.pathGzip,
+      path: sitemap.path,
       handler (req, res, next) {
-        cache.get('routes')
-          .then(routes => createSitemap(options, routes, req))
-          .then(sitemap => sitemap.toGzip())
-          .then(gzip => {
-            res.setHeader('Content-Type', 'application/x-gzip')
-            res.setHeader('Content-Encoding', 'gzip')
-            res.end(gzip)
+        sitemap.cache.get('routes')
+          .then(routes => createSitemap(sitemap, routes, req))
+          .then(sm => sm.toXML())
+          .then(xml => {
+            res.setHeader('Content-Type', 'application/xml')
+            res.end(xml)
           }).catch(err => {
             next(err)
           })
       }
     })
-  }
-
-  // Add server middleware for sitemap.xml
-  this.addServerMiddleware({
-    path: options.path,
-    handler (req, res, next) {
-      cache.get('routes')
-        .then(routes => createSitemap(options, routes, req))
-        .then(sitemap => sitemap.toXML())
-        .then(xml => {
-          res.setHeader('Content-Type', 'application/xml')
-          res.end(xml)
-        }).catch(err => {
-          next(err)
-        })
-    }
   })
 }
 
@@ -204,4 +216,23 @@ function routesUnion (staticRoutes, optionsRoutes) {
 // Make sure a passed route is an object
 function ensureRouteIsObject (route) {
   return typeof route === 'object' ? route : { url: route }
+}
+
+/**
+ * Merge or push the value in the sitemap list whenever the value is an array or an object
+ * @function mergeOrPushSitemaps
+ * @param {Object|Array} value - The value to be merged or pushed
+ * @param {Object} options - Options object
+ */
+function mergeOrPushSitemaps (value, options) {
+  if (!value) return
+  if (value instanceof Array && value.length > 0) {
+    const sitemapsMapped = value.map(v => Object.assign({}, defaults, v))
+    options.sitemaps = [...options.sitemaps, ...sitemapsMapped]
+  } else if (Object.keys(value).length > 0) {
+    // Add object to the sitemap array only if there is a value & the value contains
+    // at least one property
+    const sitemapMapped = Object.assign({}, defaults, value)
+    options.sitemaps.push(sitemapMapped)
+  }
 }
