@@ -86,7 +86,7 @@ module.exports = function module (moduleOptions) {
             // Generate static sitemap.xml
             const routes = await sitemap.cache.get('routes')
             const sm = await createSitemap(sitemap, routes)
-            const xml = await sitemap.toXML()
+            const xml = await sm.toXML()
             await fs.ensureFile(xmlGeneratePath)
             await fs.writeFile(xmlGeneratePath, xml)
             if (sitemap.gzip) {

@@ -5,6 +5,7 @@ const request = require('request-promise-native')
 const { gunzipSync } = require('zlib')
 
 const config = require('./fixture/nuxt.config')
+const configMultipleSitemaps = require('./fixture/multiple-sitemaps.nuxt.config')
 
 const url = path => `http://localhost:3000${path}`
 const get = path => request(url(path))
@@ -59,6 +60,34 @@ describe('ssr', () => {
   })
 })
 
+describe('ssr multiple sitemaps', () => {
+  let nuxt
+
+  beforeAll(async () => {
+    nuxt = new Nuxt(configMultipleSitemaps)
+    await new Builder(nuxt).build()
+    await nuxt.listen(3000)
+  }, 60000)
+
+  afterAll(async () => {
+    await nuxt.close()
+  })
+
+  test('sitemap', async () => {
+    const xml = await get('/sitemap.xml')
+    expect(xml).toContain('<loc>http://localhost:3000/page/1</loc>')
+    expect(xml).toContain('<loc>http://localhost:3000/page/2</loc>')
+    expect(xml).not.toContain('<loc>http://localhost:3000/page/3</loc>')
+    expect(xml).not.toContain('<loc>http://localhost:3000/page/4</loc>')
+
+    const secondXml = await get('/second-sitemap.xml.xml')
+    expect(secondXml).toContain('<loc>http://localhost:3000/page/3</loc>')
+    expect(secondXml).toContain('<loc>http://localhost:3000/page/4</loc>')
+    expect(secondXml).not.toContain('<loc>http://localhost:3000/page/1</loc>')
+    expect(secondXml).not.toContain('<loc>http://localhost:3000/page/2</loc>')
+  })
+})
+
 describe('generate', () => {
   let nuxt
 
@@ -76,5 +105,34 @@ describe('generate', () => {
   test('sitemap', async () => {
     const xml = readFileSync(path.resolve(__dirname, '../dist/sitemap.xml'), 'utf8')
     expect(xml).toContain('<loc>http://localhost:3000/</loc>')
+  })
+})
+
+describe('generate multiple sitemaps', () => {
+  let nuxt
+
+  beforeAll(async () => {
+    nuxt = new Nuxt(configMultipleSitemaps)
+    const builder = new Builder(nuxt)
+    const generator = new Generator(nuxt, builder)
+    await generator.generate()
+  }, 60000)
+
+  afterAll(async () => {
+    await nuxt.close()
+  })
+
+  test('sitemap', async () => {
+    const xml = readFileSync(path.resolve(__dirname, '../dist/sitemap.xml'), 'utf8')
+    expect(xml).toContain('<loc>http://localhost:3000/page/1</loc>')
+    expect(xml).toContain('<loc>http://localhost:3000/page/2</loc>')
+    expect(xml).not.toContain('<loc>http://localhost:3000/page/3</loc>')
+    expect(xml).not.toContain('<loc>http://localhost:3000/page/4</loc>')
+
+    const secondXml = readFileSync(path.resolve(__dirname, '../dist/second-sitemap.xml'), 'utf8')
+    expect(secondXml).toContain('<loc>http://localhost:3000/page/3</loc>')
+    expect(secondXml).toContain('<loc>http://localhost:3000/page/4</loc>')
+    expect(secondXml).not.toContain('<loc>http://localhost:3000/page/1</loc>')
+    expect(secondXml).not.toContain('<loc>http://localhost:3000/page/2</loc>')
   })
 })
