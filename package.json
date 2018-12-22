@@ -2,6 +2,7 @@
   "name": "@nuxtjs/sitemap",
   "version": "0.1.2",
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
+  "repository": "https://github.com/nuxt-community/sitemap-module",
   "license": "MIT",
   "contributors": [
     {
@@ -11,23 +12,18 @@
       "name": "Pooya Parsa"
     }
   ],
+  "files": [
+    "src"
+  ],
   "main": "src/index.js",
-  "repository": "https://github.com/nuxt-community/sitemap-module",
-  "publishConfig": {
-    "access": "public"
-  },
-  "engines": {
-    "node": ">=8.0.0",
-    "npm": ">=5.0.0"
-  },
   "scripts": {
     "dev": "nuxt test/fixture",
     "generate": "nuxt generate test/fixture",
     "lint": "eslint src test",
-    "unit": "jest --maxWorkers=4",
-    "test": "npm run lint && npm run unit",
     "preview": "standard-version --dry-run",
-    "release": "standard-version && git push --follow-tags && npm publish"
+    "release": "standard-version && git push --follow-tags && npm publish",
+    "test": "npm run lint && npm run unit",
+    "unit": "jest --maxWorkers=4"
   },
   "husky": {
     "hooks": {
@@ -35,12 +31,9 @@
       "pre-push": "npm test"
     }
   },
-  "files": [
-    "src"
-  ],
   "jest": {
-    "testEnvironment": "node",
-    "collectCoverage": true
+    "collectCoverage": true,
+    "testEnvironment": "node"
   },
   "dependencies": {
     "async-cache": "^1.1.0",
@@ -65,5 +58,12 @@
     "jsdom": "latest",
     "nuxt": "latest",
     "standard-version": "latest"
+  },
+  "engines": {
+    "node": ">=8.0.0",
+    "npm": ">=5.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
