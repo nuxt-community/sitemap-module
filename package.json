@@ -28,6 +28,12 @@
     "test": "npm run lint && npm run unit",
     "release": "standard-version && git push --follow-tags && npm publish"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm test"
+    }
+  },
   "files": [
     "src"
   ],
@@ -53,6 +59,7 @@
     "eslint-plugin-promise": "latest",
     "eslint-plugin-standard": "latest",
     "eslint-plugin-vue": "latest",
+    "husky": "latest",
     "jest": "latest",
     "jsdom": "latest",
     "nuxt": "latest",
