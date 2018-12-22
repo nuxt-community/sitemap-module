@@ -78,6 +78,30 @@ Defines how frequently should sitemap **routes** being updated.
 This option is only effective when `generate` is `false`.
 Please note that after each invalidation, `routes` will be evaluated again. (See [routes](#routes-1) section)
 
+## `postProcess`
+- Default: `undefined`
+
+If set all routes will be filtered through this function.
+
+Example:
+
+```
+module.exports = {
+  sitemap: {
+    postProcess({routes, options}){
+      if(options.hostname === 'example.com'){
+        return routes.filter(route => route.locale === 'en')
+      }
+      return routes.filter(route => route.locale === 'de')
+    }
+    routes () {
+      return axios.get('https://jsonplaceholder.typicode.com/users')
+      .then(res => res.data.map(user =>  '/users/' + user.username))
+    }
+  }
+}
+```
+
 ### `gzip`
 - Default: `false`
 

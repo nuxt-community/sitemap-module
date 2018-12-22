@@ -1,4 +1,4 @@
-const { Minimatch } = require('minimatch')
+const {Minimatch} = require('minimatch')
 const sm = require('sitemap')
 const isHTTPS = require('is-https')
 const unionBy = require('lodash/unionBy')
@@ -6,8 +6,8 @@ const uniq = require('lodash/uniq')
 const path = require('path')
 const fs = require('fs-extra')
 const AsyncCache = require('async-cache')
-const { promisify } = require('util')
-const { hostname } = require('os')
+const {promisify} = require('util')
+const {hostname} = require('os')
 
 // Defaults
 const defaults = {
@@ -36,7 +36,7 @@ module.exports = function module (moduleOptions) {
   fs.removeSync(xmlGeneratePath)
   fs.removeSync(gzipGeneratePath)
 
-  let staticRoutes = fs.readJsonSync(jsonStaticRoutesPath, { throws: false })
+  let staticRoutes = fs.readJsonSync(jsonStaticRoutesPath, {throws: false})
   let cache = null
 
   // TODO find a better way to detect if is a "build", "start" or "generate" command
@@ -104,8 +104,8 @@ module.exports = function module (moduleOptions) {
             res.setHeader('Content-Encoding', 'gzip')
             res.end(gzip)
           }).catch(err => {
-            next(err)
-          })
+          next(err)
+        })
       }
     })
   }
@@ -121,8 +121,8 @@ module.exports = function module (moduleOptions) {
           res.setHeader('Content-Type', 'application/xml')
           res.end(xml)
         }).catch(err => {
-          next(err)
-        })
+        next(err)
+      })
     }
   })
 }
@@ -154,6 +154,11 @@ function createSitemap (options, routes, req) {
   // Set sitemap hostname
   sitemapConfig.hostname = options.hostname ||
     (req && `${isHTTPS(req) ? 'https' : 'http'}://${req.headers.host}`) || `http://${hostname()}`
+
+  // option to filter on each sitemap request over submitted routes
+  if (typeof options.postProcess === 'function') {
+    routes = options.postProcess({routes, options: Object.assign({}, options, sitemapConfig)})
+  }
 
   // Set urls and ensure they are unique
   sitemapConfig.urls = uniq(routes)
@@ -203,5 +208,5 @@ function routesUnion (staticRoutes, optionsRoutes) {
 
 // Make sure a passed route is an object
 function ensureRouteIsObject (route) {
-  return typeof route === 'object' ? route : { url: route }
+  return typeof route === 'object' ? route : {url: route}
 }
