@@ -26,6 +26,7 @@
     "lint": "eslint src test",
     "unit": "jest --maxWorkers=4",
     "test": "npm run lint && npm run unit",
+    "preview": "standard-version --dry-run",
     "release": "standard-version && git push --follow-tags && npm publish"
   },
   "husky": {
