@@ -18,6 +18,8 @@ module.exports = {
     routes: [
       '1/',
       'child/1'
-    ]
+    ],
+    filter: ({ routes }) =>
+      routes.filter(route => route.url !== '/filtered')
   }
 }

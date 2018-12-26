@@ -49,6 +49,7 @@ describe('ssr', () => {
     expect(xml).toContain('<loc>http://localhost:3000/child/1</loc>')
     expect(xml).toContain('<loc>http://localhost:3000/1/</loc>')
     expect(xml).not.toContain('<loc>http://localhost:3000/exclude</loc>')
+    expect(xml).not.toContain('<loc>http://localhost:3000/filtered</loc>')
   })
 
   test('sitemap gzip', async () => {
