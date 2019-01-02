@@ -99,6 +99,17 @@ module.exports = {
 }
 ```
 
+Example² (add trailing slash in each route):
+```js
+module.exports = {
+  sitemap: {
+    filter ({ routes }) {
+      return routes.map(route => route.url = `${route.url}/`)
+    }
+  }
+}
+```
+
 ### `gzip`
 - Default: `false`
 
