@@ -83,10 +83,13 @@ Please note that after each invalidation, `routes` will be evaluated again. (See
 
 If `filter` option is set as a function,  all routes will be filtered through it.
 
-Example:
+Examples:
 
 `nuxt.config.js`
 ```js
+
+// filter routes by language
+
 module.exports = {
   sitemap: {
     filter ({ routes, options }){
@@ -98,9 +101,9 @@ module.exports = {
   }
 }
 ```
-
-Example² (add trailing slash in each route):
 ```js
+// add a trailing slash to each route
+
 module.exports = {
   sitemap: {
     filter ({ routes }) {
