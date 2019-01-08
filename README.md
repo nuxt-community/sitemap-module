@@ -13,13 +13,17 @@
 Module based on the awesome [sitemap](https://github.com/ekalinin/sitemap.js) package ❤️
 
 ## Setup
+
 - Add `@nuxtjs/sitemap` dependency using yarn or npm to your project
+
 - Add `@nuxtjs/sitemap` module to `nuxt.config.js`
 ```js
   modules: [
    '@nuxtjs/sitemap'
   ]
-````
+```
+> **notice:** If you use other modules (eg. `nuxt-i18n`), always declare the sitemap module at end of array (eg. `modules: ['nuxt-i18n', '@nuxtjs/sitemap']`)
+
 - Add additional options to `sitemap` section of `nuxt.config.js` to override defaults
 ```js
   sitemap: {
@@ -92,7 +96,7 @@ Examples:
 
 module.exports = {
   sitemap: {
-    filter ({ routes, options }){
+    filter ({ routes, options }) {
       if (options.hostname === 'example.com') {
         return routes.filter(route => route.locale === 'en')
       }
