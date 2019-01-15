@@ -8,6 +8,7 @@ const fs = require('fs-extra')
 const AsyncCache = require('async-cache')
 const { promisify } = require('util')
 const { hostname } = require('os')
+const debug = require('debug')('nuxt:pwa')
 
 const defaults = {
   path: '/sitemap.xml',
@@ -20,7 +21,20 @@ const defaults = {
   gzip: false
 }
 
-module.exports = function module (moduleOptions) {
+module.exports = function nuxtSitemap (options) {
+  const hook = () => {
+    debug('Adding sitemap')
+    addSitemap.call(this, options)
+  }
+
+  if (this.options.mode === 'spa') {
+    return hook()
+  }
+
+  this.nuxt.hook('build:before', hook)
+}
+
+function addSitemap (moduleOptions) {
   const options = Object.assign({}, defaults, this.options.sitemap, moduleOptions)
 
   options.pathGzip = (options.gzip) ? `${options.path}.gz` : options.path
