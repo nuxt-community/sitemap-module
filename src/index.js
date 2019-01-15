@@ -10,17 +10,6 @@ const { promisify } = require('util')
 const { hostname } = require('os')
 const debug = require('debug')('nuxt:pwa')
 
-const defaults = {
-  path: '/sitemap.xml',
-  hostname: undefined,
-  generate: false,
-  exclude: [],
-  routes: [],
-  cacheTime: 1000 * 60 * 15,
-  filter: undefined,
-  gzip: false
-}
-
 module.exports = function nuxtSitemap (options) {
   const hook = () => {
     debug('Adding sitemap')
@@ -35,6 +24,17 @@ module.exports = function nuxtSitemap (options) {
 }
 
 function addSitemap (moduleOptions) {
+  const defaults = {
+    path: '/sitemap.xml',
+    hostname: this.options.build.publicPath || undefined,
+    generate: process.env.npm_lifecycle_event === 'generate' || this.options.mode === 'spa',
+    exclude: [],
+    routes: this.options.generate.routes || [],
+    cacheTime: 1000 * 60 * 15,
+    filter: undefined,
+    gzip: false
+  }
+
   const options = Object.assign({}, defaults, this.options.sitemap, moduleOptions)
 
   options.pathGzip = (options.gzip) ? `${options.path}.gz` : options.path
