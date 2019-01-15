@@ -9,7 +9,6 @@ const AsyncCache = require('async-cache')
 const { promisify } = require('util')
 const { hostname } = require('os')
 
-// Defaults
 const defaults = {
   path: '/sitemap.xml',
   hostname: undefined,
@@ -24,18 +23,10 @@ const defaults = {
 module.exports = function module (moduleOptions) {
   const options = Object.assign({}, defaults, this.options.sitemap, moduleOptions)
 
+  options.pathGzip = (options.gzip) ? `${options.path}.gz` : options.path
+
   // sitemap-routes.json is written to dist dir on build mode
   const jsonStaticRoutesPath = path.resolve(this.options.buildDir, path.join('dist', 'sitemap-routes.json'))
-
-  // sitemap.xml is written to static dir on generate mode
-  const xmlGeneratePath = path.resolve(this.options.srcDir, path.join(this.options.dir.static || 'static', options.path))
-
-  options.pathGzip = (options.gzip) ? `${options.path}.gz` : options.path
-  const gzipGeneratePath = path.resolve(this.options.srcDir, path.join(this.options.dir.static || 'static', options.pathGzip))
-
-  // Ensure no generated file exists
-  fs.removeSync(xmlGeneratePath)
-  fs.removeSync(gzipGeneratePath)
 
   let staticRoutes = fs.readJsonSync(jsonStaticRoutesPath, { throws: false })
   let cache = null
@@ -76,18 +67,30 @@ module.exports = function module (moduleOptions) {
 
       // TODO on generate process only and not on build process
       if (options.generate) {
-        (async () => {
-          // Generate static sitemap.xml
-          const routes = await cache.get('routes')
-          const sitemap = await createSitemap(options, routes)
-          const xml = await sitemap.toXML()
-          await fs.ensureFile(xmlGeneratePath)
-          await fs.writeFile(xmlGeneratePath, xml)
-          if (options.gzip) {
-            const gzip = await sitemap.toGzip()
-            await fs.writeFile(gzipGeneratePath, gzip)
+        // Register webpack plugin to emit sitemap
+        this.options.build.plugins.push({
+          apply (compiler) {
+            compiler.hooks.emit.tap('nuxt-sitemap', async (compilation) => {
+              const routes = await cache.get('routes')
+              const sitemap = await createSitemap(options, routes)
+              const xml = await sitemap.toXML()
+
+              compilation.assets[options.path] = {
+                source: () => xml,
+                size: () => xml.length
+              }
+
+              if (options.gzip) {
+                const gzip = await sitemap.toGzip()
+
+                compilation.assets[options.pathGzip] = {
+                  source: () => gzip,
+                  size: () => gzip.length
+                }
+              }
+            })
           }
-        })()
+        })
       }
     }
   })
