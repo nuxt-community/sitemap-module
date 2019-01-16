@@ -9,19 +9,19 @@ const AsyncCache = require('async-cache')
 const { promisify } = require('util')
 const { hostname } = require('os')
 
-// Defaults
-const defaults = {
-  path: '/sitemap.xml',
-  hostname: undefined,
-  generate: false,
-  exclude: [],
-  routes: [],
-  cacheTime: 1000 * 60 * 15,
-  filter: undefined,
-  gzip: false
-}
-
 module.exports = function module (moduleOptions) {
+  // Defaults
+  const defaults = {
+    path: '/sitemap.xml',
+    hostname: this.options.build.publicPath || undefined,
+    generate: process.env.npm_lifecycle_event === 'generate' || this.options.mode === 'spa',
+    exclude: [],
+    routes: this.options.generate.routes || [],
+    cacheTime: 1000 * 60 * 15,
+    filter: undefined,
+    gzip: false
+  }
+
   const options = Object.assign({}, defaults, this.options.sitemap, moduleOptions)
 
   // sitemap-routes.json is written to dist dir on build mode
