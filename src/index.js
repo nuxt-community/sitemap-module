@@ -10,11 +10,9 @@ const { promisify } = require('util')
 const { hostname } = require('os')
 
 module.exports = function module (moduleOptions) {
-  // Defaults
   const defaults = {
-    path: '/sitemap.xml',
+    path: 'sitemap.xml',
     hostname: this.options.build.publicPath || undefined,
-    generate: process.env.npm_lifecycle_event === 'generate' || this.options.mode === 'spa',
     exclude: [],
     routes: this.options.generate.routes || [],
     cacheTime: 1000 * 60 * 15,
@@ -23,25 +21,14 @@ module.exports = function module (moduleOptions) {
   }
 
   const options = Object.assign({}, defaults, this.options.sitemap, moduleOptions)
+  options.pathGzip = (options.gzip) ? `${options.path}.gz` : options.path
 
   // sitemap-routes.json is written to dist dir on build mode
   const jsonStaticRoutesPath = path.resolve(this.options.buildDir, path.join('dist', 'sitemap-routes.json'))
 
-  // sitemap.xml is written to static dir on generate mode
-  const xmlGeneratePath = path.resolve(this.options.srcDir, path.join(this.options.dir.static || 'static', options.path))
-
-  options.pathGzip = (options.gzip) ? `${options.path}.gz` : options.path
-  const gzipGeneratePath = path.resolve(this.options.srcDir, path.join(this.options.dir.static || 'static', options.pathGzip))
-
-  // Ensure no generated file exists
-  fs.removeSync(xmlGeneratePath)
-  fs.removeSync(gzipGeneratePath)
-
   let staticRoutes = fs.readJsonSync(jsonStaticRoutesPath, { throws: false })
   let cache = null
 
-  // TODO find a better way to detect if is a "build", "start" or "generate" command
-  // on "start" cmd only
   if (staticRoutes && !this.options.dev) {
     // Create a cache for routes
     cache = createCache(staticRoutes, options)
@@ -63,32 +50,29 @@ module.exports = function module (moduleOptions) {
       staticRoutes = staticRoutes.filter(route => minimatch.match(route))
     })
 
-    if (this.options.dev || options.generate) {
+    if (this.options.dev) {
       // Create a cache for routes
       cache = createCache(staticRoutes, options)
-    }
-
-    if (!this.options.dev) {
-      // TODO on build process only
+    } else {
       // Save static routes
       fs.ensureDirSync(path.resolve(this.options.buildDir, 'dist'))
       fs.writeJsonSync(jsonStaticRoutesPath, staticRoutes)
+    }
+  })
 
-      // TODO on generate process only and not on build process
-      if (options.generate) {
-        (async () => {
-          // Generate static sitemap.xml
-          const routes = await cache.get('routes')
-          const sitemap = await createSitemap(options, routes)
-          const xml = await sitemap.toXML()
-          await fs.ensureFile(xmlGeneratePath)
-          await fs.writeFile(xmlGeneratePath, xml)
-          if (options.gzip) {
-            const gzip = await sitemap.toGzip()
-            await fs.writeFile(gzipGeneratePath, gzip)
-          }
-        })()
-      }
+  // Generate sitemap.xml in dist
+  this.nuxt.hook('generate:done', async () => {
+    const routes = await cache.get('routes')
+    const sitemap = await createSitemap(options, routes)
+    const xml = await sitemap.toXML()
+    const xmlGeneratePath = path.resolve(this.options.rootDir, this.options.generate.dir, options.path)
+    await fs.ensureFile(xmlGeneratePath)
+    await fs.writeFile(xmlGeneratePath, xml)
+    if (options.gzip) {
+      const gzip = await sitemap.toGzip()
+      const gzipGeneratePath = path.resolve(this.options.rootDir, this.options.generate.dir, options.pathGzip)
+      await fs.ensureFile(gzipGeneratePath)
+      await fs.writeFile(gzipGeneratePath, gzip)
     }
   })
 
