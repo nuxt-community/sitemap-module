@@ -21,7 +21,7 @@ module.exports = function module (moduleOptions) {
   }
 
   const options = Object.assign({}, defaults, this.options.sitemap, moduleOptions)
-  options.pathGzip = (options.gzip) ? `${options.path}.gz` : options.path
+  options.pathGzip = options.gzip ? `${options.path}.gz` : options.path
 
   // sitemap-routes.json is written to dist dir on build mode
   const jsonStaticRoutesPath = path.resolve(this.options.buildDir, path.join('dist', 'sitemap-routes.json'))
