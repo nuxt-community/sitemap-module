@@ -27,15 +27,7 @@ module.exports = function module (moduleOptions) {
   // sitemap-routes.json is written to dist dir on build mode
   const jsonStaticRoutesPath = path.resolve(this.options.buildDir, path.join('dist', 'sitemap-routes.json'))
 
-  let staticRoutes = fs.readJsonSync(jsonStaticRoutesPath, { throws: false })
   let cache = null
-
-  if (staticRoutes && !this.options.dev) {
-    // Create a cache for routes
-    cache = createCache(staticRoutes, options)
-    // Hydrate cache
-    cache.get('routes')
-  }
 
   // Extend routes
   this.extendRoutes(routes => {
@@ -51,14 +43,12 @@ module.exports = function module (moduleOptions) {
       staticRoutes = staticRoutes.filter(route => minimatch.match(route))
     })
 
-    if (this.options.dev) {
-      // Create a cache for routes
-      cache = createCache(staticRoutes, options)
-    } else {
-      // Save static routes
+    if (!this.options.dev) {
       fs.ensureDirSync(path.resolve(this.options.buildDir, 'dist'))
       fs.writeJsonSync(jsonStaticRoutesPath, staticRoutes)
     }
+
+    cache = createCache(staticRoutes, options)
   })
 
   if (options.generate) {
