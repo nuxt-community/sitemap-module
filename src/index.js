@@ -48,6 +48,7 @@ module.exports = function module (moduleOptions) {
       fs.writeJsonSync(jsonStaticRoutesPath, staticRoutes)
     }
 
+    // Create a cache for routes
     cache = createCache(staticRoutes, options)
   })
 
