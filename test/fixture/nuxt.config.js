@@ -12,7 +12,6 @@ module.exports = {
     exclude: [
       '/exclude'
     ],
-    generate: true,
     gzip: true,
     hostname: 'http://localhost:3000/',
     routes: [
