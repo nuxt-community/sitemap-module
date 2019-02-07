@@ -6,6 +6,7 @@ const uniq = require('lodash/uniq')
 const path = require('path')
 const fs = require('fs-extra')
 const AsyncCache = require('async-cache')
+const consola = require('consola')
 const { promisify } = require('util')
 const { hostname } = require('os')
 
@@ -59,6 +60,10 @@ module.exports = function module (moduleOptions) {
       fs.writeJsonSync(jsonStaticRoutesPath, staticRoutes)
     }
   })
+
+  if (options.generate) {
+    consola.warn('The option `generate` isn\'t needed anymore')
+  }
 
   // Generate sitemap.xml in dist
   this.nuxt.hook('generate:done', async () => {
