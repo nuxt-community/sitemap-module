@@ -62,7 +62,7 @@ module.exports = function module (moduleOptions) {
   })
 
   if (options.generate) {
-    consola.warn('The option `generate` isn\'t needed anymore')
+    consola.warn('The option `sitemap.generate` isn\'t needed anymore')
   }
 
   // Generate sitemap.xml in dist
