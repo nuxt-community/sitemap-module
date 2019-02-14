@@ -35,7 +35,7 @@ module.exports = function module (moduleOptions) {
 
   options.sitemaps.map((sitemap) => {
     // sitemap.xml is written to static dir on generate mode
-    const xmlGeneratePath = path.resolve(this.options.srcDir, path.join('static', sitemap.path))
+    const xmlGeneratePath = path.resolve(this.options.srcDir, path.join(this.options.dir.static || 'static', sitemap.path))
 
     sitemap.pathGzip = (sitemap.gzip) ? `${sitemap.path}.gz` : sitemap.path
     const gzipGeneratePath = path.resolve(this.options.srcDir, path.join('static', sitemap.pathGzip))
