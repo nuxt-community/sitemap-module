@@ -38,7 +38,7 @@ module.exports = function module (moduleOptions) {
     const xmlGeneratePath = path.resolve(this.options.srcDir, path.join(this.options.dir.static || 'static', sitemap.path))
 
     sitemap.pathGzip = (sitemap.gzip) ? `${sitemap.path}.gz` : sitemap.path
-    const gzipGeneratePath = path.resolve(this.options.srcDir, path.join('static', sitemap.pathGzip))
+    const gzipGeneratePath = path.resolve(this.options.srcDir, path.join(this.options.dir.static || 'static', sitemap.pathGzip))
 
     // Ensure no generated file exists
     fs.removeSync(xmlGeneratePath)
