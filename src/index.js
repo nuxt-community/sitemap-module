@@ -1,5 +1,5 @@
 const { Minimatch } = require('minimatch')
-const sm = require('sitemap')
+const sitemapModule = require('sitemap')
 const isHTTPS = require('is-https')
 const unionBy = require('lodash/unionBy')
 const uniq = require('lodash/uniq')
@@ -85,12 +85,12 @@ module.exports = function module (moduleOptions) {
           (async () => {
             // Generate static sitemap.xml
             const routes = await sitemap.cache.get('routes')
-            const sm = await createSitemap(sitemap, routes)
-            const xml = await sm.toXML()
+            const createdSitemap = await createSitemap(sitemap, routes)
+            const xml = await createdSitemap.toXML()
             await fs.ensureFile(xmlGeneratePath)
             await fs.writeFile(xmlGeneratePath, xml)
             if (sitemap.gzip) {
-              const gzip = await sm.toGzip()
+              const gzip = await createdSitemap.toGzip()
               await fs.writeFile(gzipGeneratePath, gzip)
             }
           })()
@@ -101,15 +101,15 @@ module.exports = function module (moduleOptions) {
     return sitemap
   })
 
-  options.sitemaps.forEach((sitemap) => {
-    if (sitemap.gzip) {
+  options.sitemaps.forEach((sitemapOptions) => {
+    if (sitemapOptions.gzip) {
       // Add server middleware for sitemap.xml.gz
       this.addServerMiddleware({
-        path: sitemap.pathGzip,
+        path: sitemapOptions.pathGzip,
         handler (req, res, next) {
-          sitemap.cache.get('routes')
-            .then(routes => createSitemap(sitemap, routes, req))
-            .then(sm => sm.toGzip())
+          sitemapOptions.cache.get('routes')
+            .then(routes => createSitemap(sitemapOptions, routes, req))
+            .then(sitemap => sitemap.toGzip())
             .then(gzip => {
               res.setHeader('Content-Type', 'application/x-gzip')
               res.setHeader('Content-Encoding', 'gzip')
@@ -123,10 +123,10 @@ module.exports = function module (moduleOptions) {
 
     // Add server middleware for sitemap.xml
     this.addServerMiddleware({
-      path: sitemap.path,
+      path: sitemapOptions.path,
       handler (req, res, next) {
-        sitemap.cache.get('routes')
-          .then(routes => createSitemap(sitemap, routes, req))
+        sitemapOptions.cache.get('routes')
+          .then(routes => createSitemap(sitemapOptions, routes, req))
           .then(sm => sm.toXML())
           .then(xml => {
             res.setHeader('Content-Type', 'application/xml')
@@ -174,7 +174,7 @@ function createSitemap (options, routes, req) {
   sitemapConfig.cacheTime = options.cacheTime || 0
 
   // Create promisified instance and return
-  const sitemap = sm.createSitemap(sitemapConfig)
+  const sitemap = sitemapModule.createSitemap(sitemapConfig)
   sitemap.toXML = promisify(sitemap.toXML)
 
   return sitemap
