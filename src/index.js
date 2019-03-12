@@ -217,7 +217,9 @@ function flattenRoutes (router, path = '', routes = []) {
     if (r.children) {
       flattenRoutes(r.children, path + r.path + '/', routes)
     }
-    routes.push(path + r.path)
+    if (r.path !== '') {
+      routes.push(path + r.path)
+    }
   })
   return routes
 }
