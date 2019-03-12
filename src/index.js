@@ -51,9 +51,8 @@ module.exports = function module (moduleOptions) {
 
   // Extend routes
   this.extendRoutes(routes => {
-    // Map to path and filter dynamic routes
-    let staticRoutes = routes
-      .map(r => r.path)
+    // Get all static routes and ignore dynamic routes
+    let staticRoutes = flattenRoutes(routes)
       .filter(r => !r.includes(':') && !r.includes('*'))
 
     // Exclude routes
@@ -210,4 +209,15 @@ function routesUnion (staticRoutes, optionsRoutes) {
 // Make sure a passed route is an object
 function ensureRouteIsObject (route) {
   return typeof route === 'object' ? route : { url: route }
+}
+
+// Recursively flatten all routes and their child-routes
+function flattenRoutes (router, path = '', routes = []) {
+  router.forEach(r => {
+    if (r.children) {
+      flattenRoutes(r.children, path + r.path + '/', routes)
+    }
+    routes.push(path + r.path)
+  })
+  return routes
 }
