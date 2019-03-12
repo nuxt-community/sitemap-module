@@ -69,6 +69,8 @@ describe('ssr', () => {
     expect(xml).toContain('<loc>http://localhost:3000/parent</loc>')
     expect(xml).toContain('<loc>http://localhost:3000/parent/child</loc>')
     expect(xml).toContain('<loc>http://localhost:3000/parent/child/subchild</loc>')
+    expect(xml).not.toContain('<loc>http://localhost:3000/parent/</loc>')
+    expect(xml).not.toContain('<loc>http://localhost:3000/parent/child/</loc>')
 
     // dynamic routes
     expect(xml).toContain('<loc>http://localhost:3000/child</loc>')
