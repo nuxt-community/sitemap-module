@@ -1,7 +1,7 @@
 <template>
-<div>
+  <div>
     /child/{{ child }}
-</div>
+  </div>
 </template>
 
 <script>

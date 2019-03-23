@@ -2,49 +2,42 @@
   "name": "@nuxtjs/sitemap",
   "version": "0.2.0",
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
-  "repository": "https://github.com/nuxt-community/sitemap-module",
   "license": "MIT",
   "contributors": [
-    {
-      "name": "Nicolas Pennec"
-    },
-    {
-      "name": "Pooya Parsa"
-    }
+    "Nicolas Pennec",
+    "Pooya Parsa <pooya@pi0.ir>"
   ],
-  "files": [
-    "src"
-  ],
-  "main": "src/index.js",
+  "main": "lib/module.js",
+  "repository": "https://github.com/nuxt-community/sitemap-module",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "nuxt test/fixture",
-    "generate": "nuxt generate test/fixture",
-    "lint": "eslint src test",
-    "preview": "standard-version --dry-run",
-    "release": "standard-version && git push --follow-tags && npm publish",
-    "test": "npm run lint && npm run unit",
-    "unit": "jest --maxWorkers=4"
+    "lint": "eslint lib test",
+    "test": "yarn lint && jest",
+    "release": "yarn test && standard-version && git push --follow-tags && npm publish"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm test"
-    }
-  },
-  "jest": {
-    "collectCoverage": true,
-    "testEnvironment": "node"
-  },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
     "async-cache": "^1.1.0",
-    "consola": "^2.4.0",
+    "consola": "^2.5.6",
     "fs-extra": "^7.0.1",
     "is-https": "^1.0.0",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.11",
     "minimatch": "^3.0.4",
     "sitemap": "^2.1.0"
   },
   "devDependencies": {
+    "@babel/core": "latest",
+    "@babel/preset-env": "latest",
+    "@commitlint/cli": "latest",
+    "@commitlint/config-conventional": "latest",
+    "@nuxtjs/eslint-config": "latest",
+    "babel-eslint": "latest",
+    "babel-jest": "latest",
     "codecov": "latest",
     "eslint": "latest",
     "eslint-config-standard": "latest",
@@ -54,17 +47,12 @@
     "eslint-plugin-promise": "latest",
     "eslint-plugin-standard": "latest",
     "eslint-plugin-vue": "latest",
+    "get-port": "latest",
     "husky": "latest",
     "jest": "latest",
-    "jsdom": "latest",
-    "nuxt": "latest",
+    "nuxt-edge": "latest",
+    "request": "latest",
+    "request-promise-native": "latest",
     "standard-version": "latest"
-  },
-  "engines": {
-    "node": ">=8.0.0",
-    "npm": ">=5.0.0"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

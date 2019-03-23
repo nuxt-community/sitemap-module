@@ -1,10 +1,11 @@
 # Sitemap Module
-[![npm (scoped with tag)](https://img.shields.io/npm/v/@nuxtjs/sitemap/latest.svg?style=flat-square)](https://npmjs.com/package/@nuxtjs/sitemap)
-[![npm](https://img.shields.io/npm/dt/@nuxtjs/sitemap.svg?style=flat-square)](https://npmjs.com/package/@nuxtjs/sitemap)
-[![CircleCI](https://img.shields.io/circleci/project/github/nuxt-community/sitemap-module.svg?style=flat-square)](https://circleci.com/gh/nuxt-community/sitemap-module)
-[![Codecov](https://img.shields.io/codecov/c/github/nuxt-community/sitemap-module.svg?style=flat-square)](https://codecov.io/gh/nuxt-community/sitemap-module)
-[![Dependencies](https://david-dm.org/nuxt-community/sitemap-module/status.svg?style=flat-square)](https://david-dm.org/nuxt-community/sitemap-module)
-[![js-standard-style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com)
+
+[![npm version][npm-version-src]][npm-version-href]
+[![npm downloads][npm-downloads-src]][npm-downloads-href]
+[![Circle CI][circle-ci-src]][circle-ci-href]
+[![Codecov][codecov-src]][codecov-href]
+[![Dependencies][david-dm-src]][david-dm-href]
+[![Standard JS][standard-js-src]][standard-js-href]
 
 > Automatically generate or serve dynamic [sitemap.xml](https://www.sitemaps.org/protocol.html) for Nuxt.js projects!
 
@@ -14,18 +15,24 @@ Module based on the awesome [sitemap](https://github.com/ekalinin/sitemap.js) pa
 
 ## Setup
 
-- Add `@nuxtjs/sitemap` dependency using yarn or npm to your project
+1. Add the `@nuxtjs/sitemap` dependency with `yarn` or `npm` to your project
+2. Add `@nuxtjs/sitemap` to the `modules` section of `nuxt.config.js`
+3. Configure it:
 
-- Add `@nuxtjs/sitemap` module to `nuxt.config.js`
 ```js
+{
   modules: [
-   '@nuxtjs/sitemap'
+    '@nuxtjs/sitemap'
   ]
+}
 ```
+
 > **notice:** If you use other modules (eg. `nuxt-i18n`), always declare the sitemap module at end of array (eg. `modules: ['nuxt-i18n', '@nuxtjs/sitemap']`)
 
 - Add additional options to `sitemap` section of `nuxt.config.js` to override defaults
+
 ```js
+{
   sitemap: {
     path: '/sitemap.xml',
     hostname: 'https://example.com',
@@ -45,37 +52,46 @@ Module based on the awesome [sitemap](https://github.com/ekalinin/sitemap.js) pa
       }
     ]
   }
+}
 ```
 
 ## Options
 
 ### `exclude`
+
+- Default: `[]`
+
 The `exclude` parameter is an array of [glob patterns](https://github.com/isaacs/minimatch#features) to exclude static routes from the generated sitemap.
 
 ### `routes`
+
 The `routes` parameter follows the same way than the `generate` [configuration](https://nuxtjs.org/api/configuration-generate).
-   
+
 See as well the [routes](#routes-1) examples below.
 
 ### `path`
+
 - Default: `/sitemap.xml`
 
 Where serve/generate sitemap file
 
 ### `hostname`
-- Default: 
+
+- Default:
   - `hostname()` for generate mode
   - Dynamically based on request url for middleware mode
 
 This values is **mandatory** for generation sitemap file, and you should explicitly provide it for generate mode.
 
 ### `cacheTime`
+
 - Default: `1000 * 60 * 15` (15 Minutes)
 
 Defines how frequently should sitemap **routes** being updated.
 Please note that after each invalidation, `routes` will be evaluated again. (See [routes](#routes-1) section)
 
 ### `filter`
+
 - Default: `undefined`
 
 If `filter` option is set as a function,  all routes will be filtered through it.
@@ -83,8 +99,8 @@ If `filter` option is set as a function,  all routes will be filtered through it
 Examples:
 
 `nuxt.config.js`
-```js
 
+```js
 // filter routes by language
 
 module.exports = {
@@ -98,6 +114,7 @@ module.exports = {
   }
 }
 ```
+
 ```js
 // add a trailing slash to each route
 
@@ -111,6 +128,7 @@ module.exports = {
 ```
 
 ### `gzip`
+
 - Default: `false`
 
 Enable the creation of the `.xml.gz` sitemap compressed with gzip.
@@ -121,7 +139,7 @@ Dynamic routes are ignored by the sitemap module.
 
 Example:
 
-```
+```bash
 -| pages/
 ---| index.vue
 ---| users/
@@ -145,6 +163,7 @@ We add routes for `/users/:id` in `nuxt.config.js`:
 ### Function which returns a Promise
 
 `nuxt.config.js`
+
 ```js
 const axios = require('axios')
 
@@ -161,6 +180,7 @@ module.exports = {
 ### Function with a callback
 
 `nuxt.config.js`
+
 ```js
 const axios = require('axios')
 
@@ -178,10 +198,33 @@ module.exports = {
 }
 ```
 
+## Development
+
+1. Clone this repository
+2. Install dependencies using `yarn install` or `npm install`
+3. Start development server using `npm run dev`
+
 ## License
 
 [MIT License](./LICENSE)
 
-### Contributors
-- [Nicolas PENNEC](https://github.com/NicoPennec)
-- [Pooya Parsa](https://github.com/pi0)
+Copyright (c) Nuxt Community
+
+<!-- Badges -->
+[npm-version-src]: https://img.shields.io/npm/dt/@nuxtjs/sitemap-module.svg?style=flat-square
+[npm-version-href]: https://npmjs.com/package/@nuxtjs/sitemap-module
+
+[npm-downloads-src]: https://img.shields.io/npm/v/@nuxtjs/sitemap-module/latest.svg?style=flat-square
+[npm-downloads-href]: https://npmjs.com/package/@nuxtjs/sitemap-module
+
+[circle-ci-src]: https://img.shields.io/circleci/project/github/nuxt-community/sitemap-module.svg?style=flat-square
+[circle-ci-href]: https://circleci.com/gh/nuxt-community/sitemap-module
+
+[codecov-src]: https://img.shields.io/codecov/c/github/nuxt-community/sitemap-module.svg?style=flat-square
+[codecov-href]: https://codecov.io/gh/nuxt-community/sitemap-module
+
+[david-dm-src]: https://david-dm.org/nuxt-community/sitemap-module/status.svg?style=flat-square
+[david-dm-href]: https://david-dm.org/nuxt-community/sitemap-module
+
+[standard-js-src]: https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square
+[standard-js-href]: https://standardjs.com

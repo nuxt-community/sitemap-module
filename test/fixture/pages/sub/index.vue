@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     /sub/index
-</div>
+  </div>
 </template>
