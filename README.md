@@ -179,6 +179,8 @@ module.exports = {
 
 ### Function with a callback
 
+**This feature is deprecated**. Use a promise-based approach instead.
+
 `nuxt.config.js`
 
 ```js

@@ -9,5 +9,17 @@ module.exports = {
   },
   modules: [
     { handler: require('../../') }
-  ]
+  ],
+  sitemap: {
+    hostname: 'http://localhost:3000/',
+    exclude: [
+      '/exclude'
+    ],
+    routes: [
+      'child/1',
+      'child/2'
+    ],
+    filter: ({ routes }) => routes.filter(route => route.url !== '/filtered'),
+    gzip: true
+  }
 }
