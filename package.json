@@ -17,11 +17,13 @@
   ],
   "main": "src/index.js",
   "scripts": {
+    "build": "nuxt build test/fixture",
     "dev": "nuxt test/fixture",
     "generate": "nuxt generate test/fixture",
     "lint": "eslint src test",
     "preview": "standard-version --dry-run",
     "release": "standard-version && git push --follow-tags && npm publish",
+    "start": "nuxt start test/fixture",
     "test": "npm run lint && npm run unit",
     "unit": "jest --maxWorkers=4"
   },
