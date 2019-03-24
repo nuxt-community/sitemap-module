@@ -24,20 +24,24 @@ module.exports = function module (moduleOptions) {
   const options = Object.assign({}, defaults, this.options.sitemap, moduleOptions)
   options.pathGzip = options.gzip ? `${options.path}.gz` : options.path
 
-  // sitemap-routes.json is written to dist dir on build mode
-  const jsonStaticRoutesPath = path.resolve(this.options.buildDir, path.join('dist', 'sitemap-routes.json'))
+  // sitemap-routes.json is written to dist dir on "build" mode
+  const jsonStaticRoutesPath = !this.options.dev ? path.resolve(this.options.buildDir, path.join('dist', 'sitemap-routes.json')) : null
 
   let staticRoutes = fs.readJsonSync(jsonStaticRoutesPath, { throws: false })
   let cache = null
 
-  if (staticRoutes && !this.options.dev) {
+  // On run cmd "start" or "generate [--no-build]"
+  if (staticRoutes) {
     // Create a cache for routes
     cache = createCache(staticRoutes, options)
-    // Hydrate cache
-    cache.get('routes')
+
+    // On server ready, hydrate cache
+    this.nuxt.hook('listen', () => {
+      cache.get('routes')
+    })
   }
 
-  // Extend routes
+  // On extend routes
   this.extendRoutes(routes => {
     // Get all static routes and ignore dynamic routes
     let staticRoutes = flattenRoutes(routes)
@@ -50,10 +54,10 @@ module.exports = function module (moduleOptions) {
       staticRoutes = staticRoutes.filter(route => minimatch.match(route))
     })
 
-    if (this.options.dev) {
-      // Create a cache for routes
-      cache = createCache(staticRoutes, options)
-    } else {
+    // Create a cache for routes
+    cache = createCache(staticRoutes, options)
+
+    if (!this.options.dev) {
       // Save static routes
       fs.ensureDirSync(path.resolve(this.options.buildDir, 'dist'))
       fs.writeJsonSync(jsonStaticRoutesPath, staticRoutes)
@@ -191,7 +195,7 @@ function routesUnion (staticRoutes, optionsRoutes) {
   // Make sure any routes passed as strings are converted to objects with url properties
   staticRoutes = staticRoutes.map(ensureRouteIsObject)
   optionsRoutes = optionsRoutes.map(ensureRouteIsObject)
-  // add static routes to options routes, discarding any defined in options
+  // Add static routes to options routes, discarding any defined in options
   return unionBy(optionsRoutes, staticRoutes, 'url')
 }
 
