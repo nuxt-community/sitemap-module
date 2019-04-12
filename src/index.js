@@ -70,17 +70,20 @@ module.exports = function module (moduleOptions) {
 
   // Generate sitemap.xml in dist
   this.nuxt.hook('generate:done', async () => {
+    consola.info('Generating sitemaps')
     const routes = await cache.get('routes')
     const sitemap = await createSitemap(options, routes)
     const xml = await sitemap.toXML()
-    const xmlGeneratePath = path.resolve(this.options.rootDir, this.options.generate.dir, options.path)
+    const xmlGeneratePath = path.resolve(this.options.generate.dir, options.path)
     await fs.ensureFile(xmlGeneratePath)
     await fs.writeFile(xmlGeneratePath, xml)
+    consola.success('Generated', xmlGeneratePath.replace(this.options.generate.dir, ''))
     if (options.gzip) {
       const gzip = await sitemap.toGzip()
-      const gzipGeneratePath = path.resolve(this.options.rootDir, this.options.generate.dir, options.pathGzip)
+      const gzipGeneratePath = path.resolve(this.options.generate.dir, options.pathGzip)
       await fs.ensureFile(gzipGeneratePath)
       await fs.writeFile(gzipGeneratePath, gzip)
+      consola.success('Generated', gzipGeneratePath.replace(this.options.generate.dir, ''))
     }
   })
 
