@@ -115,6 +115,25 @@ module.exports = {
 
 Enable the creation of the `.xml.gz` sitemap compressed with gzip.
 
+### `defaults`
+- Default: `{}`
+
+The `defaults` parameter set the default options for all routes.
+
+`nuxt.config.js`
+```js
+  sitemap: {
+    defaults: {
+      changefreq: 'daily',
+      priority: 1,
+      lastmod: new Date(),
+      lastmodrealtime: true
+    }
+  }
+```
+
+See available options: https://github.com/ekalinin/sitemap.js#usage
+
 ## Routes
 
 Dynamic routes are ignored by the sitemap module.

@@ -18,7 +18,8 @@ module.exports = function module (moduleOptions) {
     routes: this.options.generate.routes || [],
     cacheTime: 1000 * 60 * 15,
     filter: undefined,
-    gzip: false
+    gzip: false,
+    defaults: {}
   }
 
   const options = Object.assign({}, defaults, this.options.sitemap, moduleOptions)
@@ -150,6 +151,8 @@ function createSitemap (options, routes, req) {
   // Set sitemap hostname
   sitemapConfig.hostname = options.hostname ||
     (req && `${isHTTPS(req) ? 'https' : 'http'}://${req.headers.host}`) || `http://${hostname()}`
+
+  routes = routes.map(route => Object.assign({}, options.defaults, route))
 
   // Enable filter function for each declared route
   if (typeof options.filter === 'function') {
