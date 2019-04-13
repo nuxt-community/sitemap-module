@@ -10,26 +10,35 @@
 
 [📖 **Release Notes**](./CHANGELOG.md)
 
-Module based on the awesome [sitemap](https://github.com/ekalinin/sitemap.js) package ❤️
+## Features
+
+- Module based on the awesome **[sitemap.js](https://github.com/ekalinin/sitemap.js) package** ❤️
+- Automatically add the static routes to the sitemap
+- Works with **all modes** (universal, spa, generate)
+- For **Nuxt 1.x** and higher
 
 ## Setup
 
-- Add `@nuxtjs/sitemap` dependency using yarn or npm to your project
+- Add the `@nuxtjs/sitemap` dependency with `yarn` or `npm` to your project.
 
-- Add `@nuxtjs/sitemap` module to `nuxt.config.js`
+- Add `@nuxtjs/sitemap` to the `modules` section of `nuxt.config.js`:
+
 ```js
   modules: [
-   '@nuxtjs/sitemap'
+    '@nuxtjs/sitemap'
   ]
 ```
 > **notice:** If you use other modules (eg. `nuxt-i18n`), always declare the sitemap module at end of array (eg. `modules: ['nuxt-i18n', '@nuxtjs/sitemap']`)
 
-- Add additional options to `sitemap` section of `nuxt.config.js` to override defaults
+- Configure it:
+
 ```js
+{
+  modules: [
+    '@nuxtjs/sitemap'
+  ],
   sitemap: {
-    path: '/sitemap.xml',
     hostname: 'https://example.com',
-    cacheTime: 1000 * 60 * 15,
     gzip: true,
     exclude: [
       '/secret',
@@ -47,47 +56,52 @@ Module based on the awesome [sitemap](https://github.com/ekalinin/sitemap.js) pa
   }
 ```
 
-## Options
-
-### `exclude`
-The `exclude` parameter is an array of [glob patterns](https://github.com/isaacs/minimatch#features) to exclude static routes from the generated sitemap.
+## Configuration
 
 ### `routes`
+- Default: `[]` or [`generate.routes`](https://nuxtjs.org/api/configuration-generate#routes) value from your `nuxt.config.js`
+
 The `routes` parameter follows the same way than the `generate` [configuration](https://nuxtjs.org/api/configuration-generate).
    
 See as well the [routes](#routes-1) examples below.
 
-### `path`
-- Default: `/sitemap.xml`
+### `path` (optional)
+- Default: `sitemap.xml`
 
-Where serve/generate sitemap file
+The URL path of the generated sitemap.
 
-### `hostname`
+### `hostname` (optional)
 - Default: 
-  - `hostname()` for generate mode
-  - Dynamically based on request url for middleware mode
+  1. `sitemap.hostname` value from your `nuxt.config.js`
+  2. [`build.publicPath`](https://nuxtjs.org/api/configuration-build/#publicpath) value from your `nuxt.config.js`
+  3. [`os.hostname()`](https://nodejs.org/api/os.html#os_os_hostname) for **generate** or **spa** mode, or dynamically based on request URL (`headers.host`) for **universal** mode
 
-This values is **mandatory** for generation sitemap file, and you should explicitly provide it for generate mode.
+This value is **mandatory** for generation sitemap file, and you should explicitly provide it for **generate** or **spa** mode.
 
-### `cacheTime`
+### `cacheTime` (optional)
 - Default: `1000 * 60 * 15` (15 Minutes)
 
 Defines how frequently should sitemap **routes** being updated.
+
 Please note that after each invalidation, `routes` will be evaluated again. (See [routes](#routes-1) section)
 
-### `filter`
+### `exclude` (optional)
+- Default: `[]`
+
+The `exclude` parameter is an array of [glob patterns](https://github.com/isaacs/minimatch#features) to exclude static routes from the generated sitemap.
+
+### `filter` (optional)
 - Default: `undefined`
 
-If `filter` option is set as a function,  all routes will be filtered through it.
+If `filter` option is set as a function, all routes will be filtered through it.
 
 Examples:
 
-`nuxt.config.js`
 ```js
+// nuxt.config.js
 
-// filter routes by language
-
-module.exports = {
+// Filter routes by language
+{
   sitemap: {
     filter ({ routes, options }) {
       if (options.hostname === 'example.com') {
@@ -97,11 +111,9 @@ module.exports = {
     }
   }
 }
-```
-```js
-// add a trailing slash to each route
 
-module.exports = {
+// Add a trailing slash to each route
+{
   sitemap: {
     filter ({ routes }) {
       return routes.map(route => route.url = `${route.url}/`)
@@ -110,18 +122,20 @@ module.exports = {
 }
 ```
 
-### `gzip`
+### `gzip` (optional)
 - Default: `false`
 
 Enable the creation of the `.xml.gz` sitemap compressed with gzip.
 
-### `defaults`
+### `defaults` (optional)
 - Default: `{}`
 
 The `defaults` parameter set the default options for all routes.
 
-`nuxt.config.js`
 ```js
+// nuxt.config.js
+
+{
   sitemap: {
     defaults: {
       changefreq: 'daily',
@@ -130,28 +144,34 @@ The `defaults` parameter set the default options for all routes.
       lastmodrealtime: true
     }
   }
+}
 ```
 
 See available options: https://github.com/ekalinin/sitemap.js#usage
 
 ## Routes
 
-Dynamic routes are ignored by the sitemap module.
+By default, the dynamic routes are ignored by the sitemap module.  
+Nuxt cannot automatically provide this type of complex routes.
 
 Example:
 
 ```
 -| pages/
----| index.vue
+---| index.vue  --> static route
+---| about.vue  --> static route
 ---| users/
------| _id.vue
+-----| _id.vue  --> dynamic route
 ```
 
-If you want the module to add routes with dynamic params, you need to set an array of dynamic routes.
+If you want the module to add any route with dynamic parameters, you have to set an array of dynamic routes.
 
-We add routes for `/users/:id` in `nuxt.config.js`:
+eg. add routes for `/users/:id` in the configuration:
 
 ```js
+// nuxt.config.js
+
+{
   sitemap: {
     routes: [
       '/users/1',
@@ -159,19 +179,21 @@ We add routes for `/users/:id` in `nuxt.config.js`:
       '/users/3'
     ]
   }
+}
 ```
 
 ### Function which returns a Promise
 
-`nuxt.config.js`
 ```js
+// nuxt.config.js
+
 const axios = require('axios')
 
-module.exports = {
+{
   sitemap: {
     routes () {
       return axios.get('https://jsonplaceholder.typicode.com/users')
-      .then(res => res.data.map(user =>  '/users/' + user.username))
+        .then(res => res.data.map(user => '/users/' + user.username))
     }
   }
 }
@@ -181,11 +203,12 @@ module.exports = {
 
 **This feature is deprecated**. Use a promise-based approach instead.
 
-`nuxt.config.js`
 ```js
+// nuxt.config.js
+
 const axios = require('axios')
 
-module.exports = {
+{
   sitemap: {
     routes (callback) {
       axios.get('https://jsonplaceholder.typicode.com/users')
