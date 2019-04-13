@@ -82,6 +82,9 @@ describe('ssr', () => {
 
     // filtered routes
     expect(xml).not.toContain('<loc>http://localhost:3000/filtered</loc>')
+
+    // default options
+    expect(xml).toContain('<url><loc>http://localhost:3000/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>')
   })
 
   test('sitemap gzip', async () => {

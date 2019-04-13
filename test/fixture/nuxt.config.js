@@ -19,6 +19,10 @@ module.exports = {
       'child/1'
     ],
     filter: ({ routes }) =>
-      routes.filter(route => route.url !== '/filtered')
+      routes.filter(route => route.url !== '/filtered'),
+    defaults: {
+      changefreq: 'daily',
+      priority: 1
+    }
   }
 }
