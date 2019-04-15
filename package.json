@@ -13,14 +13,14 @@
     }
   ],
   "files": [
-    "src"
+    "lib"
   ],
-  "main": "src/index.js",
+  "main": "lib/module.js",
   "scripts": {
     "build": "nuxt build test/fixture",
     "dev": "nuxt test/fixture",
     "generate": "nuxt generate test/fixture",
-    "lint": "eslint src test",
+    "lint": "eslint lib test",
     "preview": "standard-version --dry-run",
     "release": "standard-version && git push --follow-tags && npm publish",
     "start": "nuxt start test/fixture",
