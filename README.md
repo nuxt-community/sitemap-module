@@ -122,6 +122,13 @@ Examples:
 }
 ```
 
+### `generate` (optional)
+- Default: `false`
+
+Enable the creation of the sitemap in `generate` mode.
+
+This value is **mandatory** for generation sitemap file, and you should explicitly set it to `true` for **generate** mode.
+
 ### `gzip` (optional)
 - Default: `false`
 
