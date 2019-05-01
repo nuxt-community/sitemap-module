@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [1.1.0](https://github.com/nuxt-community/sitemap-module/compare/v1.0.0...v1.1.0) (2019-05-01)
+
+
+### Bug Fixes
+
+* hostname initialization ([56fdddd](https://github.com/nuxt-community/sitemap-module/commit/56fdddd)), closes [#60](https://github.com/nuxt-community/sitemap-module/issues/60)
+
+
+### Features
+
+* add "xslUrl" option to set a custom XSL file to style the sitemap ([de1b706](https://github.com/nuxt-community/sitemap-module/commit/de1b706)), closes [#58](https://github.com/nuxt-community/sitemap-module/issues/58)
+
+
+
 # [1.0.0](https://github.com/nuxt-community/sitemap-module/compare/v0.2.2...v1.0.0) (2019-04-15)
 
 
