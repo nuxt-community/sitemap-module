@@ -83,6 +83,9 @@ describe('ssr', () => {
     // filtered routes
     expect(xml).not.toContain('<loc>http://localhost:3000/filtered</loc>')
 
+    // custom XSL
+    expect(xml).toContain('<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>')
+
     // default options
     expect(xml).toContain('<url><loc>http://localhost:3000/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>')
   })

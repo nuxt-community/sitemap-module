@@ -20,6 +20,7 @@ module.exports = {
     ],
     filter: ({ routes }) =>
       routes.filter(route => route.url !== '/filtered'),
+    xslUrl: 'sitemap.xsl',
     defaults: {
       changefreq: 'daily',
       priority: 1

@@ -127,6 +127,11 @@ Examples:
 
 Enable the creation of the `.xml.gz` sitemap compressed with gzip.
 
+### `xslUrl` (optional)
+- Default: `undefined`
+
+The URL path of the XSL file to style the sitemap.
+
 ### `defaults` (optional)
 - Default: `{}`
 
