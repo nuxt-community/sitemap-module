@@ -36,6 +36,7 @@
   },
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "npm run lint",
       "pre-push": "npm test"
     }
@@ -54,6 +55,8 @@
     "sitemap": "^2.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "latest",
+    "@commitlint/config-conventional": "latest",
     "codecov": "latest",
     "eslint": "latest",
     "eslint-config-standard": "latest",
