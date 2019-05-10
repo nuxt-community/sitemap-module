@@ -66,7 +66,7 @@ The `routes` parameter follows the same way than the `generate` [configuration](
 See as well the [routes](#routes-1) examples below.
 
 ### `path` (optional)
-- Default: `sitemap.xml`
+- Default: `/sitemap.xml`
 
 The URL path of the generated sitemap.
 

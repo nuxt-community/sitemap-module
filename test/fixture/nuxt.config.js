@@ -9,6 +9,7 @@ module.exports = {
   },
   modules: ['@@'],
   sitemap: {
+    path: '/sitemap.xml',
     exclude: [
       '/exclude'
     ],
