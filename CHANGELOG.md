@@ -1,6 +1,21 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.2.0](https://github.com/nuxt-community/sitemap-module/compare/v1.1.0...v1.2.0) (2019-05-10)
+
+
+### Bug Fixes
+
+* generate sitemap from an absolute path ([78f1f32](https://github.com/nuxt-community/sitemap-module/commit/78f1f32))
+* harmonize logs for all OS ([276e8fa](https://github.com/nuxt-community/sitemap-module/commit/276e8fa))
+
+
+### Features
+
+* add "xmlNs" option to set custom XML namespaces ([751a779](https://github.com/nuxt-community/sitemap-module/commit/751a779))
+
+
 
 # [1.1.0](https://github.com/nuxt-community/sitemap-module/compare/v1.0.0...v1.1.0) (2019-05-01)
 
