@@ -127,6 +127,21 @@ Examples:
 
 Enable the creation of the `.xml.gz` sitemap compressed with gzip.
 
+### `xmlNs` (optional)
+- Default: `undefined`
+
+Set the XML namespaces by override all default `xmlns` attributes in `<urlset>` element.
+
+```js
+// nuxt.config.js
+
+{
+  sitemap: {
+    xmlNs: 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
+  }
+}
+```
+
 ### `xslUrl` (optional)
 - Default: `undefined`
 

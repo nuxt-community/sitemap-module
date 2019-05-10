@@ -21,6 +21,7 @@ module.exports = {
     ],
     filter: ({ routes }) =>
       routes.filter(route => route.url !== '/filtered'),
+    xmlNs: 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
     xslUrl: 'sitemap.xsl',
     defaults: {
       changefreq: 'daily',

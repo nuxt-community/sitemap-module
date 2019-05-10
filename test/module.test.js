@@ -83,6 +83,9 @@ describe('ssr', () => {
     // filtered routes
     expect(xml).not.toContain('<loc>http://localhost:3000/filtered</loc>')
 
+    // custom XML namespaces
+    expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+
     // custom XSL
     expect(xml).toContain('<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>')
 
