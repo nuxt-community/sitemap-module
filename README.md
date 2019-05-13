@@ -29,6 +29,7 @@
   modules: [
     '@nuxtjs/sitemap'
   ]
+}
 ```
 
 > **notice:** If you use other modules (eg. `nuxt-i18n`), always declare the sitemap module at end of array (eg. `modules: ['nuxt-i18n', '@nuxtjs/sitemap']`)
