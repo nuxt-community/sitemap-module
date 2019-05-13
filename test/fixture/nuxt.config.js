@@ -20,6 +20,12 @@ module.exports = {
       'child/2'
     ],
     filter: ({ routes }) => routes.filter(route => route.url !== '/filtered'),
-    gzip: true
+    gzip: true,
+    xmlNs: 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+    xslUrl: 'sitemap.xsl',
+    defaults: {
+      changefreq: 'daily',
+      priority: 1
+    }
   }
 }

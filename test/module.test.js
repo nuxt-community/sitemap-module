@@ -89,6 +89,15 @@ describe('module', () => {
 
     // filtered routes
     expect(xml).not.toContain(`<loc>${hostname}filtered</loc>`)
+
+    // custom XML namespaces
+    expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+
+    // custom XSL
+    expect(xml).toContain('<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>')
+
+    // default options
+    expect(xml).toContain(`<url><loc>${hostname}</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`)
   })
 
   test('sitemap gzip', async () => {
@@ -105,7 +114,8 @@ describe('custom options', () => {
       ...config,
       sitemap: {
         path: 'my-sitemap.xml',
-        generate: true
+        generate: true,
+        hostname
       }
     })
   })
@@ -120,27 +130,27 @@ describe('custom options', () => {
     const xml = await get('/my-sitemap.xml')
 
     // static routes
-    expect(xml).toContain(`<loc>${nuxt.options.build.publicPath}</loc>`)
-    expect(xml).toContain(`<loc>${nuxt.options.build.publicPath}sub</loc>`)
-    expect(xml).toContain(`<loc>${nuxt.options.build.publicPath}sub/sub</loc>`)
+    expect(xml).toContain(`<loc>${hostname}</loc>`)
+    expect(xml).toContain(`<loc>${hostname}sub</loc>`)
+    expect(xml).toContain(`<loc>${hostname}sub/sub</loc>`)
 
     // static child-routes
-    expect(xml).toContain(`<loc>${nuxt.options.build.publicPath}parent</loc>`)
-    expect(xml).toContain(`<loc>${nuxt.options.build.publicPath}parent/child</loc>`)
-    expect(xml).toContain(`<loc>${nuxt.options.build.publicPath}parent/child/subchild</loc>`)
-    expect(xml).not.toContain(`<loc>${nuxt.options.build.publicPath}parent/</loc>`)
-    expect(xml).not.toContain(`<loc>${nuxt.options.build.publicPath}parent/child/</loc>`)
+    expect(xml).toContain(`<loc>${hostname}parent</loc>`)
+    expect(xml).toContain(`<loc>${hostname}parent/child</loc>`)
+    expect(xml).toContain(`<loc>${hostname}parent/child/subchild</loc>`)
+    expect(xml).not.toContain(`<loc>${hostname}parent/</loc>`)
+    expect(xml).not.toContain(`<loc>${hostname}parent/child/</loc>`)
 
     // dynamic routes
-    expect(xml).toContain(`<loc>${nuxt.options.build.publicPath}child</loc>`)
-    expect(xml).not.toContain(`<loc>${nuxt.options.build.publicPath}child/1</loc>`)
-    expect(xml).not.toContain(`<loc>${nuxt.options.build.publicPath}child/2</loc>`)
+    expect(xml).toContain(`<loc>${hostname}child</loc>`)
+    expect(xml).not.toContain(`<loc>${hostname}child/1</loc>`)
+    expect(xml).not.toContain(`<loc>${hostname}child/2</loc>`)
 
     // excluded routes
-    expect(xml).toContain(`<loc>${nuxt.options.build.publicPath}exclude</loc>`)
+    expect(xml).toContain(`<loc>${hostname}exclude</loc>`)
 
     // filtered routes
-    expect(xml).toContain(`<loc>${nuxt.options.build.publicPath}filtered</loc>`)
+    expect(xml).toContain(`<loc>${hostname}filtered</loc>`)
   })
 
   test('custom sitemap path', async () => {
