@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  asyncData ({ params }) {
+  asyncData({ params }) {
     return params
   }
 }
