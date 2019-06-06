@@ -147,6 +147,28 @@ Set the XML namespaces by override all default `xmlns` attributes in `<urlset>` 
 
 The URL path of the XSL file to style the sitemap.
 
+### `hook` (optional)
+- Default: `undefined`
+
+If `hook` option is set as a function, routes and config are passed to it. It is possility modify all this stuff before actual sitemap creating.
+
+Examples:
+
+```js
+// nuxt.config.js
+
+// Change hostname on the fly
+{
+  sitemap: {
+    hook (config, routes, req) {
+      if (req) {
+        config.hostname = `${req.protocol}://${req.hostname}${req.port === (req.protocol === 'https' ? 443 : 80) ? '' : ':' + req.port}`
+      }
+    }
+  }
+}
+```
+
 ### `defaults` (optional)
 - Default: `{}`
 
