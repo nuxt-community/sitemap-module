@@ -51,6 +51,8 @@ describe('ssr', () => {
     // excluded routes
     html = await get('/exclude')
     expect(html).toContain('/exclude')
+    html = await get('/excluded-via-component-options')
+    expect(html).toContain('/excluded-via-component-options')
 
     // filtered routes
     html = await get('/filtered')
@@ -79,6 +81,7 @@ describe('ssr', () => {
 
     // excluded routes
     expect(xml).not.toContain('<loc>http://localhost:3000/exclude</loc>')
+    expect(xml).not.toContain('<loc>http://localhost:3000/excluded-via-component-options</loc>')
 
     // filtered routes
     expect(xml).not.toContain('<loc>http://localhost:3000/filtered</loc>')
