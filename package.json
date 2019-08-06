@@ -68,8 +68,8 @@
     "eslint-plugin-vue": "latest",
     "husky": "latest",
     "jest": "latest",
-    "jsdom": "latest",
     "nuxt": "latest",
+    "request-promise-native": "latest",
     "standard-version": "latest"
   },
   "engines": {
