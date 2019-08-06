@@ -32,7 +32,7 @@
     "release": "standard-version && git push --follow-tags && npm publish",
     "start": "nuxt start test/fixture",
     "test": "npm run lint && npm run unit",
-    "unit": "jest --maxWorkers=4"
+    "unit": "jest"
   },
   "husky": {
     "hooks": {
@@ -43,6 +43,9 @@
   },
   "jest": {
     "collectCoverage": true,
+    "collectCoverageFrom": [
+      "lib/**/*.js"
+    ],
     "testEnvironment": "node"
   },
   "dependencies": {
