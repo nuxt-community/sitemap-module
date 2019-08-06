@@ -1,8 +1,9 @@
 const { readFileSync } = require('fs')
-const { Nuxt, Builder, Generator } = require('nuxt')
 const path = require('path')
-const request = require('request-promise-native')
 const { gunzipSync } = require('zlib')
+
+const { Nuxt, Builder, Generator } = require('nuxt')
+const request = require('request-promise-native')
 
 const config = require('./fixture/nuxt.config')
 
@@ -115,7 +116,7 @@ describe('generate', () => {
     await nuxt.close()
   })
 
-  test('sitemap', async () => {
+  test('sitemap', () => {
     const xml = readFileSync(path.resolve(__dirname, '../dist/sitemap.xml'), 'utf8')
     expect(xml).toContain('<loc>http://localhost:3000/</loc>')
   })
