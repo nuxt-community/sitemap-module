@@ -91,7 +91,9 @@ describe('ssr', () => {
     expect(xml).toContain('<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>')
 
     // default options
-    expect(xml).toContain('<url><loc>http://localhost:3000/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>')
+    expect(xml).toContain(
+      '<url><loc>http://localhost:3000/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>'
+    )
   })
 
   test('sitemap gzip', async () => {
