@@ -5,9 +5,9 @@
   "keywords": [
     "nuxt",
     "nuxtjs",
+    "seo",
     "sitemap",
-    "sitemap.xml",
-    "seo"
+    "sitemap.xml"
   ],
   "repository": "https://github.com/nuxt-community/sitemap-module",
   "license": "MIT",
@@ -26,20 +26,27 @@
   "scripts": {
     "build": "nuxt build test/fixture",
     "dev": "nuxt test/fixture",
+    "format": "yarn lint --fix",
     "generate": "nuxt generate test/fixture",
-    "lint": "eslint lib test",
+    "lint": "eslint . --ext js,vue",
     "preview": "standard-version --dry-run",
     "release": "standard-version && git push --follow-tags && npm publish",
     "start": "nuxt start test/fixture",
-    "test": "npm run lint && npm run unit",
+    "test": "yarn lint && yarn unit",
     "unit": "jest"
   },
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "npm run lint",
-      "pre-push": "npm test"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn test"
     }
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "jest": {
     "collectCoverage": true,
@@ -63,9 +70,13 @@
     "@nuxtjs/eslint-config": "latest",
     "codecov": "latest",
     "eslint": "latest",
+    "eslint-config-prettier": "latest",
+    "eslint-plugin-prettier": "latest",
     "husky": "latest",
     "jest": "latest",
+    "lint-staged": "latest",
     "nuxt": "latest",
+    "prettier": "latest",
     "request-promise-native": "latest",
     "standard-version": "latest"
   },

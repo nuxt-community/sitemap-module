@@ -1,13 +1,10 @@
 module.exports = {
   extends: [
-    '@nuxtjs'
+    '@nuxtjs',
+    'plugin:prettier/recommended'
   ],
   rules: {
     // Allow sparse arrays
-    'no-sparse-arrays': 'off',
-    // Allow space after function name (standard rule)
-    'space-before-function-paren': ['error', 'always'],
-    // Remove parents on arrow function
-    'arrow-parens': ['error', 'as-needed']
+    'no-sparse-arrays': 'off'
   }
 }
