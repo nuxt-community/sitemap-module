@@ -48,13 +48,6 @@
       "git add"
     ]
   },
-  "jest": {
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "lib/**/*.js"
-    ],
-    "testEnvironment": "node"
-  },
   "dependencies": {
     "async-cache": "^1.1.0",
     "consola": "^2.10.1",

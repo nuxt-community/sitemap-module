@@ -1,30 +1,39 @@
 const { readFileSync } = require('fs')
-const path = require('path')
+const { resolve } = require('path')
 const { gunzipSync } = require('zlib')
 
 const { Nuxt, Builder, Generator } = require('nuxt')
 const request = require('request-promise-native')
 
 const config = require('./fixture/nuxt.config')
+config.dev = false
+config.sitemap = {}
 
 const url = path => `http://localhost:3000${path}`
 const get = path => request(url(path))
 const getGzip = path => request({ url: url(path), encoding: null })
 
-describe('ssr', () => {
-  let nuxt
+const startServer = async config => {
+  const nuxt = new Nuxt(config)
+  await nuxt.ready()
+  await new Builder(nuxt).build()
+  await nuxt.listen(3000)
+  return nuxt
+}
+const runGenerate = async config => {
+  const nuxt = new Nuxt(config)
+  await nuxt.ready()
+  const builder = new Builder(nuxt)
+  const generator = new Generator(nuxt, builder)
+  await generator.generate()
+}
 
-  beforeAll(async () => {
-    nuxt = new Nuxt(config)
-    await new Builder(nuxt).build()
-    await nuxt.listen(3000)
-  }, 60000)
+jest.setTimeout(60000)
 
-  afterAll(async () => {
-    await nuxt.close()
-  })
+describe('ssr - pages', () => {
+  test('should render all pages', async () => {
+    const nuxt = await startServer(config)
 
-  test('render', async () => {
     // static routes
     let html = await get('/')
     expect(html).toContain('/index')
@@ -56,70 +65,181 @@ describe('ssr', () => {
     // filtered routes
     html = await get('/filtered')
     expect(html).toContain('/filtered')
-  })
 
-  test('sitemap', async () => {
-    const xml = await get('/sitemap.xml')
-
-    // static routes
-    expect(xml).toContain('<loc>http://localhost:3000/</loc>')
-    expect(xml).toContain('<loc>http://localhost:3000/sub</loc>')
-    expect(xml).toContain('<loc>http://localhost:3000/sub/sub</loc>')
-
-    // static child-routes
-    expect(xml).toContain('<loc>http://localhost:3000/parent</loc>')
-    expect(xml).toContain('<loc>http://localhost:3000/parent/child</loc>')
-    expect(xml).toContain('<loc>http://localhost:3000/parent/child/subchild</loc>')
-    expect(xml).not.toContain('<loc>http://localhost:3000/parent/</loc>')
-    expect(xml).not.toContain('<loc>http://localhost:3000/parent/child/</loc>')
-
-    // dynamic routes
-    expect(xml).toContain('<loc>http://localhost:3000/child</loc>')
-    expect(xml).toContain('<loc>http://localhost:3000/child/1</loc>')
-    expect(xml).toContain('<loc>http://localhost:3000/1/</loc>')
-
-    // excluded routes
-    expect(xml).not.toContain('<loc>http://localhost:3000/exclude</loc>')
-
-    // filtered routes
-    expect(xml).not.toContain('<loc>http://localhost:3000/filtered</loc>')
-
-    // custom XML namespaces
-    expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
-
-    // custom XSL
-    expect(xml).toContain('<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>')
-
-    // default options
-    expect(xml).toContain(
-      '<url><loc>http://localhost:3000/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>'
-    )
-  })
-
-  test('sitemap gzip', async () => {
-    const xml = await get('/sitemap.xml')
-    const gz = await getGzip('/sitemap.xml.gz')
-    const sitemap = gunzipSync(gz).toString()
-    expect(xml).toEqual(sitemap)
+    await nuxt.close()
   })
 })
 
-describe('generate', () => {
-  let nuxt
+describe('sitemap - minimal configuration', () => {
+  test('sitemap.xml', async () => {
+    const nuxt = await startServer({
+      ...config,
+      generate: {
+        routes: null
+      },
+      sitemap: {
+        hostname: 'https://example.com/'
+      }
+    })
 
-  beforeAll(async () => {
-    nuxt = new Nuxt(config)
-    const builder = new Builder(nuxt)
-    const generator = new Generator(nuxt, builder)
-    await generator.generate()
-  }, 60000)
+    const xml = await get('/sitemap.xml')
+    expect(xml).toMatchSnapshot()
 
-  afterAll(async () => {
+    await nuxt.close()
+  })
+})
+
+describe('sitemap - advanced configuration', () => {
+  let nuxt = null
+
+  afterEach(async () => {
     await nuxt.close()
   })
 
-  test('sitemap', () => {
-    const xml = readFileSync(path.resolve(__dirname, '../dist/sitemap.xml'), 'utf8')
-    expect(xml).toContain('<loc>http://localhost:3000/</loc>')
+  describe('custom options', () => {
+    let xml = null
+
+    beforeAll(async () => {
+      nuxt = await startServer({
+        ...config,
+        sitemap: {
+          path: '/custom-sitemap.xml',
+          hostname: 'https://example.com/',
+          exclude: ['/exclude'],
+          routes: ['1/', 'child/1', { url: 'test/' }],
+          filter: ({ routes }) => routes.filter(route => route.url !== '/filtered'),
+          defaults: {
+            changefreq: 'daily',
+            priority: 1
+          },
+          xmlNs: 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+          xslUrl: 'sitemap.xsl',
+          gzip: false,
+          cacheTime: 0
+        }
+      })
+    })
+
+    test('custom path', async () => {
+      xml = await get('/custom-sitemap.xml')
+      expect(xml).toContain('<loc>https://example.com/</loc>')
+    })
+
+    test('static routes', () => {
+      // static routes
+      expect(xml).toContain('<loc>https://example.com/</loc>')
+      expect(xml).toContain('<loc>https://example.com/sub</loc>')
+      expect(xml).toContain('<loc>https://example.com/sub/sub</loc>')
+
+      // static child-routes
+      expect(xml).toContain('<loc>https://example.com/parent</loc>')
+      expect(xml).toContain('<loc>https://example.com/parent/child</loc>')
+      expect(xml).toContain('<loc>https://example.com/parent/child/subchild</loc>')
+      expect(xml).not.toContain('<loc>https://example.com/parent/</loc>')
+      expect(xml).not.toContain('<loc>https://example.com/parent/child/</loc>')
+    })
+
+    test('dynamic routes', () => {
+      expect(xml).toContain('<loc>https://example.com/child</loc>')
+      expect(xml).toContain('<loc>https://example.com/child/1</loc>')
+      expect(xml).toContain('<loc>https://example.com/1/</loc>')
+      expect(xml).toContain('<loc>https://example.com/test/</loc>')
+    })
+
+    test('excluded routes', () => {
+      expect(xml).not.toContain('<loc>https://example.com/exclude</loc>')
+    })
+
+    test('filtered routes', () => {
+      expect(xml).not.toContain('<loc>https://example.com/filtered</loc>')
+    })
+
+    test('default options', () => {
+      expect(xml).toContain(
+        '<url><loc>https://example.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>'
+      )
+      expect(xml).toContain(
+        '<url><loc>https://example.com/child</loc><changefreq>daily</changefreq><priority>1.0</priority></url>'
+      )
+    })
+
+    test('custom XML namespaces', () => {
+      expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+    })
+
+    test('custom XSL', () => {
+      expect(xml).toContain('<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>')
+    })
+  })
+
+  describe('custom options', () => {
+    test('gzip enabled', async () => {
+      nuxt = await startServer({
+        ...config,
+        sitemap: {
+          gzip: true
+        }
+      })
+
+      const xml = await get('/sitemap.xml')
+      const gz = await getGzip('/sitemap.xml.gz')
+      const sitemap = gunzipSync(gz).toString()
+      expect(xml).toEqual(sitemap)
+    })
+  })
+
+  describe('external options', () => {
+    let xml = null
+
+    beforeAll(async () => {
+      nuxt = await startServer({
+        ...config,
+        build: {
+          publicPath: 'https://example.com'
+        },
+        generate: {
+          routes: ['test']
+        }
+      })
+
+      xml = await get('/sitemap.xml')
+    })
+
+    test('default hostname from build.publicPath', () => {
+      expect(xml).toContain('<loc>https://example.com/</loc>')
+    })
+
+    test('default routes from generate.routes', () => {
+      expect(xml).toContain('<loc>https://example.com/test</loc>')
+    })
+  })
+})
+
+describe('sitemap - generate mode', () => {
+  test('sitemap.xml', async () => {
+    await runGenerate({
+      ...config,
+      sitemap: {
+        hostname: 'https://example.com/'
+      }
+    })
+
+    const xml = readFileSync(resolve(__dirname, '../dist/sitemap.xml'), 'utf8')
+    expect(xml).toMatchSnapshot()
+  })
+
+  test('sitemap.xml.gz', async () => {
+    await runGenerate({
+      ...config,
+      sitemap: {
+        hostname: 'https://example.com/',
+        gzip: true
+      }
+    })
+
+    const xml = readFileSync(resolve(__dirname, '../dist/sitemap.xml'), 'utf8')
+    const gz = readFileSync(resolve(__dirname, '../dist/sitemap.xml.gz'))
+    const sitemap = gunzipSync(gz).toString()
+    expect(xml).toEqual(sitemap)
   })
 })
