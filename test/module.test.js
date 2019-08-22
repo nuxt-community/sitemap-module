@@ -186,6 +186,27 @@ describe('sitemap - advanced configuration', () => {
       const sitemap = gunzipSync(gz).toString()
       expect(xml).toEqual(sitemap)
     })
+
+    test('trailingSlash enabled', async () => {
+      nuxt = await startServer({
+        ...config,
+        sitemap: {
+          hostname: 'https://example.com',
+          trailingSlash: true,
+          routes: ['test']
+        }
+      })
+
+      const xml = await get('/sitemap.xml')
+
+      // trailing slash
+      expect(xml).not.toContain('<loc>https://example.com/sub</loc>')
+      expect(xml).not.toContain('<loc>https://example.com/sub/sub</loc>')
+      expect(xml).not.toContain('<loc>https://example.com/test</loc>')
+      expect(xml).toContain('<loc>https://example.com/sub/</loc>')
+      expect(xml).toContain('<loc>https://example.com/sub/sub/</loc>')
+      expect(xml).toContain('<loc>https://example.com/test/</loc>')
+    })
   })
 
   describe('external options', () => {

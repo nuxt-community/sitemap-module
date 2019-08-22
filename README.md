@@ -150,6 +150,13 @@ Set the XML namespaces by override all default `xmlns` attributes in `<urlset>` 
 
 The URL path of the XSL file to style the sitemap.
 
+### `trailingSlash` (optional)
+- Default: `false`
+
+Add a trailing slash to each route URL (eg. `/page/1` => `/page/1/`)
+
+> **notice:** To avoid [duplicate content](https://support.google.com/webmasters/answer/66359) detection from crawlers, you have to configure a HTTP 301 redirect between the 2 URLs (see [redirect-module](https://github.com/nuxt-community/redirect-module) or [nuxt-trailingslash-module](https://github.com/WilliamDASILVA/nuxt-trailingslash-module)).
+
 ### `defaults` (optional)
 - Default: `{}`
 
