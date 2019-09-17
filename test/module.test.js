@@ -106,7 +106,7 @@ describe('sitemap - advanced configuration', () => {
           path: '/custom-sitemap.xml',
           hostname: 'https://example.com/',
           exclude: ['/exclude'],
-          routes: ['1/', 'child/1', { url: 'test/' }],
+          routes: ['1/', 'child/1', { url: 'test/' }, { route: '/payload/1', payload: { id: 1 } }],
           filter: ({ routes }) => routes.filter(route => route.url !== '/filtered'),
           defaults: {
             changefreq: 'daily',
