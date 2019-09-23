@@ -236,12 +236,154 @@ describe('sitemap - advanced configuration', () => {
   })
 })
 
+describe('sitemap - multiple configuration', () => {
+  let nuxt = null
+
+  beforeAll(async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: [
+        {
+          path: 'sitemap-foo.xml',
+          hostname: 'https://example.com/'
+        },
+        {
+          path: 'sitemap-bar.xml',
+          hostname: 'https://example.org/'
+        }
+      ]
+    })
+  })
+
+  test('sitemap-foo.xml', async () => {
+    const xml = await get('/sitemap-foo.xml')
+    expect(xml).toMatchSnapshot()
+  })
+
+  test('sitemap-bar.xml', async () => {
+    const xml = await get('/sitemap-bar.xml')
+    expect(xml).toMatchSnapshot()
+  })
+
+  afterAll(async () => {
+    await nuxt.close()
+  })
+})
+
+describe('sitemapindex - minimal configuration', () => {
+  let nuxt = null
+
+  beforeAll(async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: {
+        hostname: 'https://example.com/',
+        sitemaps: [
+          {
+            path: '/sitemap-foo.xml',
+            routes: ['foo/1', 'foo/2']
+          },
+          {
+            path: '/sitemap-bar.xml',
+            routes: ['bar/1', 'bar/2']
+          }
+        ]
+      }
+    })
+  })
+
+  test('sitemapindex.xml', async () => {
+    const xml = await get('/sitemapindex.xml')
+    expect(xml).toContain('<loc>https://example.com/sitemap-foo.xml</loc>')
+    expect(xml).toContain('<loc>https://example.com/sitemap-bar.xml</loc>')
+  })
+
+  test('sitemap-foo.xml', async () => {
+    const xml = await get('/sitemap-foo.xml')
+    expect(xml).toContain('<loc>https://example.com/foo/1</loc>')
+    expect(xml).toContain('<loc>https://example.com/foo/2</loc>')
+  })
+
+  test('sitemap-bar.xml', async () => {
+    const xml = await get('/sitemap-bar.xml')
+    expect(xml).toContain('<loc>https://example.com/bar/1</loc>')
+    expect(xml).toContain('<loc>https://example.com/bar/2</loc>')
+  })
+
+  afterAll(async () => {
+    await nuxt.close()
+  })
+})
+
+describe('sitemapindex - advanced configuration', () => {
+  let nuxt = null
+  let xml = null
+  const lastmod = new Date().toISOString()
+
+  beforeAll(async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: {
+        path: '/sitemapindex.xml',
+        hostname: 'https://example.com/',
+        sitemaps: [
+          {
+            path: '/sitemap-foo.xml',
+            routes: ['foo/1', 'foo/2']
+          },
+          {
+            hostname: 'https://example.fr/',
+            path: '/sitemap-bar.xml',
+            routes: ['bar/1', 'bar/2']
+          }
+        ],
+        gzip: true,
+        lastmod,
+        xmlNs: 'xmlns="https://example.com/schemas/sitemap/0.9"',
+        xslUrl: 'sitemapindex.xsl'
+      }
+    })
+
+    xml = await get('/sitemapindex.xml')
+  })
+
+  test('cascading hostname', () => {
+    expect(xml).toContain('<loc>https://example.com/sitemap-foo.xml</loc>')
+    expect(xml).toContain('<loc>https://example.fr/sitemap-bar.xml</loc>')
+  })
+
+  test('gzip enabled', async () => {
+    const gz = await getGzip('/sitemapindex.xml.gz')
+    const sitemap = gunzipSync(gz).toString()
+    expect(xml).toEqual(sitemap)
+  })
+
+  test('custom lastmod', () => {
+    expect(xml).toContain(`<lastmod>${lastmod}</lastmod>`)
+  })
+
+  test('custom XML namespaces', () => {
+    expect(xml).toContain('<sitemapindex xmlns="https://example.com/schemas/sitemap/0.9">')
+  })
+
+  test('custom XSL', () => {
+    expect(xml).toContain('<?xml-stylesheet type="text/xsl" href="sitemapindex.xsl"?>')
+  })
+
+  afterAll(async () => {
+    await nuxt.close()
+  })
+})
+
+// TODO: describe('sitemapindex - multiple configuration', () => { ... })
+
 describe('sitemap - generate mode', () => {
   test('sitemap.xml', async () => {
     await runGenerate({
       ...config,
       sitemap: {
-        hostname: 'https://example.com/'
+        hostname: 'https://example.com/',
+        exclude: ['/exclude']
       }
     })
 
@@ -262,5 +404,50 @@ describe('sitemap - generate mode', () => {
     const gz = readFileSync(resolve(__dirname, '../dist/sitemap.xml.gz'))
     const sitemap = gunzipSync(gz).toString()
     expect(xml).toEqual(sitemap)
+  })
+})
+
+describe('sitemapindex - generate mode', () => {
+  beforeAll(async () => {
+    await runGenerate({
+      ...config,
+      sitemap: {
+        hostname: 'https://example.com/',
+        sitemaps: [
+          {
+            path: '/sitemap-foo.xml',
+            routes: ['foo/1', 'foo/2']
+          },
+          {
+            hostname: 'https://example.fr/',
+            path: '/sitemap-bar.xml',
+            routes: ['bar/1', 'bar/2']
+          }
+        ],
+        gzip: true
+      }
+    })
+  })
+
+  test('sitemapindex.xml', () => {
+    const xml = readFileSync(resolve(__dirname, '../dist/sitemapindex.xml'), 'utf8')
+    expect(xml).toMatchSnapshot()
+  })
+
+  test('sitemapindex.xml.gz', () => {
+    const xml = readFileSync(resolve(__dirname, '../dist/sitemapindex.xml'), 'utf8')
+    const gz = readFileSync(resolve(__dirname, '../dist/sitemapindex.xml.gz'))
+    const sitemapindex = gunzipSync(gz).toString()
+    expect(xml).toEqual(sitemapindex)
+  })
+
+  test('sitemap-foo.xml', () => {
+    const xml = readFileSync(resolve(__dirname, '../dist/sitemap-foo.xml'), 'utf8')
+    expect(xml).toMatchSnapshot()
+  })
+
+  test('sitemap-bar.xml', () => {
+    const xml = readFileSync(resolve(__dirname, '../dist/sitemap-bar.xml'), 'utf8')
+    expect(xml).toMatchSnapshot()
   })
 })
