@@ -74,7 +74,7 @@ You can set a single item of [sitemap](#sitemap-configuration) or [sitemap index
         url: '/page/2',
         changefreq: 'daily',
         priority: 1,
-        lastmodISO: '2017-06-30T13:30:00.000Z'
+        lastmod: '2017-06-30T13:30:00.000Z'
       }
     ]
   }
