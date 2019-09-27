@@ -25,17 +25,21 @@
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Sitemap Configuration](#sitemap-configuration)
-- [Sitemap Index Configuration](#sitemap-index-configuration)
+- [Sitemap Options](#sitemap-options)
+- [Sitemap Index Options](#sitemap-index-options)
 - [Routes Declaration](#routes-declaration)
 
 ## Installation
 
-> npm install @nuxtjs/sitemap --save
+```shell
+npm install @nuxtjs/sitemap
+```
 
 or
 
-> yarn add @nuxtjs/sitemap
+```shell
+yarn add @nuxtjs/sitemap
+```
 
 ## Usage
 
@@ -53,14 +57,31 @@ or
 
 - Add a custom configuration with the `sitemap` property.
 
-You can set a single item of [sitemap](#sitemap-configuration) or [sitemap index](#sitemap-index-configuration) or an array of item:
+You can set a single item of [sitemap](#sitemap-options) or [sitemap index](#sitemap-index-options) or an array of item.
 
 ```js
-// Setup a simple sitemap.xml
+// nuxt.config.js
+
 {
   modules: [
     '@nuxtjs/sitemap'
   ],
+  sitemap: {
+    // custom configuration
+  }
+}
+```
+
+### Setup a Sitemap
+
+By default, the sitemap is setup to the following path: `/sitemap.xml`  
+All static routes (eg. `/pages/about.vue`) are automatically add to the sitemap, but you can exclude each of them with the [`exclude`](#exclude-optional---string-array) property.  
+For dynamic routes (eg. `/pages/_id.vue`), you have to declare them with the [`routes`](#routes-optional---array--function) property. This option can be an array or a function.
+
+```js
+// nuxt.config.js
+
+{
   sitemap: {
     hostname: 'https://example.com',
     gzip: true,
@@ -70,8 +91,9 @@ You can set a single item of [sitemap](#sitemap-configuration) or [sitemap index
     ],
     routes: [
       '/page/1',
+      '/page/2',
       {
-        url: '/page/2',
+        url: '/page/3',
         changefreq: 'daily',
         priority: 1,
         lastmod: '2017-06-30T13:30:00.000Z'
@@ -80,14 +102,17 @@ You can set a single item of [sitemap](#sitemap-configuration) or [sitemap index
   }
 ```
 
+### Setup a Sitemap Index
+
+To declare a sitemap index and its linked sitemaps, use the [`sitemaps`](#sitemaps---array-of-object) property.  
+By default, the sitemap index is setup to the following path: `/sitemapindex.xml`  
+Each item of the `sitemaps` array can be setup with its own [sitemap options](#sitemap-options).
+
 ```js
-// Setup a sitemap index and its linked sitemaps
+// nuxt.config.js
+
 {
-  modules: [
-    '@nuxtjs/sitemap'
-  ],
   sitemap: {
-    path: '/sitemapindex.xml',
     hostname: 'https://example.com',
     lastmod: '2017-06-30',
     sitemaps: [
@@ -104,12 +129,15 @@ You can set a single item of [sitemap](#sitemap-configuration) or [sitemap index
   }
 ```
 
+### Setup a list of sitemaps
+
+To declare a list of sitemaps, use an `array` to setup each sitemap with its own configuration.  
+You can combine sitemap and sitemap index configurations.
+
 ```js
-// Setup several sitemaps
+// nuxt.config.js
+
 {
-  modules: [
-    '@nuxtjs/sitemap'
-  ],
   sitemap: [
     {
       path: '/sitemap-products.xml',
@@ -131,11 +159,11 @@ You can set a single item of [sitemap](#sitemap-configuration) or [sitemap index
 
 ## Sitemap Options
 
-### `routes` - array or promise function
+### `routes` (optional) - array | function
 
 - Default: `[]` or [`generate.routes`](https://nuxtjs.org/api/configuration-generate#routes) value from your `nuxt.config.js`
 
-The `routes` parameter follows the same way than the `generate` [configuration](https://nuxtjs.org/api/configuration-generate).
+The `routes` parameter follows the same way than the `generate` [configuration](https://nuxtjs.org/api/configuration-generate#routes).
 
 See as well the [routes declaration](#routes-declaration) examples below.
 
@@ -161,6 +189,8 @@ This value is **mandatory** for generation sitemap file, and you should explicit
 Defines how frequently should sitemap **routes** being updated (value in milliseconds).
 
 Please note that after each invalidation, `routes` will be evaluated again. (See [routes declaration](#routes-declaration) section)
+
+This option is enable only for the nuxt "universal" mode.
 
 ### `exclude` (optional) - string array
 
@@ -263,7 +293,7 @@ The `defaults` parameter set the default options for all routes.
 
 See available options: https://github.com/ekalinin/sitemap.js#usage
 
-## Sitemap Index Configuration
+## Sitemap Index Options
 
 ### `path` (optional) - string
 
@@ -279,7 +309,7 @@ Set the `hostname` value to each sitemap linked to its sitemap index.
 
 - Default: `[]`
 
-Array of [sitemap configuration](#sitemap-configuration]) linked to the sitemap index.
+Array of [sitemap configuration](#sitemap-options]) linked to the sitemap index.
 
 ```js
   // nuxt.config.js
@@ -393,12 +423,13 @@ const axios = require('axios')
     }
   }
 }
+```
 
 ## License
 
 [MIT License](./LICENSE)
 
-### Contributors
+## Contributors
 
 - [Nicolas Pennec](https://github.com/NicoPennec)
 - [Pooya Parsa](https://github.com/pi0)
