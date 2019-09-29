@@ -417,9 +417,9 @@ const axios = require('axios')
 
 {
   sitemap: {
-    routes () {
-      return axios.get('https://jsonplaceholder.typicode.com/users')
-        .then(res => res.data.map(user => '/users/' + user.username))
+    routes: async () => {
+      const { data } = await axios.get('https://jsonplaceholder.typicode.com/users')
+      return data.map(user => `/users/${user.username}`)
     }
   }
 }
