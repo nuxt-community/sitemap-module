@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### ⚠ BREAKING CHANGES
 
-* lastmod option parses all ISO8601 date-only strings as being in UTC rather than local time (see [sitemap.js v4 CHANGELOG]https://github.com/ekalinin/sitemap.js/blob/master/CHANGELOG.md#400))
+* lastmod option parses all ISO8601 date-only strings as being in UTC rather than local time (see [sitemap.js v4 CHANGELOG](https://github.com/ekalinin/sitemap.js/blob/master/CHANGELOG.md#400))
 * Drop support for Nuxt.js 1.x
 
 ### Features
