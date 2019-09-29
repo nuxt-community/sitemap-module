@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/nuxt-community/sitemap-module/compare/v1.3.1...v2.0.0) (2019-09-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* lastmod option parses all ISO8601 date-only strings as being in UTC rather than local time (see [sitemap.js v4 CHANGELOG]https://github.com/ekalinin/sitemap.js/blob/master/CHANGELOG.md#400))
+* Drop support for Nuxt.js 1.x
+
+### Features
+
+* add configuration for sitemap index and multiple sitemaps ([e78e4a2](https://github.com/nuxt-community/sitemap-module/commit/e78e4a2)), closes [#6](https://github.com/nuxt-community/sitemap-module/issues/6)
+
+
+* update dependency sitemap.js to v4 ([795aa1a](https://github.com/nuxt-community/sitemap-module/commit/795aa1a))
+
 ### [1.3.1](https://github.com/nuxt-community/sitemap-module/compare/v1.3.0...v1.3.1) (2019-09-17)
 
 
