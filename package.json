@@ -1,5 +1,5 @@
 {
-  "name": "@nuxtjs/sitemap",
+  "name": "@smenateam/nuxt-sitemap-module",
   "version": "2.0.0",
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
   "keywords": [
@@ -9,7 +9,7 @@
     "sitemap",
     "sitemap.xml"
   ],
-  "repository": "https://github.com/nuxt-community/sitemap-module",
+  "repository": "https://github.com/smenateam/nuxt-sitemap-module",
   "license": "MIT",
   "contributors": [
     {
@@ -78,6 +78,7 @@
     "npm": ">=5.0.0"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://npm.pkg.github.com/"
   }
 }
