@@ -55,7 +55,7 @@
     "is-https": "^1.0.0",
     "lodash.unionby": "^4.8.0",
     "minimatch": "^3.0.4",
-    "sitemap": "^4.1.1"
+    "sitemap": "^5.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
