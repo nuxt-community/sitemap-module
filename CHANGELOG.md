@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0](https://github.com/smenateam/nuxt-sitemap-module/compare/v2.0.1...v3.0.0) (2019-10-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* routes option as a function no longer accepts callback function, use promises instead. New param is object with:
+* req - current request, useful for generating sitemap routes based on request host etc.
+* cache - provides a way to implement own caching logic with `set(key, value)` and `get(key)` methods
+
+### Features
+
+* add { req, cache } object as param to `options.routes` function ([ba5e368](https://github.com/smenateam/nuxt-sitemap-module/commit/ba5e368))
+
 ### [2.0.1](https://github.com/smenateam/nuxt-sitemap-module/compare/v2.0.0...v2.0.1) (2019-10-05)
 
 ## [2.0.0](https://github.com/nuxt-community/sitemap-module/compare/v1.3.1...v2.0.0) (2019-09-29)
