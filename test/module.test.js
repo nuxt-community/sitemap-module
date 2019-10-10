@@ -451,3 +451,21 @@ describe('sitemapindex - generate mode', () => {
     expect(xml).toMatchSnapshot()
   })
 })
+
+describe('sitemap - dynamic (request based) routes', () => {
+  test('sitemap.xml', async () => {
+    const nuxt = await startServer({
+      ...config,
+      sitemap: {
+        routes({ req, cache }) {
+          return Promise.resolve(['/test', typeof req, typeof cache.get])
+        }
+      }
+    })
+
+    const xml = await get('/sitemap.xml')
+    expect(xml).toMatchSnapshot()
+
+    await nuxt.close()
+  })
+})
