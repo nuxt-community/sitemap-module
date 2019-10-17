@@ -100,6 +100,7 @@ For dynamic routes (eg. `/pages/_id.vue`), you have to declare them with the [`r
       }
     ]
   }
+}
 ```
 
 ### Setup a Sitemap Index
