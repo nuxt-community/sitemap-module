@@ -91,14 +91,13 @@ describe('sitemap - minimal configuration', () => {
 
 describe('sitemap - advanced configuration', () => {
   let nuxt = null
+  let xml = null
 
   afterEach(async () => {
     await nuxt.close()
   })
 
   describe('custom options', () => {
-    let xml = null
-
     beforeAll(async () => {
       nuxt = await startServer({
         ...config,
@@ -210,28 +209,46 @@ describe('sitemap - advanced configuration', () => {
   })
 
   describe('external options', () => {
-    let xml = null
-
-    beforeAll(async () => {
+    test('default hostname from build.publicPath', async () => {
       nuxt = await startServer({
         ...config,
         build: {
           publicPath: 'https://example.com'
-        },
-        generate: {
-          routes: ['test']
         }
       })
 
       xml = await get('/sitemap.xml')
-    })
-
-    test('default hostname from build.publicPath', () => {
       expect(xml).toContain('<loc>https://example.com/</loc>')
     })
 
-    test('default routes from generate.routes', () => {
+    test('default routes from generate.routes', async () => {
+      nuxt = await startServer({
+        ...config,
+        generate: {
+          routes: ['test']
+        },
+        sitemap: {
+          hostname: 'https://example.com/'
+        }
+      })
+
+      xml = await get('/sitemap.xml')
       expect(xml).toContain('<loc>https://example.com/test</loc>')
+    })
+
+    test('custom base from router.base', async () => {
+      nuxt = await startServer({
+        ...config,
+        router: {
+          base: '/base'
+        },
+        sitemap: {
+          hostname: 'https://example.com/'
+        }
+      })
+
+      xml = await get('/base/sitemap.xml')
+      expect(xml).toMatchSnapshot()
     })
   })
 })
@@ -368,6 +385,55 @@ describe('sitemapindex - advanced configuration', () => {
 
   test('custom XSL', () => {
     expect(xml).toContain('<?xml-stylesheet type="text/xsl" href="sitemapindex.xsl"?>')
+  })
+
+  afterAll(async () => {
+    await nuxt.close()
+  })
+})
+
+describe('sitemapindex - custom router base', () => {
+  let nuxt = null
+
+  beforeAll(async () => {
+    nuxt = await startServer({
+      ...config,
+      router: {
+        base: '/base'
+      },
+      sitemap: {
+        hostname: 'https://example.com/',
+        sitemaps: [
+          {
+            path: '/sitemap-foo.xml',
+            routes: ['foo/1', 'foo/2']
+          },
+          {
+            hostname: 'https://example.fr/',
+            path: '/sitemap-bar.xml',
+            routes: ['bar/1', 'bar/2']
+          }
+        ]
+      }
+    })
+  })
+
+  test('sitemapindex.xml', async () => {
+    const xml = await get('/base/sitemapindex.xml')
+    expect(xml).toContain('<loc>https://example.com/base/sitemap-foo.xml</loc>')
+    expect(xml).toContain('<loc>https://example.fr/base/sitemap-bar.xml</loc>')
+  })
+
+  test('sitemap-foo.xml', async () => {
+    const xml = await get('/base/sitemap-foo.xml')
+    expect(xml).toContain('<loc>https://example.com/base/foo/1</loc>')
+    expect(xml).toContain('<loc>https://example.com/base/foo/2</loc>')
+  })
+
+  test('sitemap-bar.xml', async () => {
+    const xml = await get('/base/sitemap-bar.xml')
+    expect(xml).toContain('<loc>https://example.fr/base/bar/1</loc>')
+    expect(xml).toContain('<loc>https://example.fr/base/bar/2</loc>')
   })
 
   afterAll(async () => {
