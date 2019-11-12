@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/nuxt-community/sitemap-module/compare/v2.0.0...v2.0.1) (2019-11-12)
+
+
+### Bug Fixes
+
+* add router base to each link ([f75ea8b](https://github.com/nuxt-community/sitemap-module/commit/f75ea8b30f1de98873ddecb3306f3044718f0baa)), closes [#88](https://github.com/nuxt-community/sitemap-module/issues/88)
+* fail on invalid options ([92a4f2f](https://github.com/nuxt-community/sitemap-module/commit/92a4f2f2ac27cd81fb87ac8e2e7dcf8b30ac4c76))
+
 ## [2.0.0](https://github.com/nuxt-community/sitemap-module/compare/v1.3.1...v2.0.0) (2019-09-29)
 
 
