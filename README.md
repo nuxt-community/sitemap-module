@@ -1,11 +1,10 @@
 # Sitemap Module
 
-[![npm (scoped with tag)](https://img.shields.io/npm/v/@nuxtjs/sitemap/latest.svg?style=flat-square)](https://npmjs.com/package/@nuxtjs/sitemap)
-[![npm](https://img.shields.io/npm/dt/@nuxtjs/sitemap.svg?style=flat-square)](https://npmjs.com/package/@nuxtjs/sitemap)
-[![CircleCI](https://img.shields.io/circleci/project/github/nuxt-community/sitemap-module.svg?style=flat-square)](https://circleci.com/gh/nuxt-community/sitemap-module)
-[![Codecov](https://img.shields.io/codecov/c/github/nuxt-community/sitemap-module.svg?style=flat-square)](https://codecov.io/gh/nuxt-community/sitemap-module)
-[![Dependencies](https://david-dm.org/nuxt-community/sitemap-module/status.svg?style=flat-square)](https://david-dm.org/nuxt-community/sitemap-module)
-[![js-standard-style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com)
+[![npm (scoped with tag)](https://img.shields.io/npm/v/@nuxtjs/sitemap/latest?style=flat-square)](https://npmjs.com/package/@nuxtjs/sitemap)
+[![Downloads](https://img.shields.io/npm/dw/@nuxtjs/sitemap?style=flat-square)](https://npmjs.com/package/@nuxtjs/sitemap)
+[![Build Status](https://img.shields.io/circleci/project/github/nuxt-community/sitemap-module?style=flat-square)](https://circleci.com/gh/nuxt-community/sitemap-module)
+[![Coverage Status](https://img.shields.io/codecov/c/github/nuxt-community/sitemap-module?style=flat-square)](https://codecov.io/gh/nuxt-community/sitemap-module)
+[![License](https://img.shields.io/npm/l/@nuxtjs/sitemap?style=flat-square)](http://standardjs.com)
 
 > Automatically generate or serve dynamic [sitemap.xml](https://www.sitemaps.org/protocol.html) for Nuxt.js projects!
 
