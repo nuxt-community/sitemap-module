@@ -14,8 +14,8 @@
 
 - Module based on the awesome **[sitemap.js](https://github.com/ekalinin/sitemap.js) package** ❤️
 - Create **sitemap** or **sitemap index**
-- Auto-split over 500.000 URLs
 - Automatically add the static routes to each sitemap
+- Auto-split over 50.000 URLs
 - Works with **all modes** (universal, spa, generate)
 - For **Nuxt 2.x** and higher
 
