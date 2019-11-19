@@ -15,6 +15,7 @@ module.exports = {
       xmlNs: 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
       // xslUrl: 'sitemap.xsl',
       trailingSlash: true,
+      size: 5,
       defaults: {
         changefreq: 'daily',
         priority: 1

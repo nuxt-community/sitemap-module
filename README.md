@@ -14,6 +14,7 @@
 
 - Module based on the awesome **[sitemap.js](https://github.com/ekalinin/sitemap.js) package** ❤️
 - Create **sitemap** or **sitemap index**
+- Auto-split over 500.000 URLs
 - Automatically add the static routes to each sitemap
 - Works with **all modes** (universal, spa, generate)
 - For **Nuxt 2.x** and higher
@@ -270,6 +271,15 @@ The URL path of the XSL file to style the sitemap.
 Add a trailing slash to each route URL (eg. `/page/1` => `/page/1/`)
 
 > **notice:** To avoid [duplicate content](https://support.google.com/webmasters/answer/66359) detection from crawlers, you have to configure an HTTP 301 redirect between the 2 URLs (see [redirect-module](https://github.com/nuxt-community/redirect-module) or [nuxt-trailingslash-module](https://github.com/WilliamDASILVA/nuxt-trailingslash-module)).
+
+### `size` (optional) - number
+
+- Default: 50,000
+
+Set a number of maximum URLs contained for each sitemap.  
+If your site contains more than the maximum number of URLs, the module will create multiple sitemaps and create a sitemap index to index them.
+
+For more information about the default limitation of 50,000 URLS, please read the official [Sitemap.org - FAQ](https://www.sitemaps.org/faq.html)
 
 ### `defaults` (optional) - object
 

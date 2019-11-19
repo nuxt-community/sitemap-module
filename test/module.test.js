@@ -517,3 +517,5 @@ describe('sitemapindex - generate mode', () => {
     expect(xml).toMatchSnapshot()
   })
 })
+
+// TODO: describe('sitemap - generate mode with auto-split', () => { ... }
