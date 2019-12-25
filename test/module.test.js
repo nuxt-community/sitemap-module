@@ -114,7 +114,10 @@ describe('sitemap - advanced configuration', () => {
           xmlNs: 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
           xslUrl: 'sitemap.xsl',
           gzip: false,
-          cacheTime: 0
+          cacheTime: 0,
+          headers: {
+            'Cache-Control': 'max-age=0, s-maxage=0, public'
+          }
         }
       })
     })
@@ -176,7 +179,10 @@ describe('sitemap - advanced configuration', () => {
       nuxt = await startServer({
         ...config,
         sitemap: {
-          gzip: true
+          gzip: true,
+          gzHeaders: {
+            'Cache-Control': 'max-age=0, s-maxage=0, public'
+          }
         }
       })
 
