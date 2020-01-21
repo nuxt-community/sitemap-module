@@ -257,11 +257,9 @@ Set the XML namespaces by override all default `xmlns` attributes in `<urlset>` 
 }
 ```
 
-### `xslUrl` (optional) - string
+### `xslUrl`
 
-- Default: `undefined`
-
-The URL path of the XSL file to style the sitemap.
+No longer supported as of sitemap.js v5
 
 ### `trailingSlash` (optional) - boolean
 
@@ -372,9 +370,7 @@ Set the XML namespaces by override all default `xmlns` attributes in `<sitemapin
 
 ### `xslUrl` (optional) - string
 
-- Default: `undefined`
-
-The URL path of the XSL file to style the sitemap index.
+No longer supported as of sitemap.js v5
 
 ## Routes Declaration
 
