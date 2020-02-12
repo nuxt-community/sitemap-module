@@ -158,7 +158,7 @@ You can combine sitemap and sitemap index configurations.
 }
 ```
 
-### Enable static routes filtering by route component options. (experimental)
+### Enable static routes filtering by route component options (experimental)
 
 Default route component with property `sitemap: true` will mark corresponding route to be included in sitemap.
 Routes without this setting will be ignored.
