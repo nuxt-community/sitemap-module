@@ -158,6 +158,41 @@ You can combine sitemap and sitemap index configurations.
 }
 ```
 
+### Enable static routes filtering by route component options. (experimental)
+
+Default route component with property `sitemap: true` will mark corresponding route to be included in sitemap.
+Routes without this setting will be ignored.
+
+```js
+// nuxt.config.js
+
+{
+  modules: [
+    '@nuxtjs/sitemap'
+  ],
+  sitemap_filter: true,
+  sitemap: {
+    // custom configuration
+  }
+}
+```
+
+```js
+// route component
+const Component = {
+  sitemap: true,
+  template: '<div>Hello!</div>'
+}
+
+// vue-router config
+const router = new VueRouter({
+  routes: [
+    { path: '/hello', component: Component },
+  ]
+})
+```
+
+
 ## Sitemap Options
 
 ### `routes` (optional) - array | function
