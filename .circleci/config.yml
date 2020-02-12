@@ -1,9 +1,8 @@
 version: 2
 jobs:
   build:
-    working_directory: /usr/src/app
     docker:
-      - image: banian/node
+      - image: circleci/node:latest
     steps:
       # Checkout repository
       - checkout

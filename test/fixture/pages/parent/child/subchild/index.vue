@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     /parent/child/subchild
-</div>
+  </div>
 </template>

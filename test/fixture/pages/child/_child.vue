@@ -1,12 +1,10 @@
 <template>
-<div>
-    /child/{{ child }}
-</div>
+  <div>/child/{{ child }}</div>
 </template>
 
 <script>
 export default {
-  asyncData ({ params }) {
+  asyncData({ params }) {
     return params
   }
 }

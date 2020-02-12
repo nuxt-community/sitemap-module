@@ -1,12 +1,10 @@
 <template>
-<div>
-    /{{ param }}/index
-</div>
+  <div>/{{ param }}/index</div>
 </template>
 
 <script>
 export default {
-  asyncData ({ params }) {
+  asyncData({ params }) {
     return params
   }
 }

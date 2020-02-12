@@ -1,6 +1,6 @@
 <template>
-<div>
+  <div>
     /parent/child
-    <nuxt-child/>
-</div>
+    <nuxt-child />
+  </div>
 </template>
