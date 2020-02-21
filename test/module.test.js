@@ -105,14 +105,27 @@ describe('sitemap - advanced configuration', () => {
           path: '/custom-sitemap.xml',
           hostname: 'https://example.com/',
           exclude: ['/exclude'],
-          routes: ['1/', 'child/1', { url: 'test/' }, { route: '/payload/1', payload: { id: 1 } }],
+          routes: [
+            '1/',
+            'child/1',
+            { url: 'test/' },
+            { route: '/payload/1', payload: { id: 1 } },
+            {
+              url: `imgtest`,
+              img: [
+                {
+                  url: 'https://example.com',
+                  caption: 'foo <>&\'" bar'
+                }
+              ]
+            }
+          ],
           filter: ({ routes }) => routes.filter(route => route.url !== '/filtered'),
           defaults: {
             changefreq: 'daily',
             priority: 1
           },
           xmlNs: 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
-          xslUrl: 'sitemap.xsl',
           gzip: false,
           cacheTime: 0
         }
@@ -143,6 +156,8 @@ describe('sitemap - advanced configuration', () => {
       expect(xml).toContain('<loc>https://example.com/child/1</loc>')
       expect(xml).toContain('<loc>https://example.com/1/</loc>')
       expect(xml).toContain('<loc>https://example.com/test/</loc>')
+      expect(xml).toContain('https://example.com/imgtest')
+      expect(xml).not.toContain('![CDATA')
     })
 
     test('excluded routes', () => {
@@ -164,10 +179,6 @@ describe('sitemap - advanced configuration', () => {
 
     test('custom XML namespaces', () => {
       expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
-    })
-
-    test('custom XSL', () => {
-      expect(xml).toContain('<?xml-stylesheet type="text/xsl" href="sitemap.xsl"?>')
     })
   })
 
@@ -356,8 +367,7 @@ describe('sitemapindex - advanced configuration', () => {
         ],
         gzip: true,
         lastmod,
-        xmlNs: 'xmlns="https://example.com/schemas/sitemap/0.9"',
-        xslUrl: 'sitemapindex.xsl'
+        xmlNs: 'xmlns="https://example.com/schemas/sitemap/0.9"'
       }
     })
 
@@ -381,10 +391,6 @@ describe('sitemapindex - advanced configuration', () => {
 
   test('custom XML namespaces', () => {
     expect(xml).toContain('<sitemapindex xmlns="https://example.com/schemas/sitemap/0.9">')
-  })
-
-  test('custom XSL', () => {
-    expect(xml).toContain('<?xml-stylesheet type="text/xsl" href="sitemapindex.xsl"?>')
   })
 
   afterAll(async () => {

@@ -1,6 +1,6 @@
 {
   "name": "@nuxtjs/sitemap",
-  "version": "2.0.1",
+  "version": "3.0.1",
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
   "keywords": [
     "nuxt",
@@ -55,7 +55,7 @@
     "is-https": "^1.0.0",
     "lodash.unionby": "^4.8.0",
     "minimatch": "^3.0.4",
-    "sitemap": "^4.1.1"
+    "sitemap": "^5.1.0"
   },
   "devDependencies": {
     "@commitlint/cli": "latest",
