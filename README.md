@@ -271,6 +271,27 @@ Add a trailing slash to each route URL (eg. `/page/1` => `/page/1/`)
 
 > **notice:** To avoid [duplicate content](https://support.google.com/webmasters/answer/66359) detection from crawlers, you have to configure an HTTP 301 redirect between the 2 URLs (see [redirect-module](https://github.com/nuxt-community/redirect-module) or [nuxt-trailingslash-module](https://github.com/WilliamDASILVA/nuxt-trailingslash-module)).
 
+### `headers` (optional) - object
+### `gzHeaders` (optional) - object
+
+- Default: `undefined`
+
+The object that contains list of custhom http response headers.
+
+```js
+// nuxt.config.js
+
+{
+  sitemap: {
+    // ...
+    headers: {
+      'Cache-Control': 'max-age=1800, s-maxage=1200, public',
+    }
+    // ...
+  }
+}
+```
+
 ### `defaults` (optional) - object
 
 - Default: `{}`
