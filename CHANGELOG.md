@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/nuxt-community/sitemap-module/compare/v2.0.1...v2.1.0) (2020-03-27)
+
+
+### Features
+
+* add router data to each route in the filter function ([3f58560](https://github.com/nuxt-community/sitemap-module/commit/3f58560eea2a8cf075d3265dabcf3621e02f76e6)), closes [#69](https://github.com/nuxt-community/sitemap-module/issues/69)
+
+
+### Bug Fixes
+
+* headers of gzipped sitemap ([938d7b6](https://github.com/nuxt-community/sitemap-module/commit/938d7b67cdacee8eb15af6b2d0adaafda08ddaa2))
+* omit router data before sitemap creation ([755ec76](https://github.com/nuxt-community/sitemap-module/commit/755ec7647099c362fa18e82492cb9a790f83e46e))
+
 ### [2.0.1](https://github.com/nuxt-community/sitemap-module/compare/v2.0.0...v2.0.1) (2019-11-12)
 
 
