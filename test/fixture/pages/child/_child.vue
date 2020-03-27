@@ -6,6 +6,6 @@
 export default {
   asyncData({ params }) {
     return params
-  }
+  },
 }
 </script>

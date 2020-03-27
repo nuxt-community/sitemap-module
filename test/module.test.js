@@ -9,18 +9,18 @@ const config = require('./fixture/nuxt.config')
 config.dev = false
 config.sitemap = {}
 
-const url = path => `http://localhost:3000${path}`
-const get = path => request(url(path))
-const getGzip = path => request({ url: url(path), encoding: null })
+const url = (path) => `http://localhost:3000${path}`
+const get = (path) => request(url(path))
+const getGzip = (path) => request({ url: url(path), encoding: null })
 
-const startServer = async config => {
+const startServer = async (config) => {
   const nuxt = new Nuxt(config)
   await nuxt.ready()
   await new Builder(nuxt).build()
   await nuxt.listen(3000)
   return nuxt
 }
-const runGenerate = async config => {
+const runGenerate = async (config) => {
   const nuxt = new Nuxt(config)
   await nuxt.ready()
   const builder = new Builder(nuxt)
@@ -75,11 +75,11 @@ describe('sitemap - minimal configuration', () => {
     const nuxt = await startServer({
       ...config,
       generate: {
-        routes: null
+        routes: null,
       },
       sitemap: {
-        hostname: 'https://example.com/'
-      }
+        hostname: 'https://example.com/',
+      },
     })
 
     const xml = await get('/sitemap.xml')
@@ -106,16 +106,16 @@ describe('sitemap - advanced configuration', () => {
           hostname: 'https://example.com/',
           exclude: ['/exclude'],
           routes: ['1/', 'child/1', { url: 'test/' }, { route: '/payload/1', payload: { id: 1 } }],
-          filter: ({ routes }) => routes.filter(route => route.url !== '/filtered'),
+          filter: ({ routes }) => routes.filter((route) => route.url !== '/filtered'),
           defaults: {
             changefreq: 'daily',
-            priority: 1
+            priority: 1,
           },
           xmlNs: 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
           xslUrl: 'sitemap.xsl',
           gzip: false,
-          cacheTime: 0
-        }
+          cacheTime: 0,
+        },
       })
     })
 
@@ -176,8 +176,8 @@ describe('sitemap - advanced configuration', () => {
       nuxt = await startServer({
         ...config,
         sitemap: {
-          gzip: true
-        }
+          gzip: true,
+        },
       })
 
       const xml = await get('/sitemap.xml')
@@ -192,8 +192,8 @@ describe('sitemap - advanced configuration', () => {
         sitemap: {
           hostname: 'https://example.com',
           trailingSlash: true,
-          routes: ['test']
-        }
+          routes: ['test'],
+        },
       })
 
       const xml = await get('/sitemap.xml')
@@ -213,8 +213,8 @@ describe('sitemap - advanced configuration', () => {
       nuxt = await startServer({
         ...config,
         build: {
-          publicPath: 'https://example.com'
-        }
+          publicPath: 'https://example.com',
+        },
       })
 
       xml = await get('/sitemap.xml')
@@ -225,11 +225,11 @@ describe('sitemap - advanced configuration', () => {
       nuxt = await startServer({
         ...config,
         generate: {
-          routes: ['test']
+          routes: ['test'],
         },
         sitemap: {
-          hostname: 'https://example.com/'
-        }
+          hostname: 'https://example.com/',
+        },
       })
 
       xml = await get('/sitemap.xml')
@@ -240,11 +240,11 @@ describe('sitemap - advanced configuration', () => {
       nuxt = await startServer({
         ...config,
         router: {
-          base: '/base'
+          base: '/base',
         },
         sitemap: {
-          hostname: 'https://example.com/'
-        }
+          hostname: 'https://example.com/',
+        },
       })
 
       xml = await get('/base/sitemap.xml')
@@ -262,13 +262,13 @@ describe('sitemap - multiple configuration', () => {
       sitemap: [
         {
           path: 'sitemap-foo.xml',
-          hostname: 'https://example.com/'
+          hostname: 'https://example.com/',
         },
         {
           path: 'sitemap-bar.xml',
-          hostname: 'https://example.org/'
-        }
-      ]
+          hostname: 'https://example.org/',
+        },
+      ],
     })
   })
 
@@ -298,14 +298,14 @@ describe('sitemapindex - minimal configuration', () => {
         sitemaps: [
           {
             path: '/sitemap-foo.xml',
-            routes: ['foo/1', 'foo/2']
+            routes: ['foo/1', 'foo/2'],
           },
           {
             path: '/sitemap-bar.xml',
-            routes: ['bar/1', 'bar/2']
-          }
-        ]
-      }
+            routes: ['bar/1', 'bar/2'],
+          },
+        ],
+      },
     })
   })
 
@@ -346,19 +346,19 @@ describe('sitemapindex - advanced configuration', () => {
         sitemaps: [
           {
             path: '/sitemap-foo.xml',
-            routes: ['foo/1', 'foo/2']
+            routes: ['foo/1', 'foo/2'],
           },
           {
             hostname: 'https://example.fr/',
             path: '/sitemap-bar.xml',
-            routes: ['bar/1', 'bar/2']
-          }
+            routes: ['bar/1', 'bar/2'],
+          },
         ],
         gzip: true,
         lastmod,
         xmlNs: 'xmlns="https://example.com/schemas/sitemap/0.9"',
-        xslUrl: 'sitemapindex.xsl'
-      }
+        xslUrl: 'sitemapindex.xsl',
+      },
     })
 
     xml = await get('/sitemapindex.xml')
@@ -399,22 +399,22 @@ describe('sitemapindex - custom router base', () => {
     nuxt = await startServer({
       ...config,
       router: {
-        base: '/base'
+        base: '/base',
       },
       sitemap: {
         hostname: 'https://example.com/',
         sitemaps: [
           {
             path: '/sitemap-foo.xml',
-            routes: ['foo/1', 'foo/2']
+            routes: ['foo/1', 'foo/2'],
           },
           {
             hostname: 'https://example.fr/',
             path: '/sitemap-bar.xml',
-            routes: ['bar/1', 'bar/2']
-          }
-        ]
-      }
+            routes: ['bar/1', 'bar/2'],
+          },
+        ],
+      },
     })
   })
 
@@ -449,8 +449,8 @@ describe('sitemap - generate mode', () => {
       ...config,
       sitemap: {
         hostname: 'https://example.com/',
-        exclude: ['/exclude']
-      }
+        exclude: ['/exclude'],
+      },
     })
 
     const xml = readFileSync(resolve(__dirname, '../dist/sitemap.xml'), 'utf8')
@@ -462,8 +462,8 @@ describe('sitemap - generate mode', () => {
       ...config,
       sitemap: {
         hostname: 'https://example.com/',
-        gzip: true
-      }
+        gzip: true,
+      },
     })
 
     const xml = readFileSync(resolve(__dirname, '../dist/sitemap.xml'), 'utf8')
@@ -482,16 +482,16 @@ describe('sitemapindex - generate mode', () => {
         sitemaps: [
           {
             path: '/sitemap-foo.xml',
-            routes: ['foo/1', 'foo/2']
+            routes: ['foo/1', 'foo/2'],
           },
           {
             hostname: 'https://example.fr/',
             path: '/sitemap-bar.xml',
-            routes: ['bar/1', 'bar/2']
-          }
+            routes: ['bar/1', 'bar/2'],
+          },
         ],
-        gzip: true
-      }
+        gzip: true,
+      },
     })
   })
 
