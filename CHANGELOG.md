@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/nuxt-community/sitemap-module/compare/v2.1.0...v2.2.0) (2020-04-05)
+
+
+### Features
+
+* enable ETag header ([ccf3e10](https://github.com/nuxt-community/sitemap-module/commit/ccf3e10a44073c720eb651181db573bc17664a1c)), closes [#80](https://github.com/nuxt-community/sitemap-module/issues/80)
+
+
+### Bug Fixes
+
+* force route.url as string ([dc521ab](https://github.com/nuxt-community/sitemap-module/commit/dc521ab32456c511fec8b312c03544312ff2804d))
+
 ## [2.1.0](https://github.com/nuxt-community/sitemap-module/compare/v2.0.1...v2.1.0) (2020-03-27)
 
 
