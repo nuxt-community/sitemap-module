@@ -193,6 +193,16 @@ Please note that after each invalidation, `routes` will be evaluated again. (See
 
 This option is enable only for the nuxt "universal" mode.
 
+### `etag` (optional) - object
+
+- Default: [`render.etag`](https://nuxtjs.org/api/configuration-render#etag) value from your `nuxt.config.js`
+
+Enable the etag cache header on sitemap (See [etag](https://nuxtjs.org/api/configuration-render#etag) docs for possible options).
+
+To disable etag for sitemap set `etag: false`
+
+This option is enable only for the nuxt "universal" mode.
+
 ### `exclude` (optional) - string array
 
 - Default: `[]`

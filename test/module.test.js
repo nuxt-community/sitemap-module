@@ -10,7 +10,7 @@ config.dev = false
 config.sitemap = {}
 
 const url = (path) => `http://localhost:3000${path}`
-const get = (path) => request(url(path))
+const get = (path, options = null) => request(url(path), options)
 const getGzip = (path) => request({ url: url(path), encoding: null })
 
 const startServer = async (config) => {
@@ -172,6 +172,69 @@ describe('sitemap - advanced configuration', () => {
   })
 
   describe('custom options', () => {
+    test('etag enabled', async () => {
+      nuxt = await startServer({
+        ...config,
+        sitemap: {
+          gzip: true,
+        },
+      })
+
+      const requestOptions = {
+        simple: false,
+        resolveWithFullResponse: true,
+      }
+
+      // 1st call
+      let response = await get('/sitemap.xml', requestOptions)
+      expect(response.statusCode).toEqual(200)
+      expect(response.headers.etag).not.toBeUndefined()
+      // 2nd call
+      response = await get('/sitemap.xml', {
+        headers: {
+          'If-None-Match': response.headers.etag,
+        },
+        ...requestOptions,
+      })
+      expect(response.statusCode).toEqual(304)
+
+      // 1st call
+      response = await get('/sitemap.xml.gz', requestOptions)
+      expect(response.statusCode).toEqual(200)
+      expect(response.headers.etag).not.toBeUndefined()
+      // 2nd call
+      response = await get('/sitemap.xml.gz', {
+        headers: {
+          'If-None-Match': response.headers.etag,
+        },
+        ...requestOptions,
+      })
+      expect(response.statusCode).toEqual(304)
+    })
+
+    test('etag disabled', async () => {
+      nuxt = await startServer({
+        ...config,
+        sitemap: {
+          etag: false,
+          gzip: true,
+        },
+      })
+
+      const requestOptions = {
+        simple: false,
+        resolveWithFullResponse: true,
+      }
+
+      let response = await get('/sitemap.xml', requestOptions)
+      expect(response.statusCode).toEqual(200)
+      expect(response.headers.etag).toBeUndefined()
+
+      response = await get('/sitemap.xml.gz', requestOptions)
+      expect(response.statusCode).toEqual(200)
+      expect(response.headers.etag).toBeUndefined()
+    })
+
     test('gzip enabled', async () => {
       nuxt = await startServer({
         ...config,
