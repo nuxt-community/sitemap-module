@@ -45,9 +45,11 @@ yarn add @nuxtjs/sitemap
 - Add `@nuxtjs/sitemap` to the `modules` section of your `nuxt.config.js` file:
 
 ```js
+{
   modules: [
     '@nuxtjs/sitemap'
-  ]
+  ],
+}
 ```
 
 > **notice:**  
@@ -295,14 +297,13 @@ The `defaults` parameter set the default options for all routes.
     defaults: {
       changefreq: 'daily',
       priority: 1,
-      lastmod: new Date(),
-      lastmodrealtime: true
+      lastmod: new Date()
     }
   }
 }
 ```
 
-See available options: https://github.com/ekalinin/sitemap.js#usage
+See available options: https://github.com/ekalinin/sitemap.js/blob/4.1.1/README.md#sitemap-item-options
 
 ## Sitemap Index Options
 
@@ -412,11 +413,7 @@ eg. add routes for `/users/:id` in the configuration:
 
 {
   sitemap: {
-    routes: [
-      '/users/1',
-      '/users/2',
-      '/users/3'
-    ]
+    routes: ['/users/1', '/users/2', '/users/3']
   }
 }
 ```
@@ -432,7 +429,7 @@ const axios = require('axios')
   sitemap: {
     routes: async () => {
       const { data } = await axios.get('https://jsonplaceholder.typicode.com/users')
-      return data.map(user => `/users/${user.username}`)
+      return data.map((user) => `/users/${user.username}`)
     }
   }
 }
