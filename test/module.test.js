@@ -398,7 +398,8 @@ describe('sitemapindex - minimal configuration', () => {
 describe('sitemapindex - advanced configuration', () => {
   let nuxt = null
   let xml = null
-  const lastmod = new Date().toISOString()
+  const today = new Date().toISOString()
+  const yesterday = new Date(new Date() - 1000 * 60 * 60 * 24).toISOString()
 
   beforeAll(async () => {
     nuxt = await startServer({
@@ -406,10 +407,12 @@ describe('sitemapindex - advanced configuration', () => {
       sitemap: {
         path: '/sitemapindex.xml',
         hostname: 'https://example.com/',
+        lastmod: today,
         sitemaps: [
           {
             path: '/sitemap-foo.xml',
             routes: ['foo/1', 'foo/2'],
+            lastmod: yesterday,
           },
           {
             hostname: 'https://example.fr/',
@@ -418,7 +421,6 @@ describe('sitemapindex - advanced configuration', () => {
           },
         ],
         gzip: true,
-        lastmod,
         xmlNs: 'xmlns="https://example.com/schemas/sitemap/0.9"',
         xslUrl: 'sitemapindex.xsl',
       },
@@ -432,14 +434,15 @@ describe('sitemapindex - advanced configuration', () => {
     expect(xml).toContain('<loc>https://example.fr/sitemap-bar.xml</loc>')
   })
 
+  test('custom lastmod', () => {
+    expect(xml).toContain(`<lastmod>${today}</lastmod>`)
+    expect(xml).toContain(`<lastmod>${yesterday}</lastmod>`)
+  })
+
   test('gzip enabled', async () => {
     const gz = await getGzip('/sitemapindex.xml.gz')
     const sitemap = gunzipSync(gz).toString()
     expect(xml).toEqual(sitemap)
-  })
-
-  test('custom lastmod', () => {
-    expect(xml).toContain(`<lastmod>${lastmod}</lastmod>`)
   })
 
   test('custom XML namespaces', () => {

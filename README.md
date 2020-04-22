@@ -359,6 +359,30 @@ Array of [sitemap configuration](#sitemap-options]) linked to the sitemap index.
 
 See more [examples](#usage) above.
 
+### `lastmod` (optional) - string
+
+Set the `lastmod` value to each sitemap linked to its sitemap index.
+
+In addition, the `lastmod` can be defined for each linked sitemap.
+
+```js
+// nuxt.config.js
+
+{
+  sitemap: {
+    lastmod: "2020-01-01",
+    sitemaps: [
+      {
+        path: '/sitemap-foo.xml',
+        lastmod: "2020-01-02"
+      }, {
+        path: '/sitemap-bar.xml'
+      }
+    ]
+  }
+}
+```
+
 ### `gzip` (optional) - boolean
 
 - Default: `false`
@@ -376,7 +400,8 @@ Set the XML namespaces by override all default `xmlns` attributes in `<sitemapin
 
 {
   sitemap: {
-    xmlNs: 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'
+    xmlNs: 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+    sitemaps: [...]
   }
 }
 ```
