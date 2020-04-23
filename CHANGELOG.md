@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/nuxt-community/sitemap-module/compare/v2.2.0...v2.2.1) (2020-04-23)
+
+
+### Bug Fixes
+
+* lastmod on sitemapindex ([56d586b](https://github.com/nuxt-community/sitemap-module/commit/56d586b2ecaac977aca44103377d5c73f2f2dbc0)), closes [#112](https://github.com/nuxt-community/sitemap-module/issues/112)
+* logs without additional ([9b4773c](https://github.com/nuxt-community/sitemap-module/commit/9b4773c7766422029593905853f4ddbd7ef17220))
+* missing warning on generate mode ([d82ee3e](https://github.com/nuxt-community/sitemap-module/commit/d82ee3ea7b2ebcb8203a964b67f57d41f3a2c797))
+
 ## [2.2.0](https://github.com/nuxt-community/sitemap-module/compare/v2.1.0...v2.2.0) (2020-04-05)
 
 
