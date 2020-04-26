@@ -61,6 +61,8 @@ describe('ssr - pages', () => {
     // excluded routes
     html = await get('/exclude')
     expect(html).toContain('/exclude')
+    html = await get('/excluded-via-component-options')
+    expect(html).toContain('/excluded-via-component-options')
 
     // filtered routes
     html = await get('/filtered')
@@ -147,6 +149,7 @@ describe('sitemap - advanced configuration', () => {
 
     test('excluded routes', () => {
       expect(xml).not.toContain('<loc>https://example.com/exclude</loc>')
+      expect(xml).not.toContain('<loc>https://example.com/excluded-via-component-options</loc>')
     })
 
     test('filtered routes', () => {
