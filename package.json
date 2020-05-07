@@ -49,7 +49,7 @@
   },
   "dependencies": {
     "async-cache": "^1.1.0",
-    "consola": "^2.11.3",
+    "consola": "^2.12.1",
     "etag": "^1.8.1",
     "fresh": "^0.5.2",
     "fs-extra": "^8.1.0",
