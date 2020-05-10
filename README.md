@@ -133,8 +133,8 @@ You can disable the sitemap module with a boolean value at `false`:
 
 ### Setup a Sitemap
 
-By default, the sitemap is setup to the following path: `/sitemap.xml`
-All static routes (eg. `/pages/about.vue`) are automatically add to the sitemap, but you can exclude each of them with the [`exclude`](#exclude-optional---string-array) property.
+By default, the sitemap is setup to the following path: `/sitemap.xml`  
+All static routes (eg. `/pages/about.vue`) are automatically add to the sitemap, but you can exclude each of them with the [`exclude`](#exclude-optional---string-array) property.  
 For dynamic routes (eg. `/pages/_id.vue`), you have to declare them with the [`routes`](#routes-optional---array--function) property. This option can be an array or a function.
 
 ```js
