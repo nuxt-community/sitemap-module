@@ -4,10 +4,12 @@
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
   "keywords": [
     "nuxt",
+    "nuxt.js",
     "nuxtjs",
     "seo",
     "sitemap",
-    "sitemap.xml"
+    "sitemap.xml",
+    "ssr"
   ],
   "repository": "https://github.com/nuxt-community/sitemap-module",
   "license": "MIT",
