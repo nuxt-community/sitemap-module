@@ -22,7 +22,8 @@
 
 ## Table of Contents
 
-- [Installation](#installation)
+- [Install](#installation)
+- [Setup](#setup)
 - [Usage](#usage)
 - [Sitemap Options](#sitemap-options)
 - [Sitemap Index Options](#sitemap-index-options)
@@ -40,9 +41,9 @@ or
 yarn add @nuxtjs/sitemap
 ```
 
-## Usage
+## Setup
 
-- Add `@nuxtjs/sitemap` to the `modules` section of your `nuxt.config.js` file:
+Add `@nuxtjs/sitemap` to the `modules` section of your `nuxt.config.js` file:
 
 ```js
 {
@@ -56,9 +57,9 @@ yarn add @nuxtjs/sitemap
 > If you use other modules (eg. `nuxt-i18n`), always declare the sitemap module at end of array  
 > eg. `modules: ['nuxt-i18n', '@nuxtjs/sitemap']`
 
-- Add a custom configuration with the `sitemap` property.
+### Configuration
 
-You can set a single item of [sitemap](#sitemap-options) or [sitemap index](#sitemap-index-options) or an array of item.
+Add a custom configuration with the `sitemap` property:
 
 ```js
 // nuxt.config.js
@@ -68,15 +69,72 @@ You can set a single item of [sitemap](#sitemap-options) or [sitemap index](#sit
     '@nuxtjs/sitemap'
   ],
   sitemap: {
-    // custom configuration
-  }
+    // options
+  },
 }
 ```
 
+The module option parameter can be:
+
+### `Object`
+
+A single item of [sitemap](#sitemap-options) or [sitemap index](#sitemap-index-options):
+
+```js
+{
+  sitemap: {
+    // ...
+  },
+}
+```
+
+### `Array`
+
+A list of [sitemap](#sitemap-options) or [sitemap index](#sitemap-index-options) items:
+
+```js
+{
+  sitemap: [
+    {
+      // ...
+    },
+    {
+      // ...
+    },
+  ],
+}
+```
+
+### `Function`
+
+A function that returns a valid sitemap configuration:
+
+```js
+{
+  sitemap: function () {
+    return {
+      // ...
+    }
+  },
+}
+```
+
+### `Boolean`
+
+You can disable the sitemap module with a boolean value at `false`:
+
+```js
+{
+  sitemap: false
+}
+```
+
+## Usage
+
 ### Setup a Sitemap
 
-By default, the sitemap is setup to the following path: `/sitemap.xml`  
-All static routes (eg. `/pages/about.vue`) are automatically add to the sitemap, but you can exclude each of them with the [`exclude`](#exclude-optional---string-array) property.  
+By default, the sitemap is setup to the following path: `/sitemap.xml`
+All static routes (eg. `/pages/about.vue`) are automatically add to the sitemap, but you can exclude each of them with the [`exclude`](#exclude-optional---string-array) property.
 For dynamic routes (eg. `/pages/_id.vue`), you have to declare them with the [`routes`](#routes-optional---array--function) property. This option can be an array or a function.
 
 ```js
