@@ -70,6 +70,75 @@ describe('ssr - pages', () => {
   })
 })
 
+describe('sitemap - init options', () => {
+  let nuxt = null
+  let xml = null
+
+  afterEach(async () => {
+    await nuxt.close()
+  })
+
+  test('as object', async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: {
+        hostname: 'https://example.com/',
+      },
+    })
+
+    xml = await get('/sitemap.xml')
+    expect(xml).toContain('<loc>https://example.com/</loc>')
+  })
+
+  test('as array', async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: [
+        {
+          hostname: 'https://example.com/',
+        },
+      ],
+    })
+
+    xml = await get('/sitemap.xml')
+    expect(xml).toContain('<loc>https://example.com/</loc>')
+  })
+
+  test('as function', async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: () => ({
+        hostname: 'https://example.com/',
+      }),
+    })
+
+    xml = await get('/sitemap.xml')
+    expect(xml).toContain('<loc>https://example.com/</loc>')
+  })
+
+  test('as boolean', async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: false,
+    })
+
+    xml = await get('/sitemap.xml')
+    expect(xml).toContain('<!doctype html>')
+    expect(xml).not.toContain('<loc>https://example.com/</loc>')
+  })
+
+  test('as boolean from function', async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: () => false,
+    })
+
+    xml = await get('/sitemap.xml')
+    expect(xml).toContain('<!doctype html>')
+    expect(xml).not.toContain('<loc>https://example.com/</loc>')
+  })
+})
+
 describe('sitemap - minimal configuration', () => {
   test('sitemap.xml', async () => {
     const nuxt = await startServer({
