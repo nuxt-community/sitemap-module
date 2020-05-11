@@ -15,7 +15,7 @@
 - Module based on the awesome **[sitemap.js](https://github.com/ekalinin/sitemap.js) package** ❤️
 - Create **sitemap** or **sitemap index**
 - Automatically add the static routes to each sitemap
-- Works with **all modes** (universal, spa, generate)
+- Works with **all modes** (SSR, SPA, generate)
 - For **Nuxt 2.x** and higher
 
 ---
@@ -239,7 +239,7 @@ The URL path of the generated sitemap.
 - Default:
   1. `sitemap.hostname` value from your `nuxt.config.js`
   2. [`build.publicPath`](https://nuxtjs.org/api/configuration-build/#publicpath) value from your `nuxt.config.js`
-  3. [`os.hostname()`](https://nodejs.org/api/os.html#os_os_hostname) for **generate** or **spa** mode, or dynamically based on request URL (`headers.host`) for **universal** mode
+  3. [`os.hostname()`](https://nodejs.org/api/os.html#os_os_hostname) for **generate** or **spa** mode, or dynamically based on request URL (`headers.host`) for **ssr** mode
 
 This value is **mandatory** for generation sitemap file, and you should explicitly provide it for **generate** or **spa** mode.
 
@@ -249,19 +249,19 @@ This value is **mandatory** for generation sitemap file, and you should explicit
 
 Defines how frequently should sitemap **routes** being updated (value in milliseconds).
 
-Please note that after each invalidation, `routes` will be evaluated again. (See [routes declaration](#routes-declaration) section)
+Please note that after each invalidation, `routes` will be evaluated again (see [routes declaration](#routes-declaration) section).
 
-This option is enable only for the nuxt "universal" mode.
+This option is enable only for the nuxt **ssr** mode.
 
 ### `etag` (optional) - object
 
 - Default: [`render.etag`](https://nuxtjs.org/api/configuration-render#etag) value from your `nuxt.config.js`
 
-Enable the etag cache header on sitemap (See [etag](https://nuxtjs.org/api/configuration-render#etag) docs for possible options).
+Enable the etag cache header on sitemap (see [etag](https://nuxtjs.org/api/configuration-render#etag) docs for possible options).
 
 To disable etag for sitemap set `etag: false`
 
-This option is enable only for the nuxt "universal" mode.
+This option is enable only for the nuxt **ssr** mode.
 
 ### `exclude` (optional) - string array
 
@@ -273,7 +273,9 @@ The `exclude` parameter is an array of [glob patterns](https://github.com/isaacs
 
 - Default: `undefined`
 
-If `filter` option is set as a function, all routes will be filtered through it.
+If the `filter` option is set as a function, all routes will be filtered through it.
+
+This option is useful to customize or extend the features of the module, before the sitemap generation.
 
 Examples:
 
@@ -449,7 +451,7 @@ Enable the etag cache header on sitemap index (See [etag](https://nuxtjs.org/api
 
 To disable etag for sitemap index set `etag: false`
 
-This option is enable only for the nuxt "universal" mode.
+This option is enable only for the nuxt **ssr** mode.
 
 ### `gzip` (optional) - boolean
 
