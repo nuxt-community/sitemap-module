@@ -72,6 +72,7 @@
     "jest": "latest",
     "lint-staged": "latest",
     "nuxt": "latest",
+    "nuxt-i18n": "latest",
     "prettier": "latest",
     "request-promise-native": "latest",
     "standard-version": "latest"
