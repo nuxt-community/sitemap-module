@@ -15,6 +15,7 @@
 - Module based on the awesome **[sitemap.js](https://github.com/ekalinin/sitemap.js) package** ❤️
 - Create **sitemap** or **sitemap index**
 - Automatically add the static routes to each sitemap
+- Support **i18n** routes from **nuxt-i18n** (latest version)
 - Works with **all modes** (SSR, SPA, generate)
 - For **Nuxt 2.x** and higher
 
@@ -342,6 +343,50 @@ The URL path of the XSL file to style the sitemap.
 Add a trailing slash to each route URL (eg. `/page/1` => `/page/1/`)
 
 > **notice:** To avoid [duplicate content](https://support.google.com/webmasters/answer/66359) detection from crawlers, you have to configure an HTTP 301 redirect between the 2 URLs (see [redirect-module](https://github.com/nuxt-community/redirect-module) or [nuxt-trailingslash-module](https://github.com/WilliamDASILVA/nuxt-trailingslash-module)).
+
+### `i18n` (optional) - string | object
+
+- Default: `undefined`
+
+Configure the support of localized routes from **[nuxt-i18n](https://www.npmjs.com/package/nuxt-i18n)** module.
+
+If the `i18n` option is configured, the sitemap module will automatically add the default locale URL of each page in a `<loc>` element, with child `<xhtml:link>` entries listing every language/locale variant of the page including itself (see [Google sitemap guidelines](https://support.google.com/webmasters/answer/189077)).
+
+Examples:
+
+```js
+// nuxt.config.js
+
+{
+  modules: [
+    'nuxt-i18n',
+    '@nuxtjs/sitemap'
+  ],
+  i18n: {
+    locales: ['en', 'es', 'fr'],
+    defaultLocale: 'en'
+  },
+  sitemap: {
+    hostname: 'https://example.com',
+    // shortcut notation (basic)
+    i18n: 'en',
+    // nuxt-i18n notation (advanced)
+    i18n: {
+      defaultLocale: 'en',
+      routesNameSeparator: '___'
+    }
+  }
+}
+```
+
+```xml
+  <url>
+    <loc>https://example.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>
+  </url>
+```
 
 ### `defaults` (optional) - object
 
