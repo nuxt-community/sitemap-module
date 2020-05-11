@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/nuxt-community/sitemap-module/compare/v2.2.1...v2.3.0) (2020-05-11)
+
+
+### Features
+
+* add nuxt-i18n routes support with alternate links by hreflang ([cdbd689](https://github.com/nuxt-community/sitemap-module/commit/cdbd689fc2b5d74407119a99e7703f21baf03cc7)), closes [#91](https://github.com/nuxt-community/sitemap-module/issues/91)
+* allow module configuration as function or boolean ([522288c](https://github.com/nuxt-community/sitemap-module/commit/522288c155b67edc9a46afb01823eed9f7fdabd8)), closes [#115](https://github.com/nuxt-community/sitemap-module/issues/115)
+* enable ETag header for sitemapindex ([2098334](https://github.com/nuxt-community/sitemap-module/commit/2098334b69692eb7d3c01fd4f2533684603ce40d))
+
 ### [2.2.1](https://github.com/nuxt-community/sitemap-module/compare/v2.2.0...v2.2.1) (2020-04-23)
 
 
