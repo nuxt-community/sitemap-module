@@ -352,7 +352,7 @@ Configure the support of localized routes from **[nuxt-i18n](https://www.npmjs.c
 
 If the `i18n` option is configured, the sitemap module will automatically add the default locale URL of each page in a `<loc>` element, with child `<xhtml:link>` entries listing every language/locale variant of the page including itself (see [Google sitemap guidelines](https://support.google.com/webmasters/answer/189077)).
 
-Examples:
+Example:
 
 ```js
 // nuxt.config.js
