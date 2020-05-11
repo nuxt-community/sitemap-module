@@ -441,6 +441,16 @@ In addition, the `lastmod` can be defined for each linked sitemap.
 }
 ```
 
+### `etag` (optional) - object
+
+- Default: [`render.etag`](https://nuxtjs.org/api/configuration-render#etag) value from your `nuxt.config.js`
+
+Enable the etag cache header on sitemap index (See [etag](https://nuxtjs.org/api/configuration-render#etag) docs for possible options).
+
+To disable etag for sitemap index set `etag: false`
+
+This option is enable only for the nuxt "universal" mode.
+
 ### `gzip` (optional) - boolean
 
 - Default: `false`

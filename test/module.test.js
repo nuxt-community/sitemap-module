@@ -508,6 +508,39 @@ describe('sitemapindex - advanced configuration', () => {
     expect(xml).toContain(`<lastmod>${yesterday}</lastmod>`)
   })
 
+  test('etag enabled', async () => {
+    const requestOptions = {
+      simple: false,
+      resolveWithFullResponse: true,
+    }
+
+    // 1st call
+    let response = await get('/sitemapindex.xml', requestOptions)
+    expect(response.statusCode).toEqual(200)
+    expect(response.headers.etag).not.toBeUndefined()
+    // 2nd call
+    response = await get('/sitemapindex.xml', {
+      headers: {
+        'If-None-Match': response.headers.etag,
+      },
+      ...requestOptions,
+    })
+    expect(response.statusCode).toEqual(304)
+
+    // 1st call
+    response = await get('/sitemapindex.xml.gz', requestOptions)
+    expect(response.statusCode).toEqual(200)
+    expect(response.headers.etag).not.toBeUndefined()
+    // 2nd call
+    response = await get('/sitemapindex.xml.gz', {
+      headers: {
+        'If-None-Match': response.headers.etag,
+      },
+      ...requestOptions,
+    })
+    expect(response.statusCode).toEqual(304)
+  })
+
   test('gzip enabled', async () => {
     const gz = await getGzip('/sitemapindex.xml.gz')
     const sitemap = gunzipSync(gz).toString()
