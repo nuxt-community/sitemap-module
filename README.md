@@ -248,11 +248,11 @@ This value is **mandatory** for generation sitemap file, and you should explicit
 
 - Default: `1000 * 60 * 15` (15 Minutes)
 
-Defines how frequently should sitemap **routes** being updated (value in milliseconds).
+Defines how frequently sitemap **routes** should be updated (value in milliseconds).
 
 Please note that after each invalidation, `routes` will be evaluated again (see [routes declaration](#routes-declaration) section).
 
-This option is enable only for the nuxt **ssr** mode.
+This option is only available for nuxt in its **ssr** mode.
 
 ### `etag` (optional) - object
 
