@@ -239,10 +239,13 @@ The URL path of the generated sitemap.
 
 - Default:
   1. `sitemap.hostname` value from your `nuxt.config.js`
-  2. [`build.publicPath`](https://nuxtjs.org/api/configuration-build/#publicpath) value from your `nuxt.config.js`
+  2. [`build.publicPath`](https://nuxtjs.org/api/configuration-build/#publicpath) value from your `nuxt.config.js` (⚠️ **deprecated**)
   3. [`os.hostname()`](https://nodejs.org/api/os.html#os_os_hostname) for **generate** or **spa** mode, or dynamically based on request URL (`headers.host`) for **ssr** mode
 
 This value is **mandatory** for generation sitemap file, and you should explicitly provide it for **generate** or **spa** mode.
+
+⚠️ The usage of `build.publicPath` as default value is deprecated and will be removed on release v3.0.  
+To disable it on the current release, set a falsy value (eg. `hostname: false`).
 
 ### `cacheTime` (optional) - number
 
