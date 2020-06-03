@@ -442,6 +442,33 @@ describe('sitemap - advanced configuration', () => {
       expect(xml).toContain('<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>')
       expect(xml).toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
     })
+
+    test('locales with iso values', async () => {
+      const locales = [
+        { code: 'en', iso: 'en-US' },
+        { code: 'gb', iso: 'en-GB' },
+      ]
+      nuxt = await startServer({
+        ...config,
+        modules,
+        i18n: {
+          ...nuxtI18nConfig,
+          locales,
+        },
+        sitemap: {
+          ...sitemapConfig,
+          i18n: {
+            defaultLocale: 'en',
+            locales,
+          },
+        },
+      })
+
+      const xml = await get('/sitemap.xml')
+      expect(xml).toContain('<loc>https://example.com/</loc>')
+      expect(xml).toContain('<xhtml:link rel="alternate" hreflang="en-US" href="https://example.com/"/>')
+      expect(xml).toContain('<xhtml:link rel="alternate" hreflang="en-GB" href="https://example.com/gb/"/>')
+    })
   })
 
   describe('external options', () => {

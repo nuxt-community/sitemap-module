@@ -376,6 +376,7 @@ Example:
     // nuxt-i18n notation (advanced)
     i18n: {
       defaultLocale: 'en',
+      locales: ['en', 'es', 'fr'],
       routesNameSeparator: '___'
     }
   }
