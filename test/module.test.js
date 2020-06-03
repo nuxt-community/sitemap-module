@@ -443,7 +443,7 @@ describe('sitemap - advanced configuration', () => {
       expect(xml).toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
     })
 
-    test('locale iso code', async () => {
+    test('locales with iso values', async () => {
       const locales = [
         { code: 'en', iso: 'en-US' },
         { code: 'gb', iso: 'en-GB' },
