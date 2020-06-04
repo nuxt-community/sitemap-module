@@ -2,7 +2,7 @@
 
 [![npm (scoped with tag)](https://img.shields.io/npm/v/@nuxtjs/sitemap/latest?style=flat-square)](https://npmjs.com/package/@nuxtjs/sitemap)
 [![Downloads](https://img.shields.io/npm/dw/@nuxtjs/sitemap?style=flat-square)](https://npmjs.com/package/@nuxtjs/sitemap)
-[![Build Status](https://img.shields.io/circleci/project/github/nuxt-community/sitemap-module?style=flat-square)](https://circleci.com/gh/nuxt-community/sitemap-module)
+[![Build Status](https://img.shields.io/circleci/project/github/nuxt-community/sitemap-module?style=flat-square)](https://app.circleci.com/pipelines/github/nuxt-community/sitemap-module)
 [![Coverage Status](https://img.shields.io/codecov/c/github/nuxt-community/sitemap-module?style=flat-square)](https://codecov.io/gh/nuxt-community/sitemap-module)
 [![License](https://img.shields.io/npm/l/@nuxtjs/sitemap?style=flat-square)](http://standardjs.com)
 
@@ -239,10 +239,13 @@ The URL path of the generated sitemap.
 
 - Default:
   1. `sitemap.hostname` value from your `nuxt.config.js`
-  2. [`build.publicPath`](https://nuxtjs.org/api/configuration-build/#publicpath) value from your `nuxt.config.js`
+  2. [`build.publicPath`](https://nuxtjs.org/api/configuration-build/#publicpath) value from your `nuxt.config.js` (⚠️ **deprecated**)
   3. [`os.hostname()`](https://nodejs.org/api/os.html#os_os_hostname) in **generate** or **spa** mode, or dynamically based on request URL (`headers.host`) in **ssr** mode
 
 This value is **mandatory** for generation sitemap file, and you should explicitly provide it in **generate** or **spa** mode.
+
+⚠️ The usage of `build.publicPath` as default value is deprecated and will be removed on release v3.0.  
+To disable it on the current release, set a falsy value (eg. `hostname: false`).
 
 ### `cacheTime` (optional) - number
 
@@ -373,6 +376,7 @@ Example:
     // nuxt-i18n notation (advanced)
     i18n: {
       defaultLocale: 'en',
+      locales: ['en', 'es', 'fr'],
       routesNameSeparator: '___'
     }
   }
