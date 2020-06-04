@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.1](https://github.com/nuxt-community/sitemap-module/compare/v2.3.0...v2.3.1) (2020-06-04)
+
+
+### Bug Fixes
+
+* set hreflang with iso value like nuxt-i18n ([959fa82](https://github.com/nuxt-community/sitemap-module/commit/959fa82efe86cbba0bda737fe666592bf25f4533)), closes [#131](https://github.com/nuxt-community/sitemap-module/issues/131)
+
 ## [2.3.0](https://github.com/nuxt-community/sitemap-module/compare/v2.2.1...v2.3.0) (2020-05-11)
 
 
