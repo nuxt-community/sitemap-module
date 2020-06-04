@@ -240,9 +240,9 @@ The URL path of the generated sitemap.
 - Default:
   1. `sitemap.hostname` value from your `nuxt.config.js`
   2. [`build.publicPath`](https://nuxtjs.org/api/configuration-build/#publicpath) value from your `nuxt.config.js`
-  3. [`os.hostname()`](https://nodejs.org/api/os.html#os_os_hostname) for **generate** or **spa** mode, or dynamically based on request URL (`headers.host`) for **ssr** mode
+  3. [`os.hostname()`](https://nodejs.org/api/os.html#os_os_hostname) in **generate** or **spa** mode, or dynamically based on request URL (`headers.host`) in **ssr** mode
 
-This value is **mandatory** for generation sitemap file, and you should explicitly provide it for **generate** or **spa** mode.
+This value is **mandatory** for generation sitemap file, and you should explicitly provide it in **generate** or **spa** mode.
 
 ### `cacheTime` (optional) - number
 
@@ -252,7 +252,7 @@ Defines how frequently sitemap **routes** should be updated (value in millisecon
 
 Please note that after each invalidation, `routes` will be evaluated again (see [routes declaration](#routes-declaration) section).
 
-This option is only available for nuxt in its **ssr** mode.
+This option is only available in **ssr** mode.
 
 ### `etag` (optional) - object
 
@@ -262,7 +262,7 @@ Enable the etag cache header on sitemap (see [etag](https://nuxtjs.org/api/confi
 
 To disable etag for sitemap set `etag: false`
 
-This option is enable only for the nuxt **ssr** mode.
+This option is only available in **ssr** mode.
 
 ### `exclude` (optional) - string array
 
@@ -496,7 +496,7 @@ Enable the etag cache header on sitemap index (See [etag](https://nuxtjs.org/api
 
 To disable etag for sitemap index set `etag: false`
 
-This option is enable only for the nuxt **ssr** mode.
+This option is only available in **ssr** mode.
 
 ### `gzip` (optional) - boolean
 
