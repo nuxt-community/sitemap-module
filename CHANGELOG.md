@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.2](https://github.com/nuxt-community/sitemap-module/compare/v2.3.1...v2.3.2) (2020-06-15)
+
+
+### Bug Fixes
+
+* i18n rel-alternate-hreflang with router.base ([9a31b31](https://github.com/nuxt-community/sitemap-module/commit/9a31b31b37a281353497161f3edb55e4a6bbe588)), closes [#138](https://github.com/nuxt-community/sitemap-module/issues/138)
+
 ### [2.3.1](https://github.com/nuxt-community/sitemap-module/compare/v2.3.0...v2.3.1) (2020-06-04)
 
 
