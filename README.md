@@ -251,7 +251,8 @@ To disable it on the current release, set a falsy value (eg. `hostname: false`).
 
 - Default: `1000 * 60 * 15` (15 Minutes)
 
-Defines how frequently sitemap **routes** should be updated (value in milliseconds).
+Defines how frequently sitemap **routes** should be updated (value in milliseconds).  
+Setting a negative value will disable the cache.
 
 Please note that after each invalidation, `routes` will be evaluated again (see [routes declaration](#routes-declaration) section).
 
