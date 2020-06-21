@@ -29,6 +29,7 @@
 - [Sitemap Options](#sitemap-options)
 - [Sitemap Index Options](#sitemap-index-options)
 - [Routes Declaration](#routes-declaration)
+- [Hooks](#hooks)
 
 ## Installation
 
@@ -579,6 +580,18 @@ const axios = require('axios')
   }
 }
 ```
+
+
+## Hooks
+
+Hooks are listeners to Nuxt events. [Learn more](https://nuxtjs.org/api/configuration-hooks)
+
+You can register hooks on certain life cycle events.
+
+| Hook  | Arguments  | When  | 
+|---|---|---|
+| sitemap:generate:before  | (nuxt, sitemapOptions)  | Hook on before site generation  |
+| sitemap:generate:done  |  (nuxt) | Hook on sitemap generation finished |
 
 ## License
 
