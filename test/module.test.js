@@ -350,7 +350,7 @@ describe('sitemap - advanced configuration', () => {
     const sitemapConfig = {
       hostname: 'https://example.com',
       trailingSlash: true,
-      i18n: 'en',
+      i18n: true,
       routes: ['foo', { url: 'bar' }],
     }
 
@@ -386,14 +386,18 @@ describe('sitemap - advanced configuration', () => {
         sitemap: sitemapConfig,
       })
 
+      const links = [
+        '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>',
+        '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
+      ].join('')
+
       const xml = await get('/sitemap.xml')
       expect(xml).not.toContain('<loc>https://example.com/</loc>')
-      expect(xml).toContain('<loc>https://example.com/en/</loc>')
-      expect(xml).not.toContain('<loc>https://example.com/fr/</loc>')
-      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>')
-      expect(xml).toContain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>')
-      expect(xml).toContain('<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>')
+      expect(xml).toContain(`<url><loc>https://example.com/en/</loc>${links}</url>`)
+      expect(xml).toContain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
       expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
     })
 
     test('strategy "prefix_except_default"', async () => {
@@ -407,14 +411,18 @@ describe('sitemap - advanced configuration', () => {
         sitemap: sitemapConfig,
       })
 
+      const links = [
+        '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>',
+        '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
+      ].join('')
+
       const xml = await get('/sitemap.xml')
-      expect(xml).toContain('<loc>https://example.com/</loc>')
       expect(xml).not.toContain('<loc>https://example.com/en/</loc>')
-      expect(xml).not.toContain('<loc>https://example.com/fr/</loc>')
-      expect(xml).toContain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>')
-      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>')
-      expect(xml).toContain('<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>')
+      expect(xml).toContain(`<url><loc>https://example.com/</loc>${links}</url>`)
+      expect(xml).toContain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
       expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
     })
 
     test('strategy "prefix_and_default"', async () => {
@@ -427,20 +435,21 @@ describe('sitemap - advanced configuration', () => {
         },
         sitemap: {
           ...sitemapConfig,
-          i18n: {
-            defaultLocale: 'x-default',
-          },
         },
       })
 
+      const links = [
+        '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>',
+        '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
+        '<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>',
+      ].join('')
+
       const xml = await get('/sitemap.xml')
-      expect(xml).toContain('<loc>https://example.com/</loc>')
-      expect(xml).not.toContain('<loc>https://example.com/en/</loc>')
-      expect(xml).not.toContain('<loc>https://example.com/fr/</loc>')
-      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>')
-      expect(xml).toContain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>')
-      expect(xml).toContain('<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>')
-      expect(xml).toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
+      expect(xml).toContain(`<url><loc>https://example.com/</loc>${links}</url>`)
+      expect(xml).toContain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
+      expect(xml).toContain(`<url><loc>https://example.com/en/</loc>${links}</url>`)
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
     })
 
     test('locales with iso values', async () => {
@@ -458,7 +467,6 @@ describe('sitemap - advanced configuration', () => {
         sitemap: {
           ...sitemapConfig,
           i18n: {
-            defaultLocale: 'en',
             locales,
           },
         },
