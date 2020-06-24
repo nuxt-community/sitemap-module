@@ -373,10 +373,9 @@ Example:
   sitemap: {
     hostname: 'https://example.com',
     // shortcut notation (basic)
-    i18n: 'en',
+    i18n: true,
     // nuxt-i18n notation (advanced)
     i18n: {
-      defaultLocale: 'en',
       locales: ['en', 'es', 'fr'],
       routesNameSeparator: '___'
     }
@@ -387,6 +386,18 @@ Example:
 ```xml
   <url>
     <loc>https://example.com/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>
+  </url>
+  <url>
+    <loc>https://example.com/es/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>
+  </url>
+  <url>
+    <loc>https://example.com/fr/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>
     <xhtml:link rel="alternate" hreflang="es" href="https://example.com/es/"/>
     <xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>
