@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/nuxt-community/sitemap-module/compare/v2.3.2...v2.4.0) (2020-06-25)
+
+
+### Features
+
+* add hooks on sitemap generation ([f0365d2](https://github.com/nuxt-community/sitemap-module/commit/f0365d233d9881b613d346dfed6aef951139385d))
+
+
+### Bug Fixes
+
+* generate an <url> for each i18n language available ([b6d79c8](https://github.com/nuxt-community/sitemap-module/commit/b6d79c890a1be0cf9919fe7b1042e8b90e19ac6f)), closes [#140](https://github.com/nuxt-community/sitemap-module/issues/140)
+
 ### [2.3.2](https://github.com/nuxt-community/sitemap-module/compare/v2.3.1...v2.3.2) (2020-06-15)
 
 
