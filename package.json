@@ -61,6 +61,7 @@
     "sitemap": "^4.1.1"
   },
   "devDependencies": {
+    "@babel/runtime-corejs2": "latest",
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@nuxtjs/eslint-config": "latest",
