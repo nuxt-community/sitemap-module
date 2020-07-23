@@ -2,23 +2,26 @@ const { readFileSync } = require('fs')
 const { resolve } = require('path')
 const { gunzipSync } = require('zlib')
 
+const fetch = require('node-fetch')
 const { Nuxt, Builder, Generator } = require('nuxt')
-const request = require('request-promise-native')
 
 const config = require('./fixture/nuxt.config')
 config.dev = false
 config.modules = [require('..')]
 config.sitemap = {}
 
-const url = (path) => `http://localhost:3000${path}`
-const get = (path, options = null) => request(url(path), options)
-const getGzip = (path) => request({ url: url(path), encoding: null })
+const PORT = 3000
+const url = (path) => `http://localhost:${PORT}${path}`
+const request = (path, options = {}) => fetch(url(path), options)
+const requestGzip = (path, options = {}) => request(path, { compress: true, ...options })
+const get = (path) => request(path).then((res) => res.text())
+const getGzip = (path) => request(path, { compress: true }).then((res) => res.buffer())
 
 const startServer = async (config) => {
   const nuxt = new Nuxt(config)
   await nuxt.ready()
   await new Builder(nuxt).build()
-  await nuxt.listen(3000)
+  await nuxt.listen(PORT)
   return nuxt
 }
 const runGenerate = async (config) => {
@@ -250,36 +253,31 @@ describe('sitemap - advanced configuration', () => {
         },
       })
 
-      const requestOptions = {
-        simple: false,
-        resolveWithFullResponse: true,
-      }
+      // 1st call
+      let response = await request('/sitemap.xml')
+      let etag = response.headers.get('etag')
+      expect(response.status).toEqual(200)
+      expect(etag).toBeTruthy()
+      // 2nd call
+      response = await request('/sitemap.xml', {
+        headers: {
+          'If-None-Match': etag,
+        },
+      })
+      expect(response.status).toEqual(304)
 
       // 1st call
-      let response = await get('/sitemap.xml', requestOptions)
-      expect(response.statusCode).toEqual(200)
-      expect(response.headers.etag).not.toBeUndefined()
+      response = await requestGzip('/sitemap.xml.gz')
+      etag = response.headers.get('etag')
+      expect(response.status).toEqual(200)
+      expect(etag).toBeTruthy()
       // 2nd call
-      response = await get('/sitemap.xml', {
+      response = await requestGzip('/sitemap.xml.gz', {
         headers: {
-          'If-None-Match': response.headers.etag,
+          'If-None-Match': etag,
         },
-        ...requestOptions,
       })
-      expect(response.statusCode).toEqual(304)
-
-      // 1st call
-      response = await get('/sitemap.xml.gz', requestOptions)
-      expect(response.statusCode).toEqual(200)
-      expect(response.headers.etag).not.toBeUndefined()
-      // 2nd call
-      response = await get('/sitemap.xml.gz', {
-        headers: {
-          'If-None-Match': response.headers.etag,
-        },
-        ...requestOptions,
-      })
-      expect(response.statusCode).toEqual(304)
+      expect(response.status).toEqual(304)
     })
 
     test('etag disabled', async () => {
@@ -291,18 +289,15 @@ describe('sitemap - advanced configuration', () => {
         },
       })
 
-      const requestOptions = {
-        simple: false,
-        resolveWithFullResponse: true,
-      }
+      let response = await request('/sitemap.xml')
+      let etag = response.headers.get('etag')
+      expect(response.status).toEqual(200)
+      expect(etag).not.toBeTruthy()
 
-      let response = await get('/sitemap.xml', requestOptions)
-      expect(response.statusCode).toEqual(200)
-      expect(response.headers.etag).toBeUndefined()
-
-      response = await get('/sitemap.xml.gz', requestOptions)
-      expect(response.statusCode).toEqual(200)
-      expect(response.headers.etag).toBeUndefined()
+      response = await requestGzip('/sitemap.xml.gz')
+      etag = response.headers.get('etag')
+      expect(response.status).toEqual(200)
+      expect(etag).not.toBeTruthy()
     })
 
     test('gzip enabled', async () => {
@@ -648,36 +643,31 @@ describe('sitemapindex - advanced configuration', () => {
   })
 
   test('etag enabled', async () => {
-    const requestOptions = {
-      simple: false,
-      resolveWithFullResponse: true,
-    }
+    // 1st call
+    let response = await request('/sitemapindex.xml')
+    let etag = response.headers.get('etag')
+    expect(response.status).toEqual(200)
+    expect(etag).toBeTruthy()
+    // 2nd call
+    response = await request('/sitemapindex.xml', {
+      headers: {
+        'If-None-Match': etag,
+      },
+    })
+    expect(response.status).toEqual(304)
 
     // 1st call
-    let response = await get('/sitemapindex.xml', requestOptions)
-    expect(response.statusCode).toEqual(200)
-    expect(response.headers.etag).not.toBeUndefined()
+    response = await requestGzip('/sitemapindex.xml.gz')
+    etag = response.headers.get('etag')
+    expect(response.status).toEqual(200)
+    expect(etag).toBeTruthy()
     // 2nd call
-    response = await get('/sitemapindex.xml', {
+    response = await requestGzip('/sitemapindex.xml.gz', {
       headers: {
-        'If-None-Match': response.headers.etag,
+        'If-None-Match': etag,
       },
-      ...requestOptions,
     })
-    expect(response.statusCode).toEqual(304)
-
-    // 1st call
-    response = await get('/sitemapindex.xml.gz', requestOptions)
-    expect(response.statusCode).toEqual(200)
-    expect(response.headers.etag).not.toBeUndefined()
-    // 2nd call
-    response = await get('/sitemapindex.xml.gz', {
-      headers: {
-        'If-None-Match': response.headers.etag,
-      },
-      ...requestOptions,
-    })
-    expect(response.statusCode).toEqual(304)
+    expect(response.status).toEqual(304)
   })
 
   test('gzip enabled', async () => {
