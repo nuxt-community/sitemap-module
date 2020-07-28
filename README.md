@@ -34,7 +34,7 @@
 ## Installation
 
 ```shell
-npm install @nuxtjs/sitemap
+npm install --save @nuxtjs/sitemap
 ```
 
 or
