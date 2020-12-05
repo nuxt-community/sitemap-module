@@ -405,6 +405,16 @@ Example:
   </url>
 ```
 
+### `crawler` (optional) - boolean
+
+- Default: [`generate.crawler`](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-generate#crawler) value from your `nuxt.config.js` (by default `true` on Nuxt >= v2.13)
+
+Enable the addition of dynamic routes detected by the [Nuxt Crawler](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-generate#crawler) to each sitemap.
+
+To disable this feature set `false` on each sitemap configuration.
+
+> **notice:** This option is only available in **generate** mode and on **Nuxt >= v2.13**
+
 ### `defaults` (optional) - object
 
 - Default: `{}`

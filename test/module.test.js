@@ -754,6 +754,22 @@ describe('sitemap - generate mode', () => {
     expect(xml).toMatchSnapshot()
   })
 
+  test('sitemap.xml without crawler', async () => {
+    await runGenerate({
+      ...config,
+      generate: {
+        crawler: false,
+      },
+      sitemap: {
+        hostname: 'https://example.com/',
+        exclude: ['/exclude'],
+      },
+    })
+
+    const xml = readFileSync(resolve(__dirname, '../dist/sitemap.xml'), 'utf8')
+    expect(xml).toMatchSnapshot()
+  })
+
   test('sitemap.xml.gz', async () => {
     await runGenerate({
       ...config,
