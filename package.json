@@ -29,7 +29,7 @@
     "build": "nuxt build test/fixture",
     "dev": "nuxt test/fixture",
     "format": "yarn lint --fix",
-    "generate": "nuxt generate test/fixture",
+    "generate": "nuxt generate test/fixture --target static",
     "lint": "eslint . --ext js,vue",
     "preview": "standard-version --dry-run",
     "release": "standard-version && git push --follow-tags && npm publish",

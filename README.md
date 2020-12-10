@@ -224,9 +224,9 @@ You can combine sitemap and sitemap index configurations.
 
 ### `routes` (optional) - array | function
 
-- Default: `[]` or [`generate.routes`](https://nuxtjs.org/api/configuration-generate#routes) value from your `nuxt.config.js`
+- Default: `[]` or [`generate.routes`](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-generate#routes) value from your `nuxt.config.js`
 
-The `routes` parameter follows the same way than the `generate` [configuration](https://nuxtjs.org/api/configuration-generate#routes).
+The `routes` parameter follows the same way than the `generate` [configuration](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-generate#routes).
 
 See as well the [routes declaration](#routes-declaration) examples below.
 
@@ -240,7 +240,7 @@ The URL path of the generated sitemap.
 
 - Default:
   1. `sitemap.hostname` value from your `nuxt.config.js`
-  2. [`build.publicPath`](https://nuxtjs.org/api/configuration-build/#publicpath) value from your `nuxt.config.js` (⚠️ **deprecated**)
+  2. [`build.publicPath`](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-build#publicpath) value from your `nuxt.config.js` (⚠️ **deprecated**)
   3. [`os.hostname()`](https://nodejs.org/api/os.html#os_os_hostname) in **generate** or **spa** mode, or dynamically based on request URL (`headers.host`) in **ssr** mode
 
 This value is **mandatory** for generation sitemap file, and you should explicitly provide it in **generate** or **spa** mode.
@@ -257,17 +257,17 @@ Setting a negative value will disable the cache.
 
 Please note that after each invalidation, `routes` will be evaluated again (see [routes declaration](#routes-declaration) section).
 
-This option is only available in **ssr** mode.
+> **notice:** This option is only available in **ssr** mode.
 
 ### `etag` (optional) - object
 
-- Default: [`render.etag`](https://nuxtjs.org/api/configuration-render#etag) value from your `nuxt.config.js`
+- Default: [`render.etag`](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-render#etag) value from your `nuxt.config.js`
 
-Enable the etag cache header on sitemap (see [etag](https://nuxtjs.org/api/configuration-render#etag) docs for possible options).
+Enable the etag cache header on sitemap (see [etag](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-render#etag) docs for possible options).
 
 To disable etag for sitemap set `etag: false`
 
-This option is only available in **ssr** mode.
+> **notice:** This option is only available in **ssr** mode.
 
 ### `exclude` (optional) - string array
 
@@ -405,6 +405,16 @@ Example:
   </url>
 ```
 
+### `crawler` (optional) - boolean
+
+- Default: [`generate.crawler`](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-generate#crawler) value from your `nuxt.config.js` (by default `true` on Nuxt >= v2.13)
+
+Enable the addition of dynamic routes detected by the [Nuxt Crawler](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-generate#crawler) to each sitemap.
+
+To disable this feature set `false` on each sitemap configuration.
+
+> **notice:** This option is only available in **generate** mode and on **Nuxt >= v2.13**
+
 ### `defaults` (optional) - object
 
 - Default: `{}`
@@ -507,13 +517,13 @@ In addition, the `lastmod` can be defined for each linked sitemap.
 
 ### `etag` (optional) - object
 
-- Default: [`render.etag`](https://nuxtjs.org/api/configuration-render#etag) value from your `nuxt.config.js`
+- Default: [`render.etag`](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-render#etag) value from your `nuxt.config.js`
 
-Enable the etag cache header on sitemap index (See [etag](https://nuxtjs.org/api/configuration-render#etag) docs for possible options).
+Enable the etag cache header on sitemap index (See [etag](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-render#etag) docs for possible options).
 
 To disable etag for sitemap index set `etag: false`
 
-This option is only available in **ssr** mode.
+> **notice:** This option is only available in **ssr** mode.
 
 ### `gzip` (optional) - boolean
 
@@ -592,17 +602,16 @@ const axios = require('axios')
 }
 ```
 
-
 ## Hooks
 
-Hooks are listeners to Nuxt events. [Learn more](https://nuxtjs.org/api/configuration-hooks)
+Hooks are listeners to Nuxt events. [Learn more](https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-hooks)
 
 You can register hooks on certain life cycle events.
 
-| Hook  | Arguments  | When  | 
-|---|---|---|
-| sitemap:generate:before  | (nuxt, sitemapOptions)  | Hook on before site generation  |
-| sitemap:generate:done  |  (nuxt) | Hook on sitemap generation finished |
+| Hook                    | Arguments              | When                                |
+| ----------------------- | ---------------------- | ----------------------------------- |
+| sitemap:generate:before | (nuxt, sitemapOptions) | Hook on before site generation      |
+| sitemap:generate:done   | (nuxt)                 | Hook on sitemap generation finished |
 
 ## License
 

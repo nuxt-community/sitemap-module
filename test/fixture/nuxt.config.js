@@ -27,6 +27,7 @@ module.exports = {
         {
           path: '/sitemap-foo.xml',
           routes: ['foo/1', 'foo/2'],
+          crawler: false,
         },
         {
           hostname: 'https://yolo.com/',

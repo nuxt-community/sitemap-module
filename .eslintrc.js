@@ -5,4 +5,12 @@ module.exports = {
     // Allow sparse arrays
     'no-sparse-arrays': 'off',
   },
+  overrides: [
+    {
+      files: ['test/fixture/pages/**/*.vue'],
+      rules: {
+        'vue/singleline-html-element-content-newline': 'off',
+      },
+    },
+  ],
 }
