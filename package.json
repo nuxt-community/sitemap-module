@@ -1,7 +1,7 @@
 {
   "name": "@nuxtjs/sitemap",
   "version": "2.4.0",
-  "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
+  "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt projects",
   "keywords": [
     "nuxt",
     "nuxt.js",
