@@ -1,3 +1,5 @@
+[![@nuxtjs/sitemap](docs/static/preview.png)](https://sitemap.nuxtjs.org)
+
 # Sitemap Module
 
 [![npm (scoped with tag)](https://img.shields.io/npm/v/@nuxtjs/sitemap/latest?style=flat-square)](https://npmjs.com/package/@nuxtjs/sitemap)
@@ -9,7 +11,7 @@
 > Automatically generate or serve dynamic [sitemap.xml](https://www.sitemaps.org/protocol.html) for Nuxt projects!
 
 <p align="center">
-<a href="#">Read Documentation</a>
+  <a href="https://sitemap.nuxtjs.org">Read Documentation</a>
 </p>
 
 [📖 **Release Notes**](./CHANGELOG.md)
