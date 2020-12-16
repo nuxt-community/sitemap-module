@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: 'Module de plan de site pour NuxtJs'
+description: 'Module de plan de site pour Nuxt'
 position: 1
 category: ''
 features:

@@ -1,6 +1,6 @@
 ---
 title: Setup
-description: 'Setup sitemap module for NuxtJs'
+description: 'Setup sitemap module for Nuxt'
 position: 2
 category: Guide
 ---
