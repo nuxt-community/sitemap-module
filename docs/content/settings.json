@@ -1,0 +1,10 @@
+{
+  "title": "Nuxt Sitemap Module",
+  "url": "https://sitemap.nuxtjs.org",
+  "logo": {
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
+  },
+  "github": "nuxt-community/sitemap-module",
+  "twitter": "@nuxt_js"
+}
