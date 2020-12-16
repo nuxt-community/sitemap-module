@@ -1,6 +1,6 @@
 ---
 title: Sitemap options
-description: ''
+description: 'Sitemap options module'
 position: 6
 category: Usage
 ---

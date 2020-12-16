@@ -1,8 +1,8 @@
 ---
 title: Hooks
-description: ''
+description: 'Hooks pour le module de plan de site'
 position: 7
-category: Usage
+category: Utilisation
 ---
 
 Les hooks écoutent les événements Nuxt. [En savoir plus](https://nuxtjs.org/api/configuration-hooks)

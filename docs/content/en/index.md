@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: ''
+description: 'Sitemap Module for NuxtJs'
 position: 1
 category: ''
 features:

@@ -1,6 +1,6 @@
 ---
-title: Setup
-description: ''
+title: Installation
+description: 'Installation du module de plan de site pour NuxtJs'
 position: 2
 category: Guide
 ---

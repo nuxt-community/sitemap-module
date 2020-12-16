@@ -1,6 +1,6 @@
 ---
 title: Hooks
-description: ''
+description: 'Hooks for Sitemap module'
 position: 7
 category: Usage
 ---

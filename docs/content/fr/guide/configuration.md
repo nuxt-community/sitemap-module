@@ -1,6 +1,6 @@
 ---
 title: Configuration
-description: ''
+description: 'Ajoutez une configuration personnalisée pour le module plan de site'
 position: 3
 category: Guide
 ---

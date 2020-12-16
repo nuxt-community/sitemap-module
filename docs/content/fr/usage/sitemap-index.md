@@ -1,8 +1,8 @@
 ---
 title: Index de plan de site
-description: ''
+description: 'Déclarer un index de plan de site et ses plans de site associés'
 position: 5
-category: Usage
+category: Utilisation
 ---
 
 ### Configurer un index de plan de site
