@@ -1,8 +1,8 @@
 ---
 title: Plan de site
-description: ''
+description: 'Configurer un plan de site'
 position: 4
-category: Usage
+category: Utilisation
 ---
 
 ### Configurer un plan de site

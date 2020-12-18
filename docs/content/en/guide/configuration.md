@@ -1,6 +1,6 @@
 ---
 title: Configuration
-description: ''
+description: 'Add a custom configuration for the sitemap module'
 position: 3
 category: Guide
 ---

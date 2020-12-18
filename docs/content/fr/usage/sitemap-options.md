@@ -1,8 +1,8 @@
 ---
 title: Options de plan du site
-description: ''
+description: 'Options du module de plan du site'
 position: 6
-category: Usage
+category: Utilisation
 ---
 
 ### `routes` (optionnel) - array | function

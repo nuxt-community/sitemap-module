@@ -1,6 +1,6 @@
 ---
 title: Sitemap
-description: ''
+description: 'Setup a Sitemap'
 position: 4
 category: Usage
 ---

@@ -1,6 +1,6 @@
 ---
 title: Sitemap index
-description: ''
+description: 'Declare a sitemap index and its linked sitemaps'
 position: 5
 category: Usage
 ---
