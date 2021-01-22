@@ -54,7 +54,7 @@
     "consola": "^2.15.0",
     "etag": "^1.8.1",
     "fresh": "^0.5.2",
-    "fs-extra": "^8.1.0",
+    "fs-extra": "^9.1.0",
     "is-https": "^2.0.2",
     "lodash.unionby": "^4.8.0",
     "minimatch": "^3.0.4",
