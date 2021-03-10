@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/nuxt-community/sitemap-module/compare/v2.3.2...v2.4.0) (2020-06-25)
+
+
+### Features
+
+* add hooks on sitemap generation ([f0365d2](https://github.com/nuxt-community/sitemap-module/commit/f0365d233d9881b613d346dfed6aef951139385d))
+
+
+### Bug Fixes
+
+* generate an <url> for each i18n language available ([b6d79c8](https://github.com/nuxt-community/sitemap-module/commit/b6d79c890a1be0cf9919fe7b1042e8b90e19ac6f)), closes [#140](https://github.com/nuxt-community/sitemap-module/issues/140)
+
+### [2.3.2](https://github.com/nuxt-community/sitemap-module/compare/v2.3.1...v2.3.2) (2020-06-15)
+
+
+### Bug Fixes
+
+* i18n rel-alternate-hreflang with router.base ([9a31b31](https://github.com/nuxt-community/sitemap-module/commit/9a31b31b37a281353497161f3edb55e4a6bbe588)), closes [#138](https://github.com/nuxt-community/sitemap-module/issues/138)
+
+### [2.3.1](https://github.com/nuxt-community/sitemap-module/compare/v2.3.0...v2.3.1) (2020-06-04)
+
+
+### Bug Fixes
+
+* set hreflang with iso value like nuxt-i18n ([959fa82](https://github.com/nuxt-community/sitemap-module/commit/959fa82efe86cbba0bda737fe666592bf25f4533)), closes [#131](https://github.com/nuxt-community/sitemap-module/issues/131)
+
+## [2.3.0](https://github.com/nuxt-community/sitemap-module/compare/v2.2.1...v2.3.0) (2020-05-11)
+
+
+### Features
+
+* add nuxt-i18n routes support with alternate links by hreflang ([cdbd689](https://github.com/nuxt-community/sitemap-module/commit/cdbd689fc2b5d74407119a99e7703f21baf03cc7)), closes [#91](https://github.com/nuxt-community/sitemap-module/issues/91)
+* allow module configuration as function or boolean ([522288c](https://github.com/nuxt-community/sitemap-module/commit/522288c155b67edc9a46afb01823eed9f7fdabd8)), closes [#115](https://github.com/nuxt-community/sitemap-module/issues/115)
+* enable ETag header for sitemapindex ([2098334](https://github.com/nuxt-community/sitemap-module/commit/2098334b69692eb7d3c01fd4f2533684603ce40d))
+
 ### [2.2.1](https://github.com/nuxt-community/sitemap-module/compare/v2.2.0...v2.2.1) (2020-04-23)
 
 

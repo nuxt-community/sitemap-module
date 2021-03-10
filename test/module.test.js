@@ -2,22 +2,26 @@ const { readFileSync } = require('fs')
 const { resolve } = require('path')
 const { gunzipSync } = require('zlib')
 
+const fetch = require('node-fetch')
 const { Nuxt, Builder, Generator } = require('nuxt')
-const request = require('request-promise-native')
 
 const config = require('./fixture/nuxt.config')
 config.dev = false
+config.modules = [require('..')]
 config.sitemap = {}
 
-const url = (path) => `http://localhost:3000${path}`
-const get = (path, options = null) => request(url(path), options)
-const getGzip = (path) => request({ url: url(path), encoding: null })
+const PORT = 3000
+const url = (path) => `http://localhost:${PORT}${path}`
+const request = (path, options = {}) => fetch(url(path), options)
+const requestGzip = (path, options = {}) => request(path, { compress: true, ...options })
+const get = (path) => request(path).then((res) => res.text())
+const getGzip = (path) => request(path, { compress: true }).then((res) => res.buffer())
 
 const startServer = async (config) => {
   const nuxt = new Nuxt(config)
   await nuxt.ready()
   await new Builder(nuxt).build()
-  await nuxt.listen(3000)
+  await nuxt.listen(PORT)
   return nuxt
 }
 const runGenerate = async (config) => {
@@ -69,6 +73,75 @@ describe('ssr - pages', () => {
     expect(html).toContain('/filtered')
 
     await nuxt.close()
+  })
+})
+
+describe('sitemap - init options', () => {
+  let nuxt = null
+  let xml = null
+
+  afterEach(async () => {
+    await nuxt.close()
+  })
+
+  test('as object', async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: {
+        hostname: 'https://example.com/',
+      },
+    })
+
+    xml = await get('/sitemap.xml')
+    expect(xml).toContain('<loc>https://example.com/</loc>')
+  })
+
+  test('as array', async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: [
+        {
+          hostname: 'https://example.com/',
+        },
+      ],
+    })
+
+    xml = await get('/sitemap.xml')
+    expect(xml).toContain('<loc>https://example.com/</loc>')
+  })
+
+  test('as function', async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: () => ({
+        hostname: 'https://example.com/',
+      }),
+    })
+
+    xml = await get('/sitemap.xml')
+    expect(xml).toContain('<loc>https://example.com/</loc>')
+  })
+
+  test('as boolean', async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: false,
+    })
+
+    xml = await get('/sitemap.xml')
+    expect(xml).toContain('<!doctype html>')
+    expect(xml).not.toContain('<loc>https://example.com/</loc>')
+  })
+
+  test('as boolean from function', async () => {
+    nuxt = await startServer({
+      ...config,
+      sitemap: () => false,
+    })
+
+    xml = await get('/sitemap.xml')
+    expect(xml).toContain('<!doctype html>')
+    expect(xml).not.toContain('<loc>https://example.com/</loc>')
   })
 })
 
@@ -183,36 +256,31 @@ describe('sitemap - advanced configuration', () => {
         },
       })
 
-      const requestOptions = {
-        simple: false,
-        resolveWithFullResponse: true,
-      }
+      // 1st call
+      let response = await request('/sitemap.xml')
+      let etag = response.headers.get('etag')
+      expect(response.status).toEqual(200)
+      expect(etag).toBeTruthy()
+      // 2nd call
+      response = await request('/sitemap.xml', {
+        headers: {
+          'If-None-Match': etag,
+        },
+      })
+      expect(response.status).toEqual(304)
 
       // 1st call
-      let response = await get('/sitemap.xml', requestOptions)
-      expect(response.statusCode).toEqual(200)
-      expect(response.headers.etag).not.toBeUndefined()
+      response = await requestGzip('/sitemap.xml.gz')
+      etag = response.headers.get('etag')
+      expect(response.status).toEqual(200)
+      expect(etag).toBeTruthy()
       // 2nd call
-      response = await get('/sitemap.xml', {
+      response = await requestGzip('/sitemap.xml.gz', {
         headers: {
-          'If-None-Match': response.headers.etag,
+          'If-None-Match': etag,
         },
-        ...requestOptions,
       })
-      expect(response.statusCode).toEqual(304)
-
-      // 1st call
-      response = await get('/sitemap.xml.gz', requestOptions)
-      expect(response.statusCode).toEqual(200)
-      expect(response.headers.etag).not.toBeUndefined()
-      // 2nd call
-      response = await get('/sitemap.xml.gz', {
-        headers: {
-          'If-None-Match': response.headers.etag,
-        },
-        ...requestOptions,
-      })
-      expect(response.statusCode).toEqual(304)
+      expect(response.status).toEqual(304)
     })
 
     test('etag disabled', async () => {
@@ -224,18 +292,15 @@ describe('sitemap - advanced configuration', () => {
         },
       })
 
-      const requestOptions = {
-        simple: false,
-        resolveWithFullResponse: true,
-      }
+      let response = await request('/sitemap.xml')
+      let etag = response.headers.get('etag')
+      expect(response.status).toEqual(200)
+      expect(etag).not.toBeTruthy()
 
-      let response = await get('/sitemap.xml', requestOptions)
-      expect(response.statusCode).toEqual(200)
-      expect(response.headers.etag).toBeUndefined()
-
-      response = await get('/sitemap.xml.gz', requestOptions)
-      expect(response.statusCode).toEqual(200)
-      expect(response.headers.etag).toBeUndefined()
+      response = await requestGzip('/sitemap.xml.gz')
+      etag = response.headers.get('etag')
+      expect(response.status).toEqual(200)
+      expect(etag).not.toBeTruthy()
     })
 
     test('gzip enabled', async () => {
@@ -263,14 +328,152 @@ describe('sitemap - advanced configuration', () => {
       })
 
       const xml = await get('/sitemap.xml')
-
-      // trailing slash
       expect(xml).not.toContain('<loc>https://example.com/sub</loc>')
       expect(xml).not.toContain('<loc>https://example.com/sub/sub</loc>')
       expect(xml).not.toContain('<loc>https://example.com/test</loc>')
       expect(xml).toContain('<loc>https://example.com/sub/</loc>')
       expect(xml).toContain('<loc>https://example.com/sub/sub/</loc>')
       expect(xml).toContain('<loc>https://example.com/test/</loc>')
+    })
+  })
+
+  describe('i18n options', () => {
+    const modules = [require('nuxt-i18n'), require('..')]
+
+    const nuxtI18nConfig = {
+      locales: ['en', 'fr'],
+      defaultLocale: 'en',
+    }
+
+    const sitemapConfig = {
+      hostname: 'https://example.com',
+      trailingSlash: true,
+      i18n: true,
+      routes: ['foo', { url: 'bar' }],
+    }
+
+    test('strategy "no_prefix"', async () => {
+      nuxt = await startServer({
+        ...config,
+        modules,
+        i18n: {
+          ...nuxtI18nConfig,
+          strategy: 'no_prefix',
+        },
+        sitemap: sitemapConfig,
+      })
+
+      const xml = await get('/sitemap.xml')
+      expect(xml).toContain('<loc>https://example.com/</loc>')
+      expect(xml).not.toContain('<loc>https://example.com/en/</loc>')
+      expect(xml).not.toContain('<loc>https://example.com/fr/</loc>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
+    })
+
+    test('strategy "prefix"', async () => {
+      nuxt = await startServer({
+        ...config,
+        modules,
+        i18n: {
+          ...nuxtI18nConfig,
+          strategy: 'prefix',
+        },
+        sitemap: sitemapConfig,
+      })
+
+      const links = [
+        '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>',
+        '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
+      ].join('')
+
+      const xml = await get('/sitemap.xml')
+      expect(xml).not.toContain('<loc>https://example.com/</loc>')
+      expect(xml).toContain(`<url><loc>https://example.com/en/</loc>${links}</url>`)
+      expect(xml).toContain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
+    })
+
+    test('strategy "prefix_except_default"', async () => {
+      nuxt = await startServer({
+        ...config,
+        modules,
+        i18n: {
+          ...nuxtI18nConfig,
+          strategy: 'prefix_except_default',
+        },
+        sitemap: sitemapConfig,
+      })
+
+      const links = [
+        '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>',
+        '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
+      ].join('')
+
+      const xml = await get('/sitemap.xml')
+      expect(xml).not.toContain('<loc>https://example.com/en/</loc>')
+      expect(xml).toContain(`<url><loc>https://example.com/</loc>${links}</url>`)
+      expect(xml).toContain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
+    })
+
+    test('strategy "prefix_and_default"', async () => {
+      nuxt = await startServer({
+        ...config,
+        modules,
+        i18n: {
+          ...nuxtI18nConfig,
+          strategy: 'prefix_and_default',
+        },
+        sitemap: {
+          ...sitemapConfig,
+        },
+      })
+
+      const links = [
+        '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>',
+        '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
+        '<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>',
+      ].join('')
+
+      const xml = await get('/sitemap.xml')
+      expect(xml).toContain(`<url><loc>https://example.com/</loc>${links}</url>`)
+      expect(xml).toContain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
+      expect(xml).toContain(`<url><loc>https://example.com/en/</loc>${links}</url>`)
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
+      expect(xml).not.toContain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
+    })
+
+    test('locales with iso values', async () => {
+      const locales = [
+        { code: 'en', iso: 'en-US' },
+        { code: 'gb', iso: 'en-GB' },
+      ]
+      nuxt = await startServer({
+        ...config,
+        modules,
+        i18n: {
+          ...nuxtI18nConfig,
+          locales,
+        },
+        sitemap: {
+          ...sitemapConfig,
+          i18n: {
+            locales,
+          },
+        },
+      })
+
+      const xml = await get('/sitemap.xml')
+      expect(xml).toContain('<loc>https://example.com/</loc>')
+      expect(xml).toContain('<xhtml:link rel="alternate" hreflang="en-US" href="https://example.com/"/>')
+      expect(xml).toContain('<xhtml:link rel="alternate" hreflang="en-GB" href="https://example.com/gb/"/>')
     })
   })
 
@@ -440,6 +643,34 @@ describe('sitemapindex - advanced configuration', () => {
   test('custom lastmod', () => {
     expect(xml).toContain(`<lastmod>${today}</lastmod>`)
     expect(xml).toContain(`<lastmod>${yesterday}</lastmod>`)
+  })
+
+  test('etag enabled', async () => {
+    // 1st call
+    let response = await request('/sitemapindex.xml')
+    let etag = response.headers.get('etag')
+    expect(response.status).toEqual(200)
+    expect(etag).toBeTruthy()
+    // 2nd call
+    response = await request('/sitemapindex.xml', {
+      headers: {
+        'If-None-Match': etag,
+      },
+    })
+    expect(response.status).toEqual(304)
+
+    // 1st call
+    response = await requestGzip('/sitemapindex.xml.gz')
+    etag = response.headers.get('etag')
+    expect(response.status).toEqual(200)
+    expect(etag).toBeTruthy()
+    // 2nd call
+    response = await requestGzip('/sitemapindex.xml.gz', {
+      headers: {
+        'If-None-Match': etag,
+      },
+    })
+    expect(response.status).toEqual(304)
   })
 
   test('gzip enabled', async () => {

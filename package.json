@@ -1,13 +1,15 @@
 {
   "name": "@nuxtjs/sitemap",
-  "version": "2.2.1",
-  "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt.js projects",
+  "version": "2.4.0",
+  "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt projects",
   "keywords": [
     "nuxt",
+    "nuxt.js",
     "nuxtjs",
     "seo",
     "sitemap",
-    "sitemap.xml"
+    "sitemap.xml",
+    "ssr"
   ],
   "repository": "https://github.com/nuxt-community/sitemap-module",
   "license": "MIT",
@@ -52,16 +54,17 @@
     "acorn-dynamic-import": "^4.0.0",
     "acorn-walk": "^7.1.1",
     "async-cache": "^1.1.0",
-    "consola": "^2.11.3",
+    "consola": "^2.15.0",
     "etag": "^1.8.1",
     "fresh": "^0.5.2",
     "fs-extra": "^8.1.0",
-    "is-https": "^1.0.0",
+    "is-https": "^2.0.2",
     "lodash.unionby": "^4.8.0",
     "minimatch": "^3.0.4",
     "sitemap": "^4.1.1"
   },
   "devDependencies": {
+    "@babel/runtime-corejs2": "latest",
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@nuxtjs/eslint-config": "latest",
@@ -72,9 +75,10 @@
     "husky": "latest",
     "jest": "latest",
     "lint-staged": "latest",
+    "node-fetch": "latest",
     "nuxt": "latest",
+    "nuxt-i18n": "latest",
     "prettier": "latest",
-    "request-promise-native": "latest",
     "standard-version": "latest"
   },
   "engines": {
