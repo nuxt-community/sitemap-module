@@ -13,3 +13,5 @@ You can register hooks on certain life cycle events.
 |---|---|---|
 | sitemap:generate:before  | (nuxt, sitemapOptions)  | Hook on before site generation  |
 | sitemap:generate:done  |  (nuxt) | Hook on sitemap generation finished |
+
+Note: Above hooks only work with `nuxt generate`
