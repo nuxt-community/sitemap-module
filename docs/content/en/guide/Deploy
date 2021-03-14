@@ -1,0 +1,27 @@
+---
+title: Deploy
+description: 'Things you need to know for deployment'
+position: 4
+category: Guide
+---
+
+## Deploy SSR with Vercel
+
+When deploying Nuxt SSR with Vercel you need to add `.nuxt/dist/sitemap-routes.json` file as `serverFiles`. See the example below:
+
+```js[vercel.json]
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "nuxt.config.js",
+      "use": "@nuxtjs/vercel-builder",
+      "config": {
+        "serverFiles": [
+          ".nuxt/dist/sitemap-routes.json"
+        ]
+      }
+    }
+  ]
+}
+```
