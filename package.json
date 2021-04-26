@@ -58,7 +58,7 @@
     "is-https": "^2.0.2",
     "lodash.unionby": "^4.8.0",
     "minimatch": "^3.0.4",
-    "sitemap": "^4.1.1"
+    "sitemap": "^6.4.0"
   },
   "devDependencies": {
     "@babel/runtime-corejs2": "latest",
