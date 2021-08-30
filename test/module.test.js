@@ -335,7 +335,7 @@ describe('sitemap - advanced configuration', () => {
   })
 
   describe('i18n options', () => {
-    const modules = [require('nuxt-i18n'), require('..')]
+    const modules = [require('@nuxtjs/i18n'), require('..')]
 
     const nuxtI18nConfig = {
       locales: ['en', 'fr'],

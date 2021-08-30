@@ -39,5 +39,5 @@ Add `@nuxtjs/sitemap` to the `modules` section of your `nuxt.config.js` file:
 ```
 
 > **notice:**  
-> If you use other modules (eg. `nuxt-i18n`), always declare the sitemap module at end of array  
-> eg. `modules: ['nuxt-i18n', '@nuxtjs/sitemap']`
+> If you use other modules (eg. `@nuxtjs/i18n`), always declare the sitemap module at end of array  
+> eg. `modules: ['@nuxtjs/i18n', '@nuxtjs/sitemap']`

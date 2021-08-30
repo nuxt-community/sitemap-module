@@ -7,7 +7,7 @@ features:
   - Module basé sur le package génial sitemap.js ❤️
   - Créer un plan de site ou un index de plan de site
   - Ajoutez automatiquement les itinéraires statiques à chaque plan de site
-  - Prise en charge des routes i18n depuis nuxt-i18n (dernière version)
+  - Prise en charge des routes i18n depuis `@nuxtjs/i18n` (dernière version)
   - Fonctionne avec tous les modes (SSR, SPA, generate)
   - Pour Nuxt 2.x et plus
 ---

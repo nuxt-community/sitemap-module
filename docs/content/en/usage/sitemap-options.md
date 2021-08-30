@@ -136,7 +136,7 @@ Add a trailing slash to each route URL (eg. `/page/1` => `/page/1/`)
 
 - Default: `undefined`
 
-Configure the support of localized routes from **[nuxt-i18n](https://i18n.nuxtjs.org/)** module.
+Configure the support of localized routes from **[@nuxtjs/i18n](https://i18n.nuxtjs.org/)** module.
 
 If the `i18n` option is configured, the sitemap module will automatically add the default locale URL of each page in a `<loc>` element, with child `<xhtml:link>` entries listing every language/locale variant of the page including itself (see [Google sitemap guidelines](https://support.google.com/webmasters/answer/189077)).
 
@@ -145,7 +145,7 @@ Example:
 ```js[nuxt.config.js]
 {
   modules: [
-    'nuxt-i18n',
+    '@nuxtjs/i18n',
     '@nuxtjs/sitemap'
   ],
   i18n: {
@@ -156,7 +156,7 @@ Example:
     hostname: 'https://example.com',
     // shortcut notation (basic)
     i18n: true,
-    // nuxt-i18n notation (advanced)
+    // @nuxtjs/i18n notation (advanced)
     i18n: {
       locales: ['en', 'es', 'fr'],
       routesNameSeparator: '___'
