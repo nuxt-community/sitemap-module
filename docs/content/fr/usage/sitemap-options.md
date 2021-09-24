@@ -186,16 +186,16 @@ Exemple:
   </url>
 ```
 
-### `Default` (optionnel) - objet
+### `defaults` (optionnel) - objet
 
 - Défaut: `{}`
 
-Le paramètre `Default` définit les options pour toutes les routes.
+Le paramètre `defaults` définit les options pour toutes les routes.
 
 ```js[nuxt.config.js]
 {
   sitemap: {
-    Default: {
+    defaults: {
       changefreq: 'daily',
       priority: 1,
       lastmod: new Date()
