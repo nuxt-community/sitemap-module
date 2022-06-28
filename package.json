@@ -3,6 +3,8 @@
   "version": "3.0.0",
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt projects",
   "keywords": [
+    "nuxt 3",
+    "vue 3",
     "nuxt",
     "nuxt.js",
     "nuxtjs",
