@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v2.4.0...v3.1.0) (2022-06-28)
+
+
+### Features
+
+* support for nuxt 3 ([1ba3d1c](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/1ba3d1c763da3c65297dba1b369ec7695203c505))
+
+
+### Bug Fixes
+
+* return a valid URL from getHostname ([f999d6f](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/f999d6fb137d2d8c8a021994a6e35e42ebd2825c))
+
 ## [2.4.0](https://github.com/nuxt-community/sitemap-module/compare/v2.3.2...v2.4.0) (2020-06-25)
 
 
