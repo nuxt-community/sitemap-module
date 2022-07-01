@@ -21,7 +21,8 @@ this package is highly experimental, and may cause unknown issues, feel free to 
 
 ## Currently broken
 - Tests for nuxt-i18n are not working, since nuxt-i18n is not Nuxt 3 ready yet.
-- when you're using a function in the sitemap config e.g. for dynamic routes, you need make to sure to use require instead of imports, when using external dependencies.  Example:
+- **When using a function for dynamic Routes, you are not able to use imports!!**
+  - see below for a usable workaround:
 
 `nuxt.config.ts`
 ```js
@@ -40,7 +41,24 @@ sitemap: {
 ...
 ```
 
-`/helpers/dynamicRoutes.ts`
+`/helpers/dynamicRoutes`
+```js
+/**
+ * since we can't use imports here we just fetch
+ * all out routes from a custom API endpoint where we can use imports
+ */
+export default async () => {
+  return await $fetch('/api/sitemap_routes', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+```
+
+`/server/api/sitemap_routes.ts`
 ```js
 /**
  * We are using Storyblok as our CMS,
