@@ -1,4 +1,4 @@
-import logger from './logger.js'
+import logger from './runtime/logger'
 
 const MODULE_NAME = 'Nuxt 3 Sitemap Module'
 const DEFAULT_NUXT_PUBLIC_PATH = '/_nuxt/'

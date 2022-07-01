@@ -1,6 +1,8 @@
 import { promisify } from 'util'
 import AsyncCache from 'async-cache'
 import unionBy from 'lodash.unionby'
+import generateETag from 'etag'
+import fresh from 'fresh'
 
 /**
  * Initialize a cache instance for sitemap routes
@@ -97,4 +99,30 @@ function ensureIsValidRoute(route) {
   // force as string
   _route.url = String(_route.url)
   return _route
+}
+
+/**
+ * Validate the freshness of HTTP cache using headers
+ *
+ * @param {Object} entity
+ * @param {Object} options
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {boolean}
+ */
+export function validHttpCache(entity, options, req, res) {
+  if (!options) {
+    return false
+  }
+  const { hash } = options
+  const etag = hash ? hash(entity, options) : generateETag(entity, options)
+  if (fresh(req.headers, { etag })) {
+    // Resource not modified
+    res.statusCode = 304
+    res.end()
+    return true
+  }
+  // Add ETag header
+  res.setHeader('ETag', etag)
+  return false
 }

@@ -2,8 +2,8 @@ import { hostname } from 'os'
 import { join } from 'path'
 import { URL } from 'url'
 import isHTTPS from 'is-https'
-import sm from 'sitemap'
-import logger from './logger.js'
+import * as sm from 'sitemap'
+import logger from './logger'
 
 /**
  * Initialize a fresh sitemap instance
@@ -15,7 +15,7 @@ import logger from './logger.js'
  * @returns {Sitemap} sitemap instance
  */
 export function createSitemap(options, routes, base = null, req = null) {
-  const sitemapConfig = {}
+  const sitemapConfig = {cacheTime: null, hostname: null, xmlNs: null, xslUrl: null, urls: null}
 
   // Set cacheTime
   sitemapConfig.cacheTime = options.cacheTime || 0
@@ -122,7 +122,7 @@ export function createSitemap(options, routes, base = null, req = null) {
  * @returns {string}
  */
 export function createSitemapIndex(options, base = null, req = null) {
-  const sitemapIndexConfig = {}
+  const sitemapIndexConfig = { urls: null, lastmod: null, xmlNs: null, xslUrl: null }
 
   // Set urls
   const defaultHostname = options.hostname

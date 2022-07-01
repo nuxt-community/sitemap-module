@@ -1,11 +1,11 @@
 import path from 'path'
 import { gzipSync } from 'zlib'
 import fs from 'fs-extra'
-import { createSitemap, createSitemapIndex } from './builder.js'
-import { createRoutesCache } from './cache.js'
-import logger from './logger.js'
-import { setDefaultSitemapIndexOptions, setDefaultSitemapOptions } from './options.js'
-import { excludeRoutes } from './routes.js'
+import { createSitemap, createSitemapIndex } from './runtime/builder'
+import { createRoutesCache } from './runtime/cache'
+import logger from './runtime/logger'
+import { setDefaultSitemapIndexOptions, setDefaultSitemapOptions } from './options'
+import { excludeRoutes } from './runtime/routes'
 
 /**
  * Generate a static file for each sitemap or sitemapindex
@@ -44,7 +44,7 @@ export async function generateSitemap(options, globalCache, nuxtInstance, depth 
   options = setDefaultSitemapOptions(options, nuxtInstance, depth > 0)
 
   // Init cache
-  const cache = {}
+  const cache = { staticRoutes: null, routes: null }
   cache.staticRoutes = () => excludeRoutes(options.exclude, globalCache.staticRoutes)
   cache.routes = createRoutesCache(cache, options)
 

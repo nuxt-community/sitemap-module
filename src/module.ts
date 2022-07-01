@@ -1,11 +1,11 @@
 import path from 'path'
-import * as fs from 'fs-extra'
+import fs from 'fs-extra'
 import { defineNuxtModule } from '@nuxt/kit'
 import { transformSync } from '@babel/core'
-import { generateSitemaps } from './generator.js'
-import logger from './logger.js'
-import { registerSitemaps } from './middleware.js'
-import { getStaticRoutes } from './routes.js'
+import { generateSitemaps } from './generator'
+import logger from './runtime/logger'
+import { registerSitemaps } from './middleware'
+import { getStaticRoutes } from './runtime/routes'
 
 export default defineNuxtModule({
   async setup(moduleOptions, nuxtInstance) {
@@ -45,15 +45,15 @@ export default defineNuxtModule({
       // ToDo: move to generate:done hook when available
       nitro.hooks.hook('prerender:route', async () => {
         if (nuxtInstance.options._generate) {
-          await nuxtInstance.callHook('sitemap:generate:before', nuxtInstance, options)
+          await nuxtInstance.callHook('sitemap:generate:before' as any, nuxtInstance, options)
           logger.info('Generating sitemaps')
           await Promise.all(options.map((options) => generateSitemaps(options, globalCache, nuxtInstance)))
-          await nuxtInstance.callHook('sitemap:generate:done', nuxtInstance)
+          await nuxtInstance.callHook('sitemap:generate:done' as any, nuxtInstance)
         }
       })
     })
 
-    // On "ssr" mode, register middlewares for each sitemap or sitemapindex
+    // On "ssr" mode, register runtime for each sitemap or sitemapindex
     options.forEach((options) => {
       registerSitemaps(options, globalCache, nuxtInstance)
     })

@@ -16,4 +16,4 @@ export function fatal(message, options = null) {
   })
 }
 
-export default { ...consola, fatal, warn }
+export default { success: consola.success, info: consola.info, fatal, warn }

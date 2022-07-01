@@ -24,11 +24,11 @@
     "Adrian Jakob"
   ],
   "files": [
-    "lib",
-    "lib/middlewares"
+    "dist"
   ],
   "type": "module",
-  "main": "lib/module.js",
+  "main": "dist/module.cjs",
+  "module": "dist/module.mjs",
   "scripts": {
     "build": "npx nuxi build test/fixture",
     "dev": "npx nuxi dev test/fixture",
@@ -61,6 +61,10 @@
     "sitemap": "^4.1.1"
   },
   "devDependencies": {
+    "@nuxt/module-builder": "latest",
+    "@nuxtjs/eslint-config-typescript": "latest",
+    "eslint": "latest",
+    "nuxt": "^3.0.0-rc.4",
     "@commitlint/cli": "latest",
     "@commitlint/config-conventional": "latest",
     "@nuxt/test-utils": "^3.0.0-rc.4",
@@ -70,7 +74,6 @@
     "@vue/eslint-config-typescript": "^9.1.0",
     "babel-eslint": "^10.1.0",
     "codecov": "latest",
-    "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^26.5.3",
     "eslint-plugin-prettier": "^4.0.0",
@@ -78,7 +81,6 @@
     "husky": "latest",
     "lint-staged": "latest",
     "node-fetch": "latest",
-    "nuxt": "3.0.0-rc.4",
     "nuxt-i18n": "latest",
     "prettier": "latest",
     "prettier-eslint": "^15.0.1",
@@ -98,7 +100,8 @@
   "homepage": "https://github.com/funken-studio/sitemap-module-nuxt-3#readme",
   "directories": {
     "doc": "docs",
-    "lib": "lib",
+    "src": "src",
+    "dist": "dist",
     "test": "test"
   },
   "author": "d3xter-dev"

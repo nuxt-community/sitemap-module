@@ -1,7 +1,7 @@
 module.exports = {
   extends: [
+    '@nuxtjs/eslint-config-typescript',
     'plugin:prettier/recommended',
-    '@nuxtjs/eslint-config',
     'prettier',
     'plugin:vue/vue3-recommended',
     'eslint:recommended',
@@ -11,6 +11,9 @@ module.exports = {
     curly: 'error',
     // Allow sparse arrays
     'no-sparse-arrays': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'off'
+    ]
   },
   plugins: ['jest', 'prettier'],
   env: {

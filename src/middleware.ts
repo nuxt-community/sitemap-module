@@ -1,8 +1,6 @@
 import { addServerHandler, createResolver } from '@nuxt/kit'
-import generateETag from 'etag'
-import fresh from 'fresh'
-import logger from './logger.js'
-import { setDefaultSitemapIndexOptions, setDefaultSitemapOptions } from './options.js'
+import logger from './runtime/logger'
+import { setDefaultSitemapIndexOptions, setDefaultSitemapOptions } from './options'
 
 /**
  * Register a middleware for each sitemap or sitemapindex
@@ -53,14 +51,14 @@ export function registerSitemap(options, globalCache, nuxtInstance, depth = 0) {
     // Add server middleware for sitemap.xml.gz
     addServerHandler({
       route: _path,
-      handler: resolve('./middlewares/sitemap.gzip.js'),
+      handler: resolve('./runtime/sitemap.gzip.mjs'),
     })
   }
 
   // Add server middleware for sitemap.xml
   addServerHandler({
     route: options.path,
-    handler: resolve('./middlewares/sitemap.js'),
+    handler: resolve('./runtime/sitemap.mjs'),
   })
 }
 
@@ -88,14 +86,14 @@ export function registerSitemapIndex(options, globalCache, nuxtInstance, depth =
     globalCache.options[_path] = options
     addServerHandler({
       route: _path,
-      handler: resolve('./middlewares/sitemapindex.gzip.js'),
+      handler: resolve('./runtime/sitemapindex.gzip.mjs'),
     })
   }
 
   // Add server middleware for sitemapindex.xml
   addServerHandler({
     route: options.path,
-    handler: resolve('./middlewares/sitemapindex.js'),
+    handler: resolve('./runtime/sitemapindex.mjs'),
   })
 
   // Register linked sitemaps
@@ -108,30 +106,4 @@ function prepareOptionPaths(options, nuxtInstance) {
   options.pathGzip =
     options.base !== '/' || options.pathGzip.startsWith('/') ? options.pathGzip : '/' + options.pathGzip
   return options
-}
-
-/**
- * Validate the freshness of HTTP cache using headers
- *
- * @param {Object} entity
- * @param {Object} options
- * @param {Request} req
- * @param {Response} res
- * @returns {boolean}
- */
-export function validHttpCache(entity, options, req, res) {
-  if (!options) {
-    return false
-  }
-  const { hash } = options
-  const etag = hash ? hash(entity, options) : generateETag(entity, options)
-  if (fresh(req.headers, { etag })) {
-    // Resource not modified
-    res.statusCode = 304
-    res.end()
-    return true
-  }
-  // Add ETag header
-  res.setHeader('ETag', etag)
-  return false
 }

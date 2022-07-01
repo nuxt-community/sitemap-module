@@ -1,8 +1,9 @@
 import { createRequire } from 'module'
-import { createSitemap } from '~sitemap/builder.js'
-import { validHttpCache } from '~sitemap/middleware.js'
-import { excludeRoutes } from '~sitemap/routes.js'
-import { createRoutesCache } from '~sitemap/cache.js'
+import { validHttpCache } from '~sitemap/runtime/cache.mjs'
+import { createSitemap } from '~sitemap/runtime/builder.mjs'
+import { excludeRoutes } from '~sitemap/runtime/routes.mjs'
+import { createRoutesCache } from '~sitemap/runtime/cache.mjs'
+import { useRuntimeConfig } from '#internal/nitro'
 
 export const globalCache = { routes: null, staticRoutes: null }
 

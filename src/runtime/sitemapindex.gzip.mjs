@@ -1,9 +1,11 @@
 import { gzipSync } from 'zlib'
 import { createRequire } from 'module'
-import { validHttpCache } from '~sitemap/middleware.js'
-import { excludeRoutes } from '~sitemap/routes.js'
-import { createRoutesCache } from '~sitemap/cache.js'
-import { createSitemapIndex } from '~sitemap/builder.js'
+
+import { validHttpCache } from '~sitemap/runtime/cache.mjs'
+import { createSitemapIndex } from '~sitemap/runtime/builder.mjs'
+import { excludeRoutes } from '~sitemap/runtime/routes.mjs'
+import { createRoutesCache } from '~sitemap/runtime/cache.mjs'
+import { useRuntimeConfig } from '#internal/nitro'
 
 export const globalCache = { routes: null, staticRoutes: null }
 
