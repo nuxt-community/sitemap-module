@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.2](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v3.1.1...v3.1.2) (2022-07-01)
+
+
+### Bug Fixes
+
+* added tsconfig.json ([199ecd1](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/199ecd189d6763c2ebada4e8e437ca79170f02e0))
+* fixed broken snapshots ([3c243f1](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/3c243f111592e98ff610fbaef859229b0bd302ad))
+* was broken in production ([6367434](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/6367434f7a0a803006f27233c7ac85e6623f467e))
+
 ### [3.1.1](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v3.1.0...v3.1.1) (2022-06-28)
 
 ## [3.1.0](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v2.4.0...v3.1.0) (2022-06-28)
