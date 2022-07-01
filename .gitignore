@@ -2,8 +2,10 @@ node_modules
 *.iml
 .idea
 *.log*
-.nuxt
+.nuxt/*
+!.nuxt/tsconfig.json
 .vscode
 .DS_Store
 coverage
 dist
+/test/fixture/.nuxt/*
