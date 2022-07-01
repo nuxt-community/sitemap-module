@@ -60,16 +60,20 @@ export default async () => {
 
 `/server/api/sitemap_routes.ts`
 ```js
+import { IncomingMessage, ServerResponse } from 'http'
+import { apiPlugin } from '@storyblok/vue'
 /**
  * We are using Storyblok as our CMS,
  * in order to have all news and testimonials pages in our sitemap
  * we need to fetch some from Storyblok
  */
-export default async () => {
+export default async (req: IncomingMessage, res: ServerResponse) => {
+  if (req.method !== 'POST') {
+    res.statusCode = 405
+    res.end()
+    return
+  }
   const config = useRuntimeConfig()
-
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { apiPlugin } = require('@storyblok/js')
   const { storyblokApi } = apiPlugin({ apiOptions: config.public.storyblok })
   console.log('[vue-sitemap] generate dynamic routes')
 
