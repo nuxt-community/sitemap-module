@@ -23,6 +23,12 @@
     "Pooya Parsa",
     "Adrian Jakob"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
   "files": [
     "dist"
   ],
