@@ -45,7 +45,7 @@ sitemap: {
 ```js
 /**
  * since we can't use imports here we just fetch
- * all out routes from a custom API endpoint where we can use imports
+ * all our routes from a custom API endpoint where we can use imports
  */
 export default async () => {
   return await $fetch('/api/sitemap_routes', {
