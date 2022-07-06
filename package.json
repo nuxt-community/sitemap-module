@@ -87,7 +87,7 @@
     "husky": "latest",
     "lint-staged": "latest",
     "node-fetch": "latest",
-    "nuxt-i18n": "latest",
+    "nuxt-i18n": "npm:@nuxtjs/i18n-edge",
     "prettier": "latest",
     "prettier-eslint": "^15.0.1",
     "standard-version": "latest",

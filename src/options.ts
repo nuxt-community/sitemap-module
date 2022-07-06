@@ -41,9 +41,9 @@ export function setDefaultSitemapOptions(options, nuxtInstance, isLinkedToSitema
 
   if (sitemapOptions.i18n) {
     // Check modules config
-    const modules = Object.keys(nuxtInstance.requiredModules)
+    const modules = nuxtInstance.options._installedModules.map((m) => m.meta?.name)
     /* istanbul ignore if */
-    if (modules.indexOf('nuxt-i18n') > modules.indexOf(MODULE_NAME)) {
+    if (!modules.includes('@nuxtjs/i18n')) {
       logger.warn(
         `To enable the "i18n" option, the "${MODULE_NAME}" must be declared after the "nuxt-i18n" module in your config`
       )

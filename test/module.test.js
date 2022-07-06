@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
 import { existsSync, promises, readFileSync } from 'node:fs'
+import { gunzipSync } from 'zlib'
 import fetch from 'node-fetch'
 import {
   setup,
@@ -14,7 +15,8 @@ import {
 } from '@nuxt/test-utils'
 import { describe, expect, test, beforeEach } from 'vitest'
 import { loadNuxt } from '@nuxt/kit'
-const { gunzipSync } = require('zlib')
+import i18n from 'nuxt-i18n'
+import sitemapModule from '..'
 
 const request = (path, options = {}) => fetch(url(path), options)
 const requestGzip = (path, options = {}) => request(path, { compress: true, ...options })
@@ -349,140 +351,163 @@ describe('sitemap - advanced configuration', () => {
   /**
    * i18n is not supported by nuxt 3 yet
    */
-  // describe('i18n options', () => {
-  //   const modules = [i18n, sitemapModule]
-  //
-  //   const nuxtI18nConfig = {
-  //     locales: ['en', 'fr'],
-  //     defaultLocale: 'en',
-  //   }
-  //
-  //   const sitemapConfig = {
-  //     hostname: 'https://example.com',
-  //     trailingSlash: true,
-  //     i18n: true,
-  //     routes: ['foo', { url: 'bar' }],
-  //   }
-  //
-  //   test('strategy "no_prefix"', async () => {
-  //     await updateConfig({
-  //       modules,
-  //       i18n: {
-  //         ...nuxtI18nConfig,
-  //         strategy: 'no_prefix',
-  //       },
-  //       sitemap: sitemapConfig,
-  //     })
-  //
-  //     const xml = await $fetch('/sitemap.xml')
-  //     expect(xml).contain('<loc>https://example.com/</loc>')
-  //     expect(xml).not.contain('<loc>https://example.com/en/</loc>')
-  //     expect(xml).not.contain('<loc>https://example.com/fr/</loc>')
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>')
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>')
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>')
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
-  //   })
-  //
-  //   test('strategy "prefix"', async () => {
-  //     await updateConfig({
-  //       modules,
-  //       i18n: {
-  //         ...nuxtI18nConfig,
-  //         strategy: 'prefix',
-  //       },
-  //       sitemap: sitemapConfig,
-  //     })
-  //
-  //     const links = [
-  //       '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>',
-  //       '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
-  //     ].join('')
-  //
-  //     const xml = await $fetch('/sitemap.xml')
-  //     expect(xml).not.contain('<loc>https://example.com/</loc>')
-  //     expect(xml).contain(`<url><loc>https://example.com/en/</loc>${links}</url>`)
-  //     expect(xml).contain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
-  //   })
-  //
-  //   test('strategy "prefix_except_default"', async () => {
-  //     await updateConfig({
-  //       modules,
-  //       i18n: {
-  //         ...nuxtI18nConfig,
-  //         strategy: 'prefix_except_default',
-  //       },
-  //       sitemap: sitemapConfig,
-  //     })
-  //
-  //     const links = [
-  //       '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>',
-  //       '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
-  //     ].join('')
-  //
-  //     const xml = await $fetch('/sitemap.xml')
-  //     expect(xml).not.contain('<loc>https://example.com/en/</loc>')
-  //     expect(xml).contain(`<url><loc>https://example.com/</loc>${links}</url>`)
-  //     expect(xml).contain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
-  //   })
-  //
-  //   test('strategy "prefix_and_default"', async () => {
-  //     await updateConfig({
-  //       modules,
-  //       i18n: {
-  //         ...nuxtI18nConfig,
-  //         strategy: 'prefix_and_default',
-  //       },
-  //       sitemap: {
-  //         ...sitemapConfig,
-  //       },
-  //     })
-  //
-  //     const links = [
-  //       '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>',
-  //       '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
-  //       '<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>',
-  //     ].join('')
-  //
-  //     const xml = await $fetch('/sitemap.xml')
-  //     expect(xml).contain(`<url><loc>https://example.com/</loc>${links}</url>`)
-  //     expect(xml).contain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
-  //     expect(xml).contain(`<url><loc>https://example.com/en/</loc>${links}</url>`)
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
-  //     expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
-  //   })
-  //
-  //   test('locales with iso values', async () => {
-  //     const locales = [
-  //       { code: 'en', iso: 'en-US' },
-  //       { code: 'gb', iso: 'en-GB' },
-  //     ]
-  //     await updateConfig({
-  //       modules,
-  //       i18n: {
-  //         ...nuxtI18nConfig,
-  //         locales,
-  //       },
-  //       sitemap: {
-  //         ...sitemapConfig,
-  //         i18n: {
-  //           locales,
-  //         },
-  //       },
-  //     })
-  //
-  //     const xml = await $fetch('/sitemap.xml')
-  //     expect(xml).contain('<loc>https://example.com/</loc>')
-  //     expect(xml).contain('<xhtml:link rel="alternate" hreflang="en-US" href="https://example.com/"/>')
-  //     expect(xml).contain('<xhtml:link rel="alternate" hreflang="en-GB" href="https://example.com/gb/"/>')
-  //   })
-  // })
+
+  describe('i18n options', () => {
+    const modules = [i18n, sitemapModule]
+
+    const nuxtI18nConfig = {
+      locales: ['en', 'fr'],
+      defaultLocale: 'en',
+    }
+
+    const sitemapConfig = {
+      hostname: 'https://example.com',
+      trailingSlash: true,
+      i18n: true,
+      routes: ['foo', { url: 'bar' }],
+    }
+
+    test('strategy "no_prefix"', async () => {
+      const ctx = useTestContext()
+      ctx.options.nuxtConfig = {
+        ...ctx.options.nuxtConfig,
+        modules,
+        i18n: {
+          ...nuxtI18nConfig,
+          strategy: 'no_prefix',
+        },
+      }
+      await setTestContext(ctx)
+      await updateConfig(sitemapConfig)
+
+      const xml = await $fetch('/sitemap.xml')
+      expect(xml).contain('<loc>https://example.com/</loc>')
+      expect(xml).not.contain('<loc>https://example.com/en/</loc>')
+      expect(xml).not.contain('<loc>https://example.com/fr/</loc>')
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>')
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>')
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>')
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
+    })
+
+    test('strategy "prefix"', async () => {
+      const ctx = useTestContext()
+      ctx.options.nuxtConfig = {
+        ...ctx.options.nuxtConfig,
+        modules,
+        i18n: {
+          ...nuxtI18nConfig,
+          strategy: 'prefix',
+        },
+      }
+      await setTestContext(ctx)
+      await updateConfig(sitemapConfig)
+
+      const links = [
+        '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>',
+        '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
+      ].join('')
+
+      const xml = await $fetch('/sitemap.xml')
+      expect(xml).not.contain('<loc>https://example.com/</loc>')
+      expect(xml).contain(`<url><loc>https://example.com/en/</loc>${links}</url>`)
+      expect(xml).contain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
+    })
+
+    test('strategy "prefix_except_default"', async () => {
+      const ctx = useTestContext()
+      ctx.options.nuxtConfig = {
+        ...ctx.options.nuxtConfig,
+        modules,
+        i18n: {
+          ...nuxtI18nConfig,
+          strategy: 'prefix_except_default',
+        },
+      }
+      await setTestContext(ctx)
+      await updateConfig(sitemapConfig)
+
+      const links = [
+        '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/"/>',
+        '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
+      ].join('')
+
+      const xml = await $fetch('/sitemap.xml')
+      expect(xml).not.contain('<loc>https://example.com/en/</loc>')
+      expect(xml).contain(`<url><loc>https://example.com/</loc>${links}</url>`)
+      expect(xml).contain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>')
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
+    })
+
+    test('strategy "prefix_and_default"', async () => {
+      const ctx = useTestContext()
+      ctx.options.nuxtConfig = {
+        ...ctx.options.nuxtConfig,
+        modules,
+        i18n: {
+          ...nuxtI18nConfig,
+          strategy: 'prefix_and_default',
+        },
+      }
+      await setTestContext(ctx)
+      await updateConfig({
+        ...sitemapConfig,
+      })
+
+      const links = [
+        '<xhtml:link rel="alternate" hreflang="en" href="https://example.com/en/"/>',
+        '<xhtml:link rel="alternate" hreflang="fr" href="https://example.com/fr/"/>',
+        '<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/"/>',
+      ].join('')
+
+      const xml = await $fetch('/sitemap.xml')
+      expect(xml).contain(`<url><loc>https://example.com/</loc>${links}</url>`)
+      expect(xml).contain(`<url><loc>https://example.com/fr/</loc>${links}</url>`)
+      expect(xml).contain(`<url><loc>https://example.com/en/</loc>${links}</url>`)
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/en/"/>')
+      expect(xml).not.contain('<xhtml:link rel="alternate" hreflang="x-default" href="https://example.com/fr/"/>')
+    })
+
+    test('locales with iso values', async () => {
+      const locales = [
+        { code: 'en', iso: 'en-US' },
+        { code: 'gb', iso: 'en-GB' },
+      ]
+      const ctx = useTestContext()
+      ctx.options.nuxtConfig = {
+        ...ctx.options.nuxtConfig,
+        modules,
+        i18n: {
+          ...nuxtI18nConfig,
+          locales,
+        },
+      }
+      await setTestContext(ctx)
+      await updateConfig({
+        ...sitemapConfig,
+        i18n: {
+          locales,
+        },
+      })
+
+      const xml = await $fetch('/sitemap.xml')
+      expect(xml).contain('<loc>https://example.com/</loc>')
+      expect(xml).contain('<xhtml:link rel="alternate" hreflang="en-US" href="https://example.com/"/>')
+      expect(xml).contain('<xhtml:link rel="alternate" hreflang="en-GB" href="https://example.com/gb/"/>')
+
+      // remove i18n for next tests
+      ctx.options.nuxtConfig = {
+        ...ctx.options.nuxtConfig,
+        modules: [sitemapModule],
+      }
+      await setTestContext(ctx)
+    })
+  })
 
   describe('external options', () => {
     test('default routes from generate.routes', async () => {
