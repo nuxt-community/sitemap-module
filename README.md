@@ -20,7 +20,6 @@
 this package is highly experimental, and may cause unknown issues, feel free to report them.
 
 ## Currently broken
-- Tests for nuxt-i18n are not working, since nuxt-i18n is not Nuxt 3 ready yet.
 - **When using a function for dynamic Routes, you are not able to use imports!!**
   - see below for a usable workaround:
 
