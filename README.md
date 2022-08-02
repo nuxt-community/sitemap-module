@@ -27,6 +27,9 @@ this package is highly experimental, and may cause unknown issues, feel free to 
 ```js
 import dynamicRoutes from './helpers/dynamicRoutes'
 ...
+ modules: [
+    '@funken-studio/sitemap-nuxt-3',
+],
 sitemap: {
     hostname: 'https://example.com', 
     cacheTime: 1,
