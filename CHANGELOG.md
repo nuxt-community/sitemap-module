@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v3.2.0...v4.0.0) (2022-10-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **nuxt-rc.12:** not backwards compatible with old release candidates
+
+### Bug Fixes
+
+* **nuxt v3.0.0-rc.12 compat** ([b705933](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/b705933bee8944791fe3dbe3b3687b8e76d06b00))
+* **nuxt-rc.12:** changed example in README.md ([d1d8d7f](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/d1d8d7f9083484c341491e49e4eaaf76a794c72d))
+* **nuxt-rc.12:** not backwards compatible with old release candidates ([8c207c3](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/8c207c39b07b9406e0024f17ec5b862eb8e71c47))
+
 ## [3.2.0](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v3.1.4...v3.2.0) (2022-07-06)
 
 
