@@ -1,6 +1,6 @@
 <template>
   <div>
     /parent
-    <nuxt-child />
+    <nuxt-page />
   </div>
 </template>

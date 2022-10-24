@@ -1,3 +1,4 @@
+import { eventHandler } from 'h3'
 import { gzipSync } from 'zlib'
 import { createRequire } from 'module'
 
@@ -9,7 +10,7 @@ import { useRuntimeConfig } from '#internal/nitro'
 
 export const globalCache = { routes: null, staticRoutes: null }
 
-export default (event) => {
+export default eventHandler((event) => {
   const runtimeConfig = useRuntimeConfig()
   const res = event.res
   const req = event.req
@@ -19,7 +20,7 @@ export default (event) => {
     console.log('cant use require in middleware')
   }
   // eslint-disable-next-line no-new-func,no-eval
-  const options = eval(' (' + runtimeConfig.sitemap.options + ')')[event.url]
+  const options = eval(' (' + runtimeConfig.sitemap.options + ')')[event.req.url]
   const staticRoutes = runtimeConfig.sitemap.staticRoutes
 
   // Init cache
@@ -38,4 +39,4 @@ export default (event) => {
   // Send http response
   res.setHeader('Content-Type', 'application/gzip')
   res.end(gzip)
-}
+})
