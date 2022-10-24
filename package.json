@@ -36,6 +36,7 @@
   "main": "dist/module.cjs",
   "module": "dist/module.mjs",
   "scripts": {
+    "build-module": "nuxt-build-module && yarn unit",
     "build": "npx nuxi build test/fixture",
     "dev": "npx nuxi dev test/fixture",
     "format": "yarn lint --fix",
