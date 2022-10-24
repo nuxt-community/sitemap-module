@@ -16,8 +16,9 @@ export function setDefaultSitemapOptions(options, nuxtInstance, isLinkedToSitema
     path: '/sitemap.xml',
     hostname:
       // TODO: remove support of "build.publicPath" on release 3.0
-      nuxtInstance.options.build.publicPath !== DEFAULT_NUXT_PUBLIC_PATH
-        ? nuxtInstance.options.build.publicPath
+      // nuxt@3.0.0-rc.12 nuxtInstance.options.build.publicPath eq to `{}`
+      nuxtInstance.options.app.buildAssetsDir !== DEFAULT_NUXT_PUBLIC_PATH
+        ? nuxtInstance.options.app.buildAssetsDir
         : undefined,
     exclude: [],
     routes: nuxtInstance.options.generate.routes || [],
