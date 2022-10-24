@@ -67,9 +67,6 @@
       "#head/*": [
         "../../node_modules/nuxt/dist/head/runtime/*"
       ],
-      "#components": [
-        ".nuxt/components"
-      ],
       "#imports": [
         ".nuxt/imports"
       ],
@@ -78,6 +75,9 @@
       ],
       "#build/*": [
         ".nuxt/*"
+      ],
+      "#components": [
+        ".nuxt/components"
       ]
     }
   },
