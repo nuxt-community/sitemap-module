@@ -62,14 +62,16 @@ export default async () => {
 
 `/server/api/sitemap_routes.ts`
 ```js
-import { IncomingMessage, ServerResponse } from 'http'
 import { apiPlugin } from '@storyblok/vue'
+import { eventHandler } from 'h3'
+
 /**
  * We are using Storyblok as our CMS,
  * in order to have all news and testimonials pages in our sitemap
  * we need to fetch some from Storyblok
  */
-export default async (req: IncomingMessage, res: ServerResponse) => {
+export default eventHandler(async (event) => {
+  const { req, res } = event
   if (req.method !== 'POST') {
     res.statusCode = 405
     res.end()
@@ -104,7 +106,7 @@ export default async (req: IncomingMessage, res: ServerResponse) => {
   }
 
   return [...(await fetchRoutes('news')), ...(await fetchRoutes('testimonials'))]
-}
+})
 ```
 
 ## License
