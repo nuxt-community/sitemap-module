@@ -152,7 +152,7 @@ export function createSitemapIndex(options, base = null, req = null) {
  *
  * @param   {Object}  options
  * @param   {Request} req
- * @param   {string}  base
+ * @param   {string|null}  base
  * @returns {string}
  */
 function getHostname(options, req, base) {
@@ -161,7 +161,7 @@ function getHostname(options, req, base) {
     logger.fatal('The `hostname` option is mandatory in your config on `spa` or `generate` build mode', options)
   }
   const href = new URL(
-    base,
+    base || '',
     options.hostname || (req && `${isHTTPS(req) ? 'https' : 'http'}://${req.headers.host}`) || `http://${hostname()}`
   ).href
 

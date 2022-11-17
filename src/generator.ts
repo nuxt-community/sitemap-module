@@ -1,5 +1,6 @@
 import path from 'path'
 import { gzipSync } from 'zlib'
+// eslint-disable-next-line import/default
 import fs from 'fs-extra'
 import { createSitemap, createSitemapIndex } from './runtime/builder'
 import { createRoutesCache } from './runtime/cache'
@@ -22,12 +23,21 @@ export async function generateSitemaps(options, globalCache, nuxtInstance, depth
     logger.warn("A sitemap index file can't list other sitemap index files, but only sitemap files")
   }
 
+  if (!nuxtInstance.options.generate?.dir) {
+    nuxtInstance.options.generate.dir = nuxtInstance.options.buildDir
+  }
+
+  let publicDir = '../.output/public'
+  if(nuxtInstance.options.generate.dir.includes('.nuxt')) {
+    publicDir = '/output/public'
+  }
+
   const isSitemapIndex = options && options.sitemaps && Array.isArray(options.sitemaps) && options.sitemaps.length > 0
 
   if (isSitemapIndex) {
-    await generateSitemapIndex(options, globalCache, nuxtInstance, depth)
+    await generateSitemapIndex(options, globalCache, nuxtInstance, depth, publicDir)
   } else {
-    await generateSitemap(options, globalCache, nuxtInstance, depth)
+    await generateSitemap(options, globalCache, nuxtInstance, depth, publicDir)
   }
 }
 
@@ -39,7 +49,7 @@ export async function generateSitemaps(options, globalCache, nuxtInstance, depth
  * @param {Nuxt}   nuxtInstance
  * @param {number} depth
  */
-export async function generateSitemap(options, globalCache, nuxtInstance, depth = 0) {
+export async function generateSitemap(options, globalCache, nuxtInstance, depth = 0, publicDir) {
   // Init options
   options = setDefaultSitemapOptions(options, nuxtInstance, depth > 0)
 
@@ -52,13 +62,13 @@ export async function generateSitemap(options, globalCache, nuxtInstance, depth 
   const routes = await cache.routes.get('routes')
   const base = nuxtInstance.options.router.base
   const sitemap = await createSitemap(options, routes, base)
-  const xmlFilePath = path.join(nuxtInstance.options.generate.dir, '../.output/public', options.path)
+  const xmlFilePath = path.join(nuxtInstance.options.generate.dir, publicDir, options.path)
   fs.outputFileSync(xmlFilePath, sitemap.toXML())
   logger.success('Generated', getPathname(nuxtInstance.options.generate.dir, xmlFilePath))
 
   // Generate sitemap.xml.gz
   if (options.gzip) {
-    const gzipFilePath = path.join(nuxtInstance.options.generate.dir, '../.output/public', options.pathGzip)
+    const gzipFilePath = path.join(nuxtInstance.options.generate.dir, publicDir, options.pathGzip)
     fs.outputFileSync(gzipFilePath, sitemap.toGzip())
     logger.success('Generated', getPathname(nuxtInstance.options.generate.dir, gzipFilePath))
   }
@@ -72,21 +82,21 @@ export async function generateSitemap(options, globalCache, nuxtInstance, depth 
  * @param {Nuxt}   nuxtInstance
  * @param {number} depth
  */
-export async function generateSitemapIndex(options, globalCache, nuxtInstance, depth = 0) {
+export async function generateSitemapIndex(options, globalCache, nuxtInstance, depth = 0, publicDir) {
   // Init options
   options = setDefaultSitemapIndexOptions(options, nuxtInstance)
 
   // Generate sitemapindex.xml
   const base = nuxtInstance.options.router.base
   const xml = createSitemapIndex(options, base)
-  const xmlFilePath = path.join(nuxtInstance.options.generate.dir, '../.output/public', options.path)
+  const xmlFilePath = path.join(nuxtInstance.options.generate.dir, publicDir, options.path)
   fs.outputFileSync(xmlFilePath, xml)
   logger.success('Generated', getPathname(nuxtInstance.options.generate.dir, xmlFilePath))
 
   // Generate sitemapindex.xml.gz
   if (options.gzip) {
     const gzip = gzipSync(xml)
-    const gzipFilePath = path.join(nuxtInstance.options.generate.dir, '../.output/public', options.pathGzip)
+    const gzipFilePath = path.join(nuxtInstance.options.generate.dir, publicDir, options.pathGzip)
     fs.outputFileSync(gzipFilePath, gzip)
     logger.success('Generated', getPathname(nuxtInstance.options.generate.dir, gzipFilePath))
   }
