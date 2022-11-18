@@ -791,7 +791,10 @@ describe('sitemapindex - generate mode', () => {
 
   test('sitemapindex.xml.gz', async () => {
     const ctx = await useTestContext()
-    const xml = readFileSync(resolve(__dirname, ctx.options.nuxtConfig.buildDir + '/output/public/sitemapindex.xml'), 'utf8')
+    const xml = readFileSync(
+      resolve(__dirname, ctx.options.nuxtConfig.buildDir + '/output/public/sitemapindex.xml'),
+      'utf8'
+    )
     const gz = readFileSync(resolve(__dirname, ctx.options.nuxtConfig.buildDir + '/output/public/sitemapindex.xml.gz'))
     const sitemapindex = gunzipSync(gz).toString()
     expect(xml).eq(sitemapindex)
@@ -799,13 +802,19 @@ describe('sitemapindex - generate mode', () => {
 
   test('sitemap-foo.xml', async () => {
     const ctx = await useTestContext()
-    const xml = readFileSync(resolve(__dirname, ctx.options.nuxtConfig.buildDir + '/output/public/sitemap-foo.xml'), 'utf8')
+    const xml = readFileSync(
+      resolve(__dirname, ctx.options.nuxtConfig.buildDir + '/output/public/sitemap-foo.xml'),
+      'utf8'
+    )
     expect(xml).toMatchSnapshot()
   })
 
   test('sitemap-bar.xml', async () => {
     const ctx = await useTestContext()
-    const xml = readFileSync(resolve(__dirname, ctx.options.nuxtConfig.buildDir + '/output/public/sitemap-bar.xml'), 'utf8')
+    const xml = readFileSync(
+      resolve(__dirname, ctx.options.nuxtConfig.buildDir + '/output/public/sitemap-bar.xml'),
+      'utf8'
+    )
     expect(xml).toMatchSnapshot()
   })
 })

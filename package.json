@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.18.6",
-    "@nuxt/kit": "^3.0.0-rc.12",
+    "@nuxt/kit": "^3.0.0",
     "async-cache": "^1.1.0",
     "consola": "^2.15.0",
     "etag": "^1.8.1",
