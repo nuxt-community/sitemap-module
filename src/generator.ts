@@ -24,13 +24,10 @@ export async function generateSitemaps(options, globalCache, nuxtInstance, depth
   }
 
   if (!nuxtInstance.options.generate?.dir) {
-    nuxtInstance.options.generate.dir = nuxtInstance.options.buildDir
+    nuxtInstance.options.generate.dir = nuxtInstance.options.srcDir
   }
 
-  let publicDir = '../.output/public'
-  if(nuxtInstance.options.generate.dir.includes('.nuxt')) {
-    publicDir = '/output/public'
-  }
+  const publicDir = '/.output/public'
 
   const isSitemapIndex = options && options.sitemaps && Array.isArray(options.sitemaps) && options.sitemaps.length > 0
 
