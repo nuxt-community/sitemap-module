@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.3](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v4.0.2...v4.0.3) (2022-11-19)
+
+
+### Bug Fixes
+
+* adding pre-rendered routes to sitemap when using nuxi generate ([0f922a5](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/0f922a5263128ac67488a8ca420678ba2371c74e))
+
 ### [4.0.2](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v4.0.1...v4.0.2) (2022-11-18)
 
 
