@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.4](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v4.0.3...v4.0.4) (2022-11-19)
+
+
+### Bug Fixes
+
+* different sitemaps sharing same routes cache ([8c959fe](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/8c959fe990a312cb9c089c996640e35c33ed5dac))
+
 ### [4.0.3](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v4.0.2...v4.0.3) (2022-11-19)
 
 

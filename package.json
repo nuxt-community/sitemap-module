@@ -1,6 +1,6 @@
 {
   "name": "@funken-studio/sitemap-nuxt-3",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Automatically generate or serve dynamic sitemap.xml for Nuxt projects",
   "keywords": [
     "nuxt 3",
