@@ -6,7 +6,7 @@ import { excludeRoutes } from '~sitemap/runtime/routes.mjs'
 import { createRoutesCache } from '~sitemap/runtime/cache.mjs'
 import { useRuntimeConfig } from '#internal/nitro'
 
-export const globalCache = { routes: null, staticRoutes: null }
+export const globalCache = { cache: {  }, staticRoutes: null }
 
 export default eventHandler(async (event) => {
   const runtimeConfig = useRuntimeConfig()
@@ -18,18 +18,21 @@ export default eventHandler(async (event) => {
     console.log('cant use require in middleware')
   }
   // eslint-disable-next-line no-new-func,no-eval
-  const options = eval(' (' + runtimeConfig.sitemap.options + ')')[event.req.url]
+  const options = eval('(' + runtimeConfig.sitemap.options + ')')[event.req.url]
   const staticRoutes = runtimeConfig.sitemap.staticRoutes
 
   // Init cache
   if (!globalCache.staticRoutes) {
     globalCache.staticRoutes = () => excludeRoutes(options.exclude, staticRoutes)
-    globalCache.routes = createRoutesCache(globalCache, options)
+  }
+
+  if(!globalCache.cache[event.req.url]) {
+    globalCache.cache[event.req.url] = createRoutesCache(globalCache, options)
   }
 
   try {
     // Init sitemap
-    const routes = await globalCache.routes.get('routes')
+    const routes = await globalCache.cache[event.req.url].get('routes')
     const xml = createSitemap(options, routes, options.base, req).toXML()
     // Check cache headers
     if (validHttpCache(xml, options.etag, req, res)) {

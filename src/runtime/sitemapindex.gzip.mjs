@@ -8,7 +8,7 @@ import { excludeRoutes } from '~sitemap/runtime/routes.mjs'
 import { createRoutesCache } from '~sitemap/runtime/cache.mjs'
 import { useRuntimeConfig } from '#internal/nitro'
 
-export const globalCache = { routes: null, staticRoutes: null }
+export const globalCache = { cache: {}, staticRoutes: null }
 
 export default eventHandler((event) => {
   const runtimeConfig = useRuntimeConfig()
@@ -26,7 +26,10 @@ export default eventHandler((event) => {
   // Init cache
   if (!globalCache.staticRoutes) {
     globalCache.staticRoutes = () => excludeRoutes(options.exclude, staticRoutes)
-    globalCache.routes = createRoutesCache(globalCache, options)
+  }
+
+  if(!globalCache.cache[event.req.url]) {
+    globalCache.cache[event.req.url] = createRoutesCache(globalCache, options)
   }
 
   // Init sitemap index
