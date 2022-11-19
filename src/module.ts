@@ -8,8 +8,12 @@ import logger from './runtime/logger'
 import { registerSitemaps } from './middleware'
 import { getStaticRoutes } from './runtime/routes'
 
+type ModuleOptions = {
+  generateOnBuild?: boolean
+}
+
 export default defineNuxtModule({
-  async setup(moduleOptions, nuxtInstance) {
+  async setup(moduleOptions: ModuleOptions, nuxtInstance) {
     // Init options
     const options = await initOptions(nuxtInstance, moduleOptions)
     if (options === false) {
@@ -39,19 +43,28 @@ export default defineNuxtModule({
     nuxtInstance.hook('nitro:build:before', async (nitro) => {
       nitro.options.runtimeConfig.sitemap = {
         options: await optionsToString(globalCache.options),
-        staticRoutes: globalCache.staticRoutes,
+        staticRoutes: globalCache.staticRoutes
       }
 
-      // On "generate" mode, generate static files for each sitemap or sitemapindex
-      // ToDo: move to generate:done hook when available
-      let generated = false
-      nitro.hooks.hook('prerender:route', async () => {
-        if (!generated) {
+      let isPreRender = false
+      nitro.hooks.hook('prerender:route', (ctx) => {
+        if (!ctx.route.includes('.js') && !globalCache.staticRoutes.find((r) => r.url === ctx.route)) {
+          globalCache.staticRoutes.push({ url: ctx.route, path: ctx.route, name: ctx.route.replaceAll('/', '-') })
+          nitro.options.runtimeConfig.sitemap = {
+            options: nitro.options.runtimeConfig.sitemap.options,
+            staticRoutes: globalCache.staticRoutes
+          }
+          isPreRender = true
+        }
+      })
+
+      nitro.hooks.hook('close', async () => {
+        if(isPreRender || moduleOptions.generateOnBuild) {
+          // On "generate" mode, generate static files for each sitemap or sitemapindex
           await nuxtInstance.callHook('sitemap:generate:before' as any, nuxtInstance, options)
           logger.info('Generating sitemaps')
           await Promise.all(options.map((options) => generateSitemaps(options, globalCache, nuxtInstance)))
           await nuxtInstance.callHook('sitemap:generate:done' as any, nuxtInstance)
-          generated = true
         }
       })
     })
@@ -60,7 +73,7 @@ export default defineNuxtModule({
     options.forEach((options) => {
       registerSitemaps(options, globalCache, nuxtInstance)
     })
-  },
+  }
 })
 
 async function optionsToString(options) {
@@ -93,7 +106,7 @@ async function optionsToString(options) {
 
   if (typeof options === 'function') {
     const code = transformSync(options, {
-      minified: true,
+      minified: true
     })
     return code.code.slice(0, -1)
   }
