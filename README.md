@@ -16,12 +16,25 @@
 
 [📖 **Release Notes**](./CHANGELOG.md)
 
-# Warning
-this package is highly experimental, and may cause unknown issues, feel free to report them.
 
-## Currently broken
-- **When using a function for dynamic Routes, you are not able to use imports!!**
-  - see below for a usable workaround:
+## Generate sitemap.xml
+Normally the sitemap.xml is served via a server middleware / handler, it is only generated in `.output/public` when running `nuxi generate`.
+
+If you want to generate the sitemap.xml on every build, you can set the `generateOnBuild` option to `true` in the module configuration.
+(That option might not work if you are using dynamic routes)
+
+```js
+// nuxt.config.js
+modules: {
+  ...
+  ['@funken-studio/sitemap-nuxt-3', { generateOnBuild: true }],
+  ...
+}
+```
+
+## Using dynamic routes
+- **you are not able to use imports!!**
+- see below for a usable workaround:
 
 `nuxt.config.ts`
 ```js
