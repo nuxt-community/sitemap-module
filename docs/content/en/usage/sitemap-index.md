@@ -55,6 +55,6 @@ You can combine sitemap and sitemap index configurations.
         // array of Sitemap configuration
       }]
     }
-  }
+  ]
 }
 ```
