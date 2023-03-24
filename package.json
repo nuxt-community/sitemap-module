@@ -57,7 +57,7 @@
     "fs-extra": "^8.1.0",
     "is-https": "^2.0.2",
     "lodash.unionby": "^4.8.0",
-    "minimatch": "^3.0.4",
+    "minimatch": "^7.4.3",
     "sitemap": "^4.1.1"
   },
   "devDependencies": {
