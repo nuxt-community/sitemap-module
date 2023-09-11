@@ -1,6 +1,6 @@
 [![@nuxtjs/sitemap](docs/static/preview.png)](https://sitemap.nuxtjs.org)
 
-# Sitemap Module
+# Sitemap Module for Nuxt 2
 
 [![npm (scoped with tag)](https://img.shields.io/npm/v/@nuxtjs/sitemap/latest?style=flat-square)](https://npmjs.com/package/@nuxtjs/sitemap)
 [![Downloads](https://img.shields.io/npm/dw/@nuxtjs/sitemap?style=flat-square)](https://npmjs.com/package/@nuxtjs/sitemap)
@@ -9,6 +9,8 @@
 [![License](https://img.shields.io/npm/l/@nuxtjs/sitemap?style=flat-square)](http://standardjs.com)
 
 > Automatically generate or serve dynamic [sitemap.xml](https://www.sitemaps.org/protocol.html) for Nuxt projects!
+
+Looking for a Nuxt 3 alternative? Try [Nuxt Simple Sitemap](https://github.com/harlan-zw/nuxt-simple-sitemap).
 
 <p align="center">
   <a href="https://sitemap.nuxtjs.org">Read Documentation</a>
