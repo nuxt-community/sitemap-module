@@ -10,7 +10,9 @@
 
 > Automatically generate or serve dynamic [sitemap.xml](https://www.sitemaps.org/protocol.html) for Nuxt projects!
 
-Looking for a Nuxt 3 alternative? Try [Nuxt Simple Sitemap](https://github.com/harlan-zw/nuxt-simple-sitemap).
+💡 Using Nuxt 3? The repo has moved to [nuxt-modules/sitemap](https://github.com/nuxt-modules/sitemap).
+
+💡 If you intend to use this module for Nuxt 2, you should stay on version 2.x.
 
 <p align="center">
   <a href="https://sitemap.nuxtjs.org">Read Documentation</a>
