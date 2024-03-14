@@ -7,7 +7,7 @@ features:
   - Module based on the awesome sitemap.js package ❤️
   - Create sitemap or sitemap index
   - Automatically add the static routes to each sitemap
-  - Support i18n routes from nuxt-i18n (latest version)
+  - Support i18n routes from `@nuxtjs/i18n` (latest version)
   - Works with all modes (SSR, SPA, generate)
   - For Nuxt 2.x and higher
 ---

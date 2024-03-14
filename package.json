@@ -74,7 +74,7 @@
     "lint-staged": "latest",
     "node-fetch": "latest",
     "nuxt": "latest",
-    "nuxt-i18n": "latest",
+    "@nuxtjs/i18n": "latest",
     "prettier": "latest",
     "standard-version": "latest"
   },

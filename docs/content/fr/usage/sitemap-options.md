@@ -136,7 +136,7 @@ Ajouter une barre oblique à chaque URL de route (ex. `/page/1` => `/page/1/`)
 
 - Défaut: `undefined`
 
-Configurer la prise en charge des routes localisées à partir du module **[nuxt-i18n](https://i18n.nuxtjs.org/)**
+Configurer la prise en charge des routes localisées à partir du module **[@nuxtjs/i18n](https://i18n.nuxtjs.org/)**
 
 Si l'option `i18n` est configurée, le module de plan de site ajoutera automatiquement l'URL de la locale par défaut de chaque page dans un élément `<loc>`, avec des entrées enfants `<xhtml:link>` listant toutes les variantes de langue/locale de la page y compris elle-même (voir les [Consignes relatives au plan du site Google](https://support.google.com/webmasters/answer/189077)).
 
@@ -145,7 +145,7 @@ Exemple:
 ```js[nuxt.config.js]
 {
   modules: [
-    'nuxt-i18n',
+    '@nuxtjs/i18n',
     '@nuxtjs/sitemap'
   ],
   i18n: {
@@ -156,7 +156,7 @@ Exemple:
     hostname: 'https://example.com',
     // shortcut notation (basic)
     i18n: true,
-    // nuxt-i18n notation (advanced)
+    // @nuxtjs/i18n notation (advanced)
     i18n: {
       locales: ['en', 'es', 'fr'],
       routesNameSeparator: '___'
