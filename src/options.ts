@@ -1,7 +1,6 @@
-const MODULE_NAME = require('../package.json').name
+import logger from './runtime/logger'
 
-const logger = require('./logger')
-
+const MODULE_NAME = 'Nuxt 3 Sitemap Module'
 const DEFAULT_NUXT_PUBLIC_PATH = '/_nuxt/'
 
 /**
@@ -12,18 +11,19 @@ const DEFAULT_NUXT_PUBLIC_PATH = '/_nuxt/'
  * @param   {boolean} isLinkedToSitemapIndex
  * @returns {Object}
  */
-function setDefaultSitemapOptions(options, nuxtInstance, isLinkedToSitemapIndex = false) {
+export function setDefaultSitemapOptions(options, nuxtInstance, isLinkedToSitemapIndex = false) {
   const defaults = {
     path: '/sitemap.xml',
     hostname:
       // TODO: remove support of "build.publicPath" on release 3.0
-      nuxtInstance.options.build.publicPath !== DEFAULT_NUXT_PUBLIC_PATH
-        ? nuxtInstance.options.build.publicPath
+      // nuxt@3.0.0-rc.12 nuxtInstance.options.build.publicPath eq to `{}`
+      nuxtInstance.options.app.buildAssetsDir !== DEFAULT_NUXT_PUBLIC_PATH
+        ? nuxtInstance.options.app.buildAssetsDir
         : undefined,
     exclude: [],
     routes: nuxtInstance.options.generate.routes || [],
     cacheTime: 1000 * 60 * 15,
-    etag: nuxtInstance.options.render.etag,
+    etag: nuxtInstance.options.render?.etag || { weak: true },
     filter: undefined,
     gzip: false,
     xmlNs: undefined,
@@ -32,6 +32,7 @@ function setDefaultSitemapOptions(options, nuxtInstance, isLinkedToSitemapIndex 
     lastmod: undefined,
     i18n: undefined,
     defaults: {},
+    base: '/',
   }
 
   const sitemapOptions = {
@@ -41,9 +42,9 @@ function setDefaultSitemapOptions(options, nuxtInstance, isLinkedToSitemapIndex 
 
   if (sitemapOptions.i18n) {
     // Check modules config
-    const modules = Object.keys(nuxtInstance.requiredModules)
+    const modules = nuxtInstance.options._installedModules.map((m) => m.meta?.name)
     /* istanbul ignore if */
-    if (modules.indexOf('nuxt-i18n') > modules.indexOf(MODULE_NAME)) {
+    if (!modules.includes('@nuxtjs/i18n')) {
       logger.warn(
         `To enable the "i18n" option, the "${MODULE_NAME}" must be declared after the "nuxt-i18n" module in your config`
       )
@@ -90,16 +91,17 @@ function setDefaultSitemapOptions(options, nuxtInstance, isLinkedToSitemapIndex 
  * @param   {Nuxt}   nuxtInstance
  * @returns {Object}
  */
-function setDefaultSitemapIndexOptions(options, nuxtInstance) {
+export function setDefaultSitemapIndexOptions(options, nuxtInstance) {
   const defaults = {
     path: '/sitemapindex.xml',
     hostname: undefined,
     sitemaps: [],
     lastmod: undefined,
-    etag: nuxtInstance.options.render.etag,
+    etag: nuxtInstance.options.render?.etag || { weak: true },
     gzip: false,
     xmlNs: undefined,
     xslUrl: undefined,
+    base: '/',
   }
 
   const sitemapIndexOptions = {
@@ -131,5 +133,3 @@ function setDefaultSitemapIndexOptions(options, nuxtInstance) {
 
   return sitemapIndexOptions
 }
-
-module.exports = { setDefaultSitemapOptions, setDefaultSitemapIndexOptions }

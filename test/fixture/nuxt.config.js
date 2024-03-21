@@ -10,7 +10,14 @@ module.exports = {
       exclude: ['/exclude'],
       gzip: true,
       hostname: 'http://localhost:3000/',
-      routes: ['1/', 'child/1', { url: 'test' }],
+      routes: [
+        '1/',
+        'child/1',
+        { url: 'test' },
+        () => {
+          return 'test'
+        },
+      ],
       filter: ({ routes }) => routes.filter((route) => route.url !== '/filtered/'),
       xmlNs: 'xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
       // xslUrl: 'sitemap.xsl',
