@@ -1,11 +1,9 @@
-const { hostname } = require('os')
-const { join } = require('path')
-const { URL } = require('url')
-
-const isHTTPS = require('is-https')
-const sm = require('sitemap')
-
-const logger = require('./logger')
+import { hostname } from 'os'
+import { join } from 'path'
+import { URL } from 'url'
+import isHTTPS from 'is-https'
+import * as sm from 'sitemap'
+import logger from './logger'
 
 /**
  * Initialize a fresh sitemap instance
@@ -16,8 +14,8 @@ const logger = require('./logger')
  * @param   {Request} req
  * @returns {Sitemap} sitemap instance
  */
-function createSitemap(options, routes, base = null, req = null) {
-  const sitemapConfig = {}
+export function createSitemap(options, routes, base = null, req = null) {
+  const sitemapConfig = {cacheTime: null, hostname: null, xmlNs: null, xslUrl: null, urls: null}
 
   // Set cacheTime
   sitemapConfig.cacheTime = options.cacheTime || 0
@@ -111,7 +109,6 @@ function createSitemap(options, routes, base = null, req = null) {
 
   // Set urls
   sitemapConfig.urls = routes
-
   // Create sitemap instance
   return sm.createSitemap(sitemapConfig)
 }
@@ -124,8 +121,8 @@ function createSitemap(options, routes, base = null, req = null) {
  * @param   {Request} req
  * @returns {string}
  */
-function createSitemapIndex(options, base = null, req = null) {
-  const sitemapIndexConfig = {}
+export function createSitemapIndex(options, base = null, req = null) {
+  const sitemapIndexConfig = { urls: null, lastmod: null, xmlNs: null, xslUrl: null }
 
   // Set urls
   const defaultHostname = options.hostname
@@ -155,7 +152,7 @@ function createSitemapIndex(options, base = null, req = null) {
  *
  * @param   {Object}  options
  * @param   {Request} req
- * @param   {string}  base
+ * @param   {string|null}  base
  * @returns {string}
  */
 function getHostname(options, req, base) {
@@ -163,10 +160,10 @@ function getHostname(options, req, base) {
   if (!options.hostname && !req) {
     logger.fatal('The `hostname` option is mandatory in your config on `spa` or `generate` build mode', options)
   }
-  return new URL(
-    base,
+  const href = new URL(
+    base || '',
     options.hostname || (req && `${isHTTPS(req) ? 'https' : 'http'}://${req.headers.host}`) || `http://${hostname()}`
   ).href
-}
 
-module.exports = { createSitemap, createSitemapIndex }
+  return href.slice(-1) === '/' ? href : href + '/'
+}

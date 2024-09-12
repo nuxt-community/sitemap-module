@@ -2,6 +2,85 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.4](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v4.0.3...v4.0.4) (2022-11-19)
+
+
+### Bug Fixes
+
+* different sitemaps sharing same routes cache ([8c959fe](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/8c959fe990a312cb9c089c996640e35c33ed5dac))
+
+### [4.0.3](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v4.0.2...v4.0.3) (2022-11-19)
+
+
+### Bug Fixes
+
+* adding pre-rendered routes to sitemap when using nuxi generate ([0f922a5](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/0f922a5263128ac67488a8ca420678ba2371c74e))
+
+### [4.0.2](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v4.0.1...v4.0.2) (2022-11-18)
+
+
+### Bug Fixes
+
+* sitemap generated in wrong directory ([be94a1a](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/be94a1aa771513ab1eb3fda4dfbb0471a4571ee2))
+
+### [4.0.1](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v4.0.0...v4.0.1) (2022-11-18)
+
+
+### Bug Fixes
+
+* **nuxt 3.0.0:** fixes for the latest nuxt release ([e515ef9](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/e515ef956a35381b21304dfeebeda6c111e17260))
+
+## [4.0.0](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v3.2.0...v4.0.0) (2022-10-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **nuxt-rc.12:** not backwards compatible with old release candidates
+
+### Bug Fixes
+
+* **nuxt v3.0.0-rc.12 compat** ([b705933](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/b705933bee8944791fe3dbe3b3687b8e76d06b00))
+* **nuxt-rc.12:** changed example in README.md ([d1d8d7f](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/d1d8d7f9083484c341491e49e4eaaf76a794c72d))
+* **nuxt-rc.12:** not backwards compatible with old release candidates ([8c207c3](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/8c207c39b07b9406e0024f17ec5b862eb8e71c47))
+
+## [3.2.0](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v3.1.4...v3.2.0) (2022-07-06)
+
+
+### Features
+
+* added test cases for nuxt-i18n and switched to @nuxtjs/i18n-edge ([4d07701](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/4d07701c3c92d3d0e35689eb980788a4da1d6499))
+
+### [3.1.4](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v3.1.3...v3.1.4) (2022-07-01)
+
+### [3.1.3](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v3.1.2...v3.1.3) (2022-07-01)
+
+### Bug Fixes
+
+* added exports to the package.json
+
+### [3.1.2](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v3.1.1...v3.1.2) (2022-07-01)
+
+
+### Bug Fixes
+
+* added tsconfig.json ([199ecd1](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/199ecd189d6763c2ebada4e8e437ca79170f02e0))
+* fixed broken snapshots ([3c243f1](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/3c243f111592e98ff610fbaef859229b0bd302ad))
+* was broken in production ([6367434](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/6367434f7a0a803006f27233c7ac85e6623f467e))
+
+### [3.1.1](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v3.1.0...v3.1.1) (2022-06-28)
+
+## [3.1.0](https://github.com/funken-studio/sitemap-module-nuxt-3/compare/v2.4.0...v3.1.0) (2022-06-28)
+
+
+### Features
+
+* support for nuxt 3 ([1ba3d1c](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/1ba3d1c763da3c65297dba1b369ec7695203c505))
+
+
+### Bug Fixes
+
+* return a valid URL from getHostname ([f999d6f](https://github.com/funken-studio/sitemap-module-nuxt-3/commit/f999d6fb137d2d8c8a021994a6e35e42ebd2825c))
+
 ## [2.4.0](https://github.com/nuxt-community/sitemap-module/compare/v2.3.2...v2.4.0) (2020-06-25)
 
 

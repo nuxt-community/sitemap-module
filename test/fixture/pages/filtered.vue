@@ -1,5 +1,3 @@
 <template>
-  <div>
-    /filtered
-  </div>
+  <div>/filtered</div>
 </template>

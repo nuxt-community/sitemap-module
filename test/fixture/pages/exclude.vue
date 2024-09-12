@@ -1,5 +1,3 @@
 <template>
-  <div>
-    /exclude
-  </div>
+  <div>/exclude</div>
 </template>
