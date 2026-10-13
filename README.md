@@ -1,3 +1,6 @@
+> [!NOTE]
+> This repository is archived. It contains the Nuxt 2 version of `@nuxtjs/sitemap`; Nuxt 2 reached end of life on June 30, 2024. The current module lives in [`nuxt-modules/sitemap`](https://github.com/nuxt-modules/sitemap).
+
 [![@nuxtjs/sitemap](docs/static/preview.png)](https://sitemap.nuxtjs.org)
 
 # Sitemap Module for Nuxt 2
